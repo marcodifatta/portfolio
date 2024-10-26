@@ -8,6 +8,8 @@ Dopo aver completato il mio primo progetto (www.pizzabakery.biz) ho deciso di co
 
 ---
 
+- 26/10/24 - Probabili colori per il portfolio + definizione del progetto su Excalidraw
+
 - 16/10/2024 - Creazione repository e primo commit
 
 ---
