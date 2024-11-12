@@ -3,62 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <title>Marco Di Fatta</title>
+    <title>Portfolio di Marco Di Fatta</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
   </head>
   <body>
-    <div class="container">
-      <div class="section-header">
-        <h2>Benvenuti nel mio portfolio</h2>
+    <!-- Navbar -->
+    <nav id="navbar">
+      <div class="logo">
+        <img src="path/to/your-photo.jpg" alt="Your Photo" />
       </div>
-      <div class="section-intro">
-        <div>
-          <p>
-            Benvenuto nel mio portfolio! Mi chiamo Marco Di Fatta e sono un
-            professionista appassionato di sviluppo e tecnologia. Qui troverai
-            una selezione dei miei progetti, gli stack tecnologici con cui
-            lavoro e il mio percorso professionale. Con una forte attenzione
-            alla qualità del codice e all’innovazione, mi impegno a trasformare
-            idee complesse in soluzioni pratiche ed efficienti. Esplora il sito
-            per scoprire di più su di me e sul mio lavoro.
-          </p>
-        </div>
-        <div class="photo">
-          <img src="./photo/me.png" alt="Foto Mia" />
-        </div>
-      </div>
-      <!--STACK -->
-      <div class="section-stack">
-        <h3>Stack che conosco</h3>
-        <p>(con immagini)</p>
-      </div>
-      <!-- CV -->
-      <div class="cv-links">
-        <div>DW CV ITA</div>
-        <div>DW CV ENG</div>
-      </div>
-      <!-- CERTIFICAZIONI -->
-      <div class="certifications">
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-        <div>Certificazioni</div>
-      </div>
-      <!-- PROGETTI -->
-      <div class="projects">
-        <div>Progetti</div>
-        <p>Descrizione progetto</p>
-      </div>
-    </div>
+      <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+      <ul>
+        <li><a href="#about">Chi Sono</a></li>
+        <li><a href="#cv">CV</a></li>
+        <li><a href="#socials">Social</a></li>
+        <li><a href="#projects">Progetti</a></li>
+        <li><a href="#contact">Contatti</a></li>
+      </ul>
+    </nav>
+
+    <!-- Sezione Presentazione -->
+    <section id="about">
+      <h1>Ciao, sono Marco Di Fatta</h1>
+      <p>
+        Descrizione breve di chi sei, cosa fai, cosa ti piace e gli stack di
+        programmazione che conosci.
+      </p>
+    </section>
+
+    <!-- Sezione CV -->
+    <section id="cv">
+      <h2>Curriculum Vitae</h2>
+      <a href="link-al-cv.pdf" download>Scarica il mio CV</a>
+    </section>
+
+    <!-- Sezione Social -->
+    <section id="socials">
+      <h2>Seguimi</h2>
+      <p>Link ai tuoi profili social (LinkedIn, GitHub, ecc.).</p>
+    </section>
+
+    <!-- Sezione Progetti -->
+    <section id="projects">
+      <h2>Progetti</h2>
+      <p>Breve descrizione e link ai progetti già effettuati.</p>
+    </section>
+
+    <!-- Sezione Contatti -->
+    <section id="contact">
+      <h2>Contattami</h2>
+      <p>Email o modulo di contatto.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2024 Marco Di Fatta. Tutti i diritti riservati.</p>
+    </footer>
+
+    <!-- Script JavaScript (se necessario per la navbar) -->
+    <script src="js/scripts.js"></script>
   </body>
-  <footer>
-    <p>Fatto da Marco Di Fatta</p>
-  </footer>
 </html>

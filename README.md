@@ -8,6 +8,8 @@ Dopo aver completato il mio primo progetto (www.pizzabakery.biz) ho deciso di co
 
 ---
 
+- 12/11/24 - Ristrutturato il sito. Creata struttura cartelle, revisionato l'HTML ed il CSS. TODO: Pulire CSS ed organizzarlo
+
 - 27/10/24 - Creata base del portfolio, aggiunta imamgine e base del CSS.
 
 - 26/10/24 - Probabili colori per il portfolio + definizione del progetto su Excalidraw
