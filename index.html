@@ -10,7 +10,7 @@
     <!-- Navbar -->
     <nav id="navbar">
       <div class="logo">
-        <img src="path/to/your-photo.jpg" alt="Your Photo" />
+        <img src="path/to/your-photo.jpg" alt="My Logo" />
       </div>
       <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
       <ul>
@@ -24,37 +24,119 @@
 
     <!-- Sezione Presentazione -->
     <section id="about">
-      <h1>Ciao, sono Marco Di Fatta</h1>
-      <p>
-        Descrizione breve di chi sei, cosa fai, cosa ti piace e gli stack di
-        programmazione che conosci.
-      </p>
+      <div class="container">
+        <div class="intro">
+          <h1 class="typing-effect">Hi, I'm Marco</h1>
+        </div>
+        <div class="description">
+          <p>
+            Ciao, sono Marco! Sono un appassionato di tecnologia e sviluppo, qui
+            sotto puoi vedere ciò che conosco!
+          </p>
+          <br />
+          <!-- INIZIO LOGHI -->
+          <img class="logos" src="/photo/icons/logo-html.svg" alt="HTML" />
+          <img class="logos" src="/photo/icons/logo-css.svg" alt="CSS" />
+          <img
+            class="logos"
+            src="/photo/icons/logo-javascript.svg"
+            alt="JavaScript"
+          />
+          <img class="logos" src="/photo/icons/logo-nodejs.svg" alt="NodeJS" />
+          <img
+            class="logos"
+            src="/photo/icons/logo-mongodb.svg"
+            alt="MongoDB"
+          />
+          <img class="logos" src="/photo/icons/logo-python.svg" alt="Python" />
+          <img class="logos" src="/photo/icons/logo-linux.svg" alt="Linux" />
+          <img class="logos" src="/photo/icons/logo-docker.svg" alt="Docker" />
+          <!-- FINE LOGHI -->
+        </div>
+      </div>
     </section>
 
     <!-- Sezione CV -->
     <section id="cv">
       <h2>Curriculum Vitae</h2>
-      <a href="link-al-cv.pdf" download>Scarica il mio CV</a>
+      <a href="/docs/" download>Scarica il mio CV</a>
     </section>
 
     <!-- Sezione Social -->
     <section id="socials">
       <h2>Seguimi</h2>
-      <p>Link ai tuoi profili social (LinkedIn, GitHub, ecc.).</p>
+      <p>
+        Se ti va, e ti piace quello che vedi, considera di seguirmi sui miei
+        social!
+      </p>
+      <img class="logos" src="/photo/icons/logo-linkedin.svg" alt="LinkedIn" />
     </section>
 
     <!-- Sezione Progetti -->
     <section id="projects">
       <h2>Progetti</h2>
-      <p>Breve descrizione e link ai progetti già effettuati.</p>
+      <p>In questa sezione troverai tutti i progetti che ho creato!</p>
+      <p>Clicca su una delle icone per andare al progetto!</p>
+      <br />
+      <!-- Card Progetto - PIZZABAKERY -->
+      <div class="card">
+        <div class="card-icon">
+          <img
+            class="logos"
+            src="/photo/project-logos/PizzaBakery.png"
+            alt="PizzaBakery"
+          />
+        </div>
+        <div class="card-content">
+          <h3>PizzaBakery Web Menù</h3>
+          <p>
+            Web Menù per la pizzeria PizzaBakery di Cefalù. Il menù è
+            accessibile sia da telefono che da desktop. L'amministratore può
+            aggiungere/rimuovere/modificare le pizze all'interno di ogni
+            categoria.
+          </p>
+        </div>
+      </div>
+      <br />
+      <!-- FINE Card Progetto - PIZZABAKERY -->
+      <!-- Card Progetto - PIZZABAKERY -->
+      <div class="card">
+        <div class="card-icon">
+          <img
+            class="logos"
+            src="/photo/project-logos/PizzaBakery.png"
+            alt="PizzaBakery"
+          />
+        </div>
+        <div class="card-content">
+          <h3>PizzaBakery Web Menù</h3>
+          <p>
+            Web Menù per la pizzeria PizzaBakery di Cefalù. Il menù è
+            accessibile sia da telefono che da desktop. L'amministratore può
+            aggiungere/rimuovere/modificare le pizze all'interno di ogni
+            categoria.
+          </p>
+        </div>
+      </div>
+      <!-- FINE Card Progetto - PIZZABAKERY -->
     </section>
 
     <!-- Sezione Contatti -->
+    <!-- Card CONTACT -->
     <section id="contact">
-      <h2>Contattami</h2>
-      <p>Email o modulo di contatto.</p>
-    </section>
+      <div class="contact-card">
+        <h2>Contact Me</h2>
+        <p>
+          Feel free to reach out via email or connect with me on social media!
+        </p>
 
+        <div class="contact-info">
+          <p>Email: <span id="email">marco@iltuodominio.com</span></p>
+          <button class="copy-btn" onclick="copyEmail()">Copy Email</button>
+        </div>
+      </div>
+    </section>
+    <!-- FINE Card Progetto CONTACT -->
     <!-- Footer -->
     <footer>
       <p>&copy; 2024 Marco Di Fatta. Tutti i diritti riservati.</p>

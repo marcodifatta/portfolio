@@ -8,6 +8,10 @@ Dopo aver completato il mio primo progetto (www.pizzabakery.biz) ho deciso di co
 
 ---
 
+- TODO -> I link dei social devono portare ai social. Devo poter scaricare il CV (Devo aggiornarlo). Il click sul logo del progetto deveo portare al sito. Aggiornare l'indirizzo email. Aggiungere il logo. Aggiustare le media query per la sezione Progetti.
+
+- 12/11/24 - UPDATE: Sistemato il CSS, aggiunto effetto typing, aggiunte icone e scaricate nella cartella, abbozzato il sito.
+
 - 12/11/24 - Ristrutturato il sito. Creata struttura cartelle, revisionato l'HTML ed il CSS. TODO: Pulire CSS ed organizzarlo
 
 - 27/10/24 - Creata base del portfolio, aggiunta imamgine e base del CSS.

@@ -1,3 +1,4 @@
+/**************************************** COLOR SETTINGS *********************************************/
 :root {
   --sfondo: #121212; /*var(--sfondo)*/
   --navbar: #1c1c1c; /*var(--navbar)*/
@@ -7,7 +8,11 @@
 
   --testo: #ffffff; /*var(--testo)*/
   --paragrafo: #b3b3b3; /*var(--paragrafo)*/
+
+  --sfondo-card: #333; /* var(--sfondo-card) */
 }
+
+/**************************************** END COLOR SETTINGS *********************************************/
 
 /* Reset per margini e padding */
 * {
@@ -24,7 +29,7 @@ body {
   line-height: 1.6;
 }
 
-/* Navbar */
+/**************************************** NAVBAR *********************************************/
 #navbar {
   display: flex;
   align-items: center;
@@ -94,7 +99,9 @@ body {
   color: var(--testo);
 }
 
-/* Stili per le sezioni */
+/**************************************** END NAVBAR *********************************************/
+
+/**************************************** SECTION STYLE *********************************************/
 section {
   padding: 100px 20px; /* aggiusta il padding per il layout */
   margin-top: 60px; /* per compensare la navbar fissa */
@@ -130,7 +137,113 @@ section h2 {
   color: var(--testo);
 }
 
-/* Stile del footer */
+/**************************************** END SECTION STYLE *********************************************/
+
+/**************************************** HOMEPAGE LOGOS *********************************************/
+
+.logos {
+  width: 3%; /* Imposta la larghezza al 50% del contenitore */
+}
+
+/**************************************** END HOMEPAGE LOGOS *********************************************/
+
+/**************************************** TYPING EFFECT *********************************************/
+
+/* Contenitore generale */
+#about .container {
+  display: flex;
+  flex-direction: column; /* Dispone gli elementi in colonna */
+  align-items: center; /* Centra gli elementi orizzontalmente */
+  justify-content: center; /* Centra gli elementi verticalmente */
+  text-align: center;
+  padding: 50px;
+}
+
+/* Testo della scritta "Hi, I'm Marco" con effetto macchina da scrivere */
+.typing-effect {
+  font-size: 2em;
+  font-weight: bold;
+  font-family: monospace;
+  color: #fff;
+  overflow: hidden; /* Nasconde il testo in eccesso per l’effetto typing */
+  white-space: nowrap;
+  border-right: 4px solid #fff; /* Cursore stile macchina da scrivere */
+  animation: typing 3s steps(20) 1s 1 normal both, blink 0.5s step-end infinite;
+}
+
+/* Descrizione al centro */
+.description {
+  max-width: 70%; /* Puoi regolare la larghezza massima per un aspetto più compatto */
+  color: #ddd;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+/* Effetto macchina da scrivere */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/**************************************** END TYPING EFFECT *********************************************/
+
+/**************************************** CARD *********************************************/
+
+#projects {
+  text-align: center;
+  color: var(--testo);
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 600px;
+  background-color: var(--sfondo-card);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-icon img {
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+
+.card-content {
+  text-align: left;
+}
+
+.card-content h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.card-content p {
+  margin: 5px 0 0;
+  font-size: 1rem;
+}
+
+/**************************************** FINE CARD *********************************************/
+
+/**************************************** FOOTER *********************************************/
 footer {
   background-color: var(--footer);
   text-align: center;
@@ -145,7 +258,9 @@ footer p {
   font-size: 0.9rem;
 }
 
-/* VISUALIZZAZIONE DA TELEFONI */
+/**************************************** END FOOTER *********************************************/
+
+/**************************************** DISPLAY SETTINGS *********************************************/
 
 /* Stili base per la navbar */
 #navbar ul {
@@ -179,4 +294,87 @@ footer p {
   .hamburger {
     display: block;
   }
+
+  .logos {
+    width: 18%; /* Imposta la larghezza al 50% del contenitore */
+  }
 }
+
+/**************************************** END DISPLAY SETTINGS *********************************************/
+
+/**************************************** CONTACT CARD *********************************************/
+
+/*
+  --sfondo: #121212; var(--sfondo)
+  --navbar: #1c1c1c; var(--navbar)
+  --navbar-2: #333333; var(--navbar-2)
+  --attivo: #4caf50; var(--attivo)
+  --footer: #1c1c1c; var(--footer)
+
+  --testo: #ffffff; var(--testo)
+  --paragrafo: #b3b3b3; var(--paragrafo)
+
+  --sfondo-card: #333; var(--sfondo-card) 
+*/
+
+#contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  background-color: var(--sfondo);
+}
+
+/* Stile per la contact card */
+.contact-card {
+  background-color: var(--sfondo-card) f;
+  border-radius: 10px;
+  padding: 20px 40px;
+  box-shadow: 0 4px 10px rgba(105, 105, 105, 0.527);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Titolo e testo */
+.contact-card h2 {
+  margin: 0;
+  font-size: 1.8em;
+  color: var(--testo);
+}
+
+.contact-card p {
+  font-size: 1em;
+  color: var(--testo);
+}
+
+/* Stile per l'email e pulsante copia */
+.contact-info {
+  margin: 20px 0;
+}
+
+.contact-info p {
+  font-size: 1em;
+  color: var(--testo);
+}
+
+.copy-btn {
+  background-color: var(--attivo);
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.copy-btn:hover {
+  background-color: #4caf4f69;
+}
+
+#email {
+  color: var(--attivo);
+}
+
+/**************************************** FINE CONTACT CARD *********************************************/
