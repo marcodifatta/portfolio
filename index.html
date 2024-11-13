@@ -3,14 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio di Marco Di Fatta</title>
+    <title>MDF Dev ~ Portfolio</title>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="icon" type="image/png" href="/photo/logo-icons/logo1.png" />
   </head>
   <body>
     <!-- Navbar -->
     <nav id="navbar">
       <div class="logo">
-        <img src="path/to/your-photo.jpg" alt="My Logo" />
+        <img src="/photo/logo-icons/logo2.png" alt="My Logo" />
       </div>
       <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
       <ul>
@@ -59,7 +60,7 @@
     <!-- Sezione CV -->
     <section id="cv">
       <h2>Curriculum Vitae</h2>
-      <a href="/docs/" download>Scarica il mio CV</a>
+      <a href="/docs/cv/mdf-13-11-24.pdf" download>Scarica il mio CV</a>
     </section>
 
     <!-- Sezione Social -->
@@ -69,7 +70,11 @@
         Se ti va, e ti piace quello che vedi, considera di seguirmi sui miei
         social!
       </p>
-      <img class="logos" src="/photo/icons/logo-linkedin.svg" alt="LinkedIn" />
+      <a
+        href="https://www.linkedin.com/in/marco-di-fatta-76728b15b/"
+        target="_blank"
+        ><img class="logos" src="/photo/icons/logo-linkedin.svg" alt="LinkedIn"
+      /></a>
     </section>
 
     <!-- Sezione Progetti -->
@@ -81,11 +86,13 @@
       <!-- Card Progetto - PIZZABAKERY -->
       <div class="card">
         <div class="card-icon">
-          <img
-            class="logos"
-            src="/photo/project-logos/PizzaBakery.png"
-            alt="PizzaBakery"
-          />
+          <a href="https://www.pizzabakery.biz" target="_blank">
+            <img
+              class="logos"
+              src="/photo/project-logos/PizzaBakery.png"
+              alt="PizzaBakery"
+            />
+          </a>
         </div>
         <div class="card-content">
           <h3>PizzaBakery Web Menù</h3>
@@ -98,26 +105,6 @@
         </div>
       </div>
       <br />
-      <!-- FINE Card Progetto - PIZZABAKERY -->
-      <!-- Card Progetto - PIZZABAKERY -->
-      <div class="card">
-        <div class="card-icon">
-          <img
-            class="logos"
-            src="/photo/project-logos/PizzaBakery.png"
-            alt="PizzaBakery"
-          />
-        </div>
-        <div class="card-content">
-          <h3>PizzaBakery Web Menù</h3>
-          <p>
-            Web Menù per la pizzeria PizzaBakery di Cefalù. Il menù è
-            accessibile sia da telefono che da desktop. L'amministratore può
-            aggiungere/rimuovere/modificare le pizze all'interno di ogni
-            categoria.
-          </p>
-        </div>
-      </div>
       <!-- FINE Card Progetto - PIZZABAKERY -->
     </section>
 
@@ -131,7 +118,7 @@
         </p>
 
         <div class="contact-info">
-          <p>Email: <span id="email">marco@iltuodominio.com</span></p>
+          <p>Email: <span id="email">contact@mdfdev.xyz</span></p>
           <button class="copy-btn" onclick="copyEmail()">Copy Email</button>
         </div>
       </div>

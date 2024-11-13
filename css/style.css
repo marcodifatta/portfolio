@@ -46,7 +46,7 @@ body {
 
 /* Logo e immagine a sinistra */
 #navbar .logo img {
-  height: 40px; /* Modifica l’altezza secondo necessità */
+  height: 60px; /* Modifica l’altezza secondo necessità */
   border-radius: 50%; /* Applica un bordo rotondo se desiderato */
 }
 
@@ -303,20 +303,6 @@ footer p {
 /**************************************** END DISPLAY SETTINGS *********************************************/
 
 /**************************************** CONTACT CARD *********************************************/
-
-/*
-  --sfondo: #121212; var(--sfondo)
-  --navbar: #1c1c1c; var(--navbar)
-  --navbar-2: #333333; var(--navbar-2)
-  --attivo: #4caf50; var(--attivo)
-  --footer: #1c1c1c; var(--footer)
-
-  --testo: #ffffff; var(--testo)
-  --paragrafo: #b3b3b3; var(--paragrafo)
-
-  --sfondo-card: #333; var(--sfondo-card) 
-*/
-
 #contact {
   display: flex;
   justify-content: center;
@@ -327,7 +313,7 @@ footer p {
 
 /* Stile per la contact card */
 .contact-card {
-  background-color: var(--sfondo-card) f;
+  background-color: var(--sfondo-card);
   border-radius: 10px;
   padding: 20px 40px;
   box-shadow: 0 4px 10px rgba(105, 105, 105, 0.527);

@@ -8,7 +8,9 @@ Dopo aver completato il mio primo progetto (www.pizzabakery.biz) ho deciso di co
 
 ---
 
-- TODO -> I link dei social devono portare ai social. Devo poter scaricare il CV (Devo aggiornarlo). Il click sul logo del progetto deveo portare al sito. Aggiornare l'indirizzo email. Aggiungere il logo. Aggiustare le media query per la sezione Progetti.
+- TODO -> Aggiustare le media query per la sezione Progetti.
+
+- 13/11/24 - Aggiunto logo, CV, Link social ed email. Aggiunto dockerfile.
 
 - 12/11/24 - UPDATE: Sistemato il CSS, aggiunto effetto typing, aggiunte icone e scaricate nella cartella, abbozzato il sito.
 
