@@ -46,7 +46,7 @@ body {
 
 /* Logo e immagine a sinistra */
 #navbar .logo img {
-  height: 60px; /* Modifica l’altezza secondo necessità */
+  height: 61px; /* Modifica l’altezza secondo necessità */
   border-radius: 50%; /* Applica un bordo rotondo se desiderato */
 }
 
