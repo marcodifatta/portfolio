@@ -363,6 +363,8 @@ footer p {
   font-size: 1em;
   cursor: pointer;
   margin-top: 10px;
+  text-decoration: none; /* Aggiungi questa regola per rimuovere la sottolineatura del link */
+  display: inline-block; /* Aggiungi questa regola per mantenere l'aspetto del pulsante */
 }
 
 .copy-btn:hover {

@@ -26,14 +26,6 @@ function closeMenu() {
   navLinks.classList.remove("active");
 }
 
-// Funzione CopyMail della CONTACT
-function copyEmail() {
-  const email = document.getElementById("email").innerText;
-  navigator.clipboard.writeText(email).then(() => {
-    alert("Email copied!");
-  });
-}
-
 // Ascoltatore di eventi per chiudere il menu quando si clicca su un link
 document.querySelectorAll("#navbar a").forEach((link) => {
   link.addEventListener("click", closeMenu);
