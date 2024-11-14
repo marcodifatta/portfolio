@@ -8,7 +8,7 @@ Dopo aver completato il mio primo progetto (www.pizzabakery.biz) ho deciso di co
 
 ---
 
-- 14/11/24 - Test di push
+- 14/11/24 - Test di push 2
 
 - TODO -> Aggiustare le media query per la sezione Progetti.
 
