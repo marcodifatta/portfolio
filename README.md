@@ -8,7 +8,7 @@ Dopo aver completato il mio primo progetto (www.pizzabakery.biz) ho deciso di co
 
 ---
 
-- 14/11/24 - FIX media query per la sezione Progetti.
+- 14/11/24 - FIX media query per la sezione Progetti e vari altri fix.
 
 - 13/11/24 - Aggiunto logo, CV, Link social ed email. Aggiunto dockerfile.
 

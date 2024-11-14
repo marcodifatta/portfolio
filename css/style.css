@@ -275,6 +275,16 @@ footer p {
 }
 
 @media (max-width: 768px) {
+  #about p,
+  #cv a,
+  #cv p,
+  #socials p,
+  #projects p,
+  #contact p {
+    font-size: 16px;
+    color: var(--paragrafo);
+  }
+
   /* Nascondi i link e mostra il menu hamburger su schermi piccoli */
   #navbar ul {
     display: none;
