@@ -8,8 +8,6 @@ Dopo aver completato il mio primo progetto (www.pizzabakery.biz) ho deciso di co
 
 ---
 
-- 14/11/24 - Test di push 2
-
 - TODO -> Aggiustare le media query per la sezione Progetti.
 
 - 13/11/24 - Aggiunto logo, CV, Link social ed email. Aggiunto dockerfile.
