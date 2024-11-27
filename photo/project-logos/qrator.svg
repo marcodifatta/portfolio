@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#333333" stroke="#4caf50" stroke-width="5"/>
+
+  <!-- QR Code-like squares -->
+  <rect x="40" y="40" width="30" height="30" fill="#4caf50"/>
+  <rect x="40" y="130" width="30" height="30" fill="#4caf50"/>
+  <rect x="130" y="40" width="30" height="30" fill="#4caf50"/>
+  <rect x="130" y="130" width="10" height="10" fill="#4caf50"/>
+  <rect x="150" y="130" width="10" height="10" fill="#4caf50"/>
+  <rect x="130" y="150" width="10" height="10" fill="#4caf50"/>
+  <rect x="150" y="150" width="10" height="10" fill="#4caf50"/>
+
+  <!-- Text -->
+  <text x="100" y="115" font-family="Arial, sans-serif" font-size="18" fill="#ffffff" font-weight="bold" text-anchor="middle">
+    QRator
+  </text>
+</svg>
