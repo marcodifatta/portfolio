@@ -4,6 +4,10 @@ Questo è il repository del mio portfolio personale, creato dopo aver completato
 
 ## 📝 Changelog
 
+### Febbraio 2026
+
+- **27/02** - Aggiunto nuovo progetto: MDKManager
+
 ### Marzo 2024
 
 - **19/03** - Aggiunto nuovo progetto: ShoppyList
