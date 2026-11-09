@@ -51,6 +51,13 @@ npm run admin:password          # scrivi la nuova password, copia la riga ADMIN_
 | Social | LinkedIn, GitHub, Instagram, email... con ordine |
 | Competenze | nome e icona delle tecnologie, con ordine |
 
+### Lingue
+
+- `/` è in italiano e `/en/` in inglese. Alla prima visita di `/`, un browser che preferisce l'inglese (e non ha l'italiano tra le lingue) viene mandato su `/en/`. Il selettore di lingua (`/lang/it`, `/lang/en`) salva la scelta in un cookie per un anno, e la scelta vince sulla lingua del browser.
+- I testi fissi dell'interfaccia stanno in `src/i18n/it.ts` e `src/i18n/en.ts`.
+- Progetti e testi della homepage hanno i campi in italiano e in inglese. Con `DEEPL_API_KEY` impostata (account gratuito su deepl.com, "API Free"), al salvataggio l'inglese viene generato quando l'italiano cambia o quando l'inglese manca. Se spunti "inglese corretto a mano", il testo inglese non viene più sovrascritto. Senza traduzione, `/en/` mostra il testo italiano.
+- Nelle pagine ci sono `hreflang`, `canonical` e `Content-Language`, per i motori di ricerca.
+
 Sicurezza: password con hash scrypt; sessione salvata in Postgres, cookie `HttpOnly` e `SameSite=Lax` (`Secure` in produzione), durata 7 giorni; protezione CSRF su ogni form; 5 tentativi di login sbagliati ogni 15 minuti per IP; pagine admin mai in cache e non indicizzate. Le immagini caricate vengono sempre ricodificate in WebP: un file che non è un'immagine viene rifiutato, e un SVG con script diventa un'immagine innocua. I CV vengono accettati solo se sono veri PDF.
 
 Struttura:
@@ -76,6 +83,12 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 
 ### Novembre 2026
 
+- **09/11** - Fase 4, italiano e inglese:
+  - Homepage su `/` (IT) e `/en/` (EN), scelta automatica dalla lingua del browser e selettore che la ricorda
+  - Testi fissi in `src/i18n`, contenuti dal DB con ripiego sull'italiano quando manca l'inglese
+  - Traduzione DeepL al salvataggio di progetti e testi; l'inglese corretto a mano non viene sovrascritto
+  - `hreflang`, `canonical`, `Content-Language`; pagina 404 nella lingua giusta
+  - 41 test automatici
 - **09/11** - Fase 3, area admin:
   - Login con utente e password (hash scrypt), sessioni in Postgres, CSRF, limite ai tentativi, header di sicurezza con helmet
   - Gestione progetti: creazione, modifica, bozza/pubblicato, riordino, eliminazione con conferma, caricamento di logo e screenshot (convertiti in WebP)

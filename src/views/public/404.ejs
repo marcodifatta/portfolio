@@ -1,3 +1,14 @@
 <!doctype html>
-<html lang="it"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Pagina non trovata</title></head>
-<body><h1>Pagina non trovata</h1><p><a href="/">Torna alla homepage</a></p></body></html>
+<html lang="<%= t.htmlLang %>">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title><%= t.notFound.title %> · Marco Di Fatta</title>
+    <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png" />
+  </head>
+  <body>
+    <h1><%= t.notFound.title %></h1>
+    <p><%= t.notFound.body %> <a href="<%= home %>"><%= t.notFound.back %></a></p>
+  </body>
+</html>

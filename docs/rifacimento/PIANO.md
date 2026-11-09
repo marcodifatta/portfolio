@@ -1,6 +1,6 @@
 # Piano — Rifacimento portfolio mdfdev.xyz
 
-**Stato:** Fasi 0-3 completate (09/11/2026), Fase 4 in corso · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
+**Stato:** Fasi 0-4 completate (09/11/2026), Fase 5 in corso · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
 ## 1. Requisiti (dalle 10 domande)
 
@@ -108,7 +108,7 @@ portfolio/
 4. Validazione lato server con messaggi di errore sotto ogni campo e protezione CSRF su tutti i form.
 - **Fatto quando:** senza sessione tutti gli URL `/admin/*` rimandano al login; un progetto creato appare in homepage, una bozza no; il nuovo ordine si vede in homepage; il 6° login sbagliato riceve una risposta 429.
 
-### Fase 4 — Lingua inglese
+### Fase 4 — Lingua inglese ✅ completata il 09/11/2026 (la traduzione automatica si attiva quando DEEPL_API_KEY è impostata)
 1. Dizionari `i18n/it.json` e `i18n/en.json` per i testi fissi dell'interfaccia.
 2. Route `/` (IT) e `/en/` (EN). Alla prima visita di `/`, un browser con `Accept-Language: en` viene mandato a `/en/` con un 302, a meno che non ci sia già il cookie `lang`. Il selettore IT/EN salva il cookie. Nella pagina ci sono `hreflang` e `<html lang>` corretti.
 3. Al salvataggio, se il campo EN è vuoto o non è marcato `enManual`, viene chiamato DeepL e il risultato scritto nel campo EN, sempre modificabile a mano. Se DeepL non risponde il salvataggio va comunque a buon fine e l'admin mostra un avviso.

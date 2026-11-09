@@ -24,6 +24,7 @@ export async function setupApp(opts: { translator?: Translator } = {}) {
     SESSION_SECRET: "x".repeat(40),
     ADMIN_USERNAME: "marco",
     ADMIN_PASSWORD_HASH: await hashPassword(ADMIN_PASSWORD),
+    PUBLIC_URL: "https://mdfdev.xyz",
     DEEPL_API_KEY: undefined,
     isProd: false,
   };

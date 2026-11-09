@@ -5,6 +5,7 @@ import helmet from "helmet";
 import { sessionMiddleware } from "./auth/session";
 import type { Config } from "./config";
 import type { PrismaClient } from "./generated/prisma/client";
+import { messages } from "./i18n/index";
 import { adminRouter } from "./routes/admin/index";
 import { publicRouter } from "./routes/public";
 import { createTranslator, type Translator } from "./services/translate";
@@ -71,13 +72,15 @@ export function createApp({ prisma, config, translator }: AppDeps) {
     }),
   );
 
-  app.use(publicRouter(prisma));
+  app.use(publicRouter(prisma, { publicUrl: config.PUBLIC_URL, secureCookies: config.isProd }));
 
   app.use((req, res) => {
-    res.status(404).render(req.path.startsWith("/admin") ? "admin/error" : "public/404", {
-      title: "Pagina non trovata",
-      message: "Questa pagina non esiste.",
-    });
+    if (req.path.startsWith("/admin")) {
+      res.status(404).render("admin/error", { title: "Pagina non trovata", message: "Questa pagina non esiste." });
+      return;
+    }
+    const lang = req.path.startsWith("/en/") ? "en" : "it";
+    res.status(404).render("public/404", { lang, t: messages[lang], home: lang === "en" ? "/en/" : "/" });
   });
 
   const onError: ErrorRequestHandler = (err, req, res, _next) => {
