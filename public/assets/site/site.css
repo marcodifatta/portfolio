@@ -1,0 +1,67 @@
+/* CSS della pagina: solo ciò che sta dentro le immagini e che il kit non ha (references/system.md). */
+.site-logo { width: 40px; height: 40px; border-radius: 50%; background: #e8e4e1; flex: none; }
+.nav__logo { display: inline-flex; align-items: center; gap: 10px; }
+/* telefoni stretti (320-379): logo, pulsante e menu non stanno con il nome: resta il ritratto */
+@media (max-width: 379px) { .nav .nav__name { display: none; } }
+
+/* prima schermata senza screenshot: il ritratto */
+.hero__media .hero__portrait { object-fit: contain; background: var(--g-alt, #ede5e1); }
+
+/* griglia dei progetti: una --p-h per gruppo di card */
+.projects .span-4 .panel { --p-h: 256px; }
+.projects .span-3 .panel { --p-h: 190px; }
+.projects .panel { height: var(--p-h); overflow: hidden; }
+.projects .panel .frame__img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
+.projects .panel--logo { display: grid; place-items: center; }
+.project__biglogo { width: 96px; height: 96px; object-fit: contain; }
+.project h3 { display: flex; align-items: center; gap: 10px; }
+.project__logo { width: 28px; height: 28px; border-radius: 7px; object-fit: contain; background: #fff; flex: none; }
+.project__meta { color: var(--muted); font-size: var(--t-small); margin-top: auto; }
+.project p { text-wrap: pretty; }
+
+/* sezione progetti: una o due schermate secondo quante card ci sono (3 per riga, 4 con 4/7/8 progetti) */
+#progetti { --h: 1; }
+#progetti:is([data-count="5"], [data-count="6"], [data-count="7"], [data-count="8"], [data-count="9"]) { --h: 2; }
+
+/* Chi sono: testo e link a sinistra, le tecnologie in un riquadro sotto; ritratto a destra */
+.about { display: flex; flex-direction: column; align-items: flex-start; }
+.about__body { font-size: var(--t-lead); line-height: 1.5; max-width: 42ch; }
+.about__label { margin: var(--s-7) 0 var(--s-4); color: var(--muted); }
+.skills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.skill { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 14px; background: #f7f2ef; }
+.skill .ic { width: 32px; height: 32px; object-fit: contain; }
+.skill__text { font-size: 12px; color: #2a0b08; text-align: center; line-height: 1.1; padding: 2px; }
+.develop { margin: 0; border-radius: var(--r-lg); overflow: hidden; height: min(640px, calc(100svh - var(--padt) - var(--padb) - var(--bar, 0px))); background: #e8e4e1; }
+.develop > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* il nome grande della chiusura: le grazie alte di Instrument Serif non vanno tagliate */
+.close__word { line-height: 1; padding-top: 0.06em; }
+
+/* 1024-1279: il kit mette le card a due per riga; con 3 (o 6) progetti la riga resterebbe a metà,
+   quindi qui restano tre per riga, con lo screenshot più basso */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .projects > .span-4 { grid-column: span 4; }
+  .projects .span-4 .panel { --p-h: 180px; }
+}
+/* tablet (640-1023): le card dei progetti vanno a capo, una per riga, su due schermate; l'altezza degli
+   screenshot si ricava dallo schermo e dal numero di card (--n), così le due schermate si riempiono.
+   "Chi sono" resta una schermata: testo, poi il ritratto in un riquadro 2:1. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  #progetti:is([data-count="2"], [data-count="3"], [data-count="4"]) { --h: 2; }
+  .projects :is(.span-3, .span-4) .panel { --p-h: clamp(220px, calc((200svh - 400px) / var(--n, 3) - 190px), 70vw); }
+  .develop { height: auto; aspect-ratio: 2 / 1; margin-top: var(--s-6); }
+}
+/* telefono: tre progetti in due schermate; "Chi sono" in una schermata, le icone su tre colonne */
+@media (max-width: 639px) {
+  #progetti:is([data-count="2"], [data-count="3"]) { --hm: 2; }
+  #progetti .panel { --p-h: 220px; }
+  .about__body { font-size: var(--t-body); }
+  .about__label { margin-top: var(--s-5); }
+  .skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); width: 100%; }
+  .skill { width: auto; height: 48px; border-radius: 12px; }
+  .skill .ic { width: 28px; height: 28px; }
+  .develop { height: auto; aspect-ratio: 2 / 1; margin-top: var(--s-5); }
+}
+
+/* il ritratto si vede sempre intero (il momento ritaglia a riempimento per le fotografie) */
+#chi-sono .develop > img { object-fit: contain; }

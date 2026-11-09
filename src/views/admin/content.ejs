@@ -38,6 +38,31 @@
   <div class="form-actions"><button class="btn" type="submit">Salva i testi</button></div>
 </form>
 
+<h2>Prima schermata</h2>
+<form class="panel" method="post" action="/admin/content/hero" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>" />
+  <div class="form-grid">
+    <div class="field">
+      <label for="heroImage">Immagine accanto al titolo</label>
+      <% if (heroImage) { %>
+        <div class="preview"><img class="wide" src="<%= heroImage %>" alt="Immagine attuale" style="height:140px;width:auto" /></div>
+        <label class="check"><input type="checkbox" name="removeHeroImage" /> Togli l'immagine (al suo posto lo screenshot del primo progetto)</label>
+      <% } %>
+      <input id="heroImage" name="heroImage" type="file" accept="image/png,image/jpeg,image/webp" />
+      <span class="hint">Meglio verticale o quadrata, per esempio la pagina intera di un progetto. Fino a 5 MB.</span>
+    </div>
+    <div class="field">
+      <label for="heroProject">Progetto nella scheda sopra l'immagine</label>
+      <select id="heroProject" name="heroProject">
+        <option value="">Il primo progetto visibile</option>
+        <% for (const p of projects) { %><option value="<%= p.slug %>" <%= heroProject === p.slug ? "selected" : "" %>><%= p.titleIt %><%= p.status === "DRAFT" ? " (bozza)" : "" %></option><% } %>
+      </select>
+      <span class="hint">La scheda mostra "Online", l'anno e il nome del progetto.</span>
+    </div>
+  </div>
+  <div class="form-actions"><button class="btn" type="submit">Salva la prima schermata</button></div>
+</form>
+
 <h2>Curriculum</h2>
 <form class="panel" method="post" action="/admin/content/cv" enctype="multipart/form-data">
   <input type="hidden" name="_csrf" value="<%= csrf %>" />

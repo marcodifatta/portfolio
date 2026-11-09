@@ -1,6 +1,6 @@
 # Piano — Rifacimento portfolio mdfdev.xyz
 
-**Stato:** Fasi 0-4 completate (09/11/2026), Fase 5 in corso · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
+**Stato:** Fasi 0-4 completate, Fase 5 in revisione con Marco (09/11/2026) · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
 ## 1. Requisiti (dalle 10 domande)
 

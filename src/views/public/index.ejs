@@ -1,52 +1,208 @@
 <!doctype html>
-<%# Pagina provvisoria (Fasi 2-4): mostra i dati letti dal database. La grafica arriva nella Fase 5. %>
-<html lang="<%= t.htmlLang %>">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= t.siteTitle %></title>
-    <meta name="description" content="<%= t.metaDescription %>" />
-    <link rel="canonical" href="<%= urls.canonical %>" />
-    <link rel="alternate" hreflang="it" href="<%= urls.it %>" />
-    <link rel="alternate" hreflang="en" href="<%= urls.en %>" />
-    <link rel="alternate" hreflang="x-default" href="<%= urls.it %>" />
-    <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png" />
-    <style>
-      body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 24px 16px; line-height: 1.5; }
-      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 0; list-style: none; }
-      .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; }
-      .card img { width: 56px; height: 56px; object-fit: contain; }
-      .skills img { width: 32px; height: 32px; }
-    </style>
-  </head>
-  <body>
-    <p><a href="<%= urls.switchTo %>" hreflang="<%= t.langSwitch.hreflang %>" lang="<%= t.langSwitch.hreflang %>" aria-label="<%= t.langSwitch.aria %>"><%= t.langSwitch.label %></a></p>
-    <h1><%= content.heroTitle %></h1>
-    <p><%= content.heroSubtitle %></p>
+<%#
+  Homepage del portfolio, costruita con il sistema di tasteskill (public/assets/kit).
+  Piano (docs/rifacimento/DESIGN.md):
+  type: service (site-kind other)
+  deal: hero split · palette dai colori del logo (start.mjs brand) · type instrument-serif (scelta del cliente, mockup A)
+        nav nav-split · footer footer-columns (ri-dealt: footer-visit vuole un indirizzo) · close close-word senza nome
+        (ri-dealt: close-photo vuole una seconda fotografia) · rhythm dark-band (Chi sono) · buttons tonal · mark: logo del cliente
+  moments: picture-develops (look film) sul ritratto in "Chi sono"
+%>
+<%
+  const cardCount = projects.length;
+  const span = cardCount === 4 || cardCount >= 7 ? "span-3" : "span-4";
+  const perRow = span === "span-3" ? 4 : 3;
+  const projectScreens = cardCount > perRow ? 2 : 1;
+  const mail = content.email ? `mailto:${content.email}` : "#contatti";
+  const linkedin = socials.find((s) => s.kind === "linkedin");
+  const otherSocials = socials.filter((s) => s.kind !== "email");
+  const small = (file) => String(file).replace(/\.webp$/, "-sm.webp");
+%>
+<html lang="<%= t.htmlLang %>" data-type="service" data-radius="soft" data-buttons="tonal" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title><%= t.siteTitle %></title>
+<meta name="description" content="<%= t.metaDescription %>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="<%= t.siteTitle %>">
+<meta property="og:description" content="<%= t.metaDescription %>">
+<meta property="og:image" content="<%= urls.it %>assets/brand/share.jpg">
+<meta property="og:locale" content="<%= t.locale %>">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/brand/favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#f7f2ef">
+<link rel="canonical" href="<%= urls.canonical %>">
+<link rel="alternate" hreflang="it" href="<%= urls.it %>">
+<link rel="alternate" hreflang="en" href="<%= urls.en %>">
+<link rel="alternate" hreflang="x-default" href="<%= urls.it %>">
+<meta name="site-kind" content="other">
+<meta name="page-type" content="service">
+<!-- Instrument Serif + Instrument Sans ospitati in locale (niente richieste a Google: privacy e CSP) -->
+<link rel="preload" href="/assets/fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/kit/system.css">
+<link rel="stylesheet" href="/assets/kit/ui/cards.css">
+<link rel="stylesheet" href="/assets/kit/motion/motion.css">
+<link rel="stylesheet" href="/assets/kit/layout/layout.css">
+<style>
+:root {
+  --p-bg: #f7f2ef; --p-surface: #ede5e1; --p-ink: #2a0b08; --p-muted: #745a56;
+  --p-accent: #5a1a12; --p-accent-ink: #f7f2ef; --p-action: #5a1a12; --p-action-ink: #f7f2ef;
+  --p-inv-bg: #2a0b08; --p-inv-surface: #371915; --p-inv-ink: #f7f2ef; --p-inv-muted: #a5928d;
+  --p-inv-accent: #f7f2ef; --p-inv-accent-ink: #2a0b08; --p-inv-action: #f7f2ef; --p-inv-action-ink: #2a0b08;
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-text: "Instrument Sans", system-ui, sans-serif;
+  --display-weight: 400;
+  --display-tracking: -0.012em;
+  --display-tracking-xl: -0.016em;
+  --ly-scale: 1.12;
+}
+</style>
+<link rel="stylesheet" href="/assets/site/site.css">
+<script src="/assets/site/head.js"></script>
+<link rel="modulepreload" href="/assets/kit/moments/moments.js">
+<link rel="modulepreload" href="/assets/kit/moments/lib.js">
+<link rel="modulepreload" href="/assets/kit/moments/picture-develops/moment.js">
+</head>
+<body>
+<header class="nav nav--split">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top"><%= t.skip %></a>
+    <nav class="nav__links" aria-label="<%= t.nav.label %>">
+      <div class="nav__item"><a class="nav__link" href="#progetti"><%= t.nav.projects %></a></div>
+      <div class="nav__item"><a class="nav__link" href="#chi-sono"><%= t.nav.about %></a></div>
+    </nav>
+    <a class="nav__logo" href="#top" aria-label="Marco Di Fatta"><img class="site-logo" src="/assets/brand/logo-96.webp" alt="" width="40" height="40"><span class="nav__name">Marco Di Fatta</span></a>
+    <div class="nav__actions">
+      <a class="nav__link" href="<%= urls.switchTo %>" hreflang="<%= t.langSwitch.hreflang %>" lang="<%= t.langSwitch.hreflang %>" aria-label="<%= t.langSwitch.aria %>"><%= t.langSwitch.label %></a>
+      <a class="btn btn--primary" href="<%= mail %>"><%= t.mainAction %></a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="<%= t.nav.menu %>">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
 
-    <h2><%= t.projects.title %></h2>
-    <ul class="grid">
-      <% for (const p of projects) { %>
-        <li class="card" data-project="<%= p.slug %>">
-          <% if (p.logoPath) { %><img src="<%= p.logoPath %>" alt="" width="56" height="56" /><% } %>
-          <h3><a href="<%= p.url %>" rel="noopener" target="_blank"><%= p.title %></a></h3>
-          <p><%= p.description %></p>
-          <% if (p.year) { %><small><%= p.year %></small><% } %>
-        </li>
+<main id="top">
+  <section class="hero hero--split" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text grid hero__grid">
+      <div class="hero__text span-5">
+        <% if (notice) { %><p class="hero__kicker"><span class="dot" aria-hidden="true"></span><%= notice %></p><% } %>
+        <h1 id="hero-h"><%= content.heroTitle %></h1>
+        <% if (content.heroSubtitle) { %><p class="hero__lead"><%= content.heroSubtitle %></p><% } %>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="<%= mail %>"><%= t.mainAction %><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+          <% if (content.cvPath) { %><a class="btn btn--secondary" href="<%= content.cvPath %>" download><%= t.hero.cv %></a><% } %>
+        </div>
+      </div>
+      <div class="hero__media span-6 start-7">
+        <% if (heroImage) { %>
+          <img src="<%= heroImage %>" srcset="<%= small(heroImage) %> 640w, <%= heroImage %> 1000w" sizes="(max-width: 1023px) 100vw, 44vw" width="1000" height="1640" alt="<%= heroProject ? heroProject.title : 'Marco Di Fatta' %>" style="--ly-pos: 50% 0%" fetchpriority="high" data-source="client" data-subject="<%= heroProject ? heroProject.title : 'Marco Di Fatta' %>">
+          <% if (heroProject) { %>
+            <div class="ly-float">
+              <div class="ly-float__row"><span class="ly-live"><%= t.hero.floatLabel %></span><% if (heroProject.year) { %><span><%= heroProject.year %></span><% } %></div>
+              <div class="ly-float__title"><%= heroProject.title %></div>
+            </div>
+          <% } %>
+        <% } else { %>
+          <img src="/assets/brand/ritratto-1000.webp" alt="Marco Di Fatta" class="hero__portrait" fetchpriority="high" data-source="client" data-subject="Marco Di Fatta">
+        <% } %>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section" id="progetti" data-count="<%= Math.min(cardCount, 9) %>" style="--n: <%= Math.max(cardCount, 1) %>" aria-labelledby="progetti-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="progetti-h"><%= t.projects.title %> <span class="muted"><%= t.projects.titleMuted %></span></h2>
+      </div>
+      <% if (cardCount === 0) { %>
+        <p class="t-lead"><%= t.projects.empty %></p>
+      <% } else { %>
+        <div class="grid projects">
+          <% for (const p of projects) { %>
+            <a class="card card--open project <%= span %>" href="<%= p.url %>" target="_blank" rel="noopener" data-project="<%= p.slug %>" aria-label="<%= t.projects.open.replace('{name}', p.title) %>">
+              <div class="panel panel--top<%= p.screenshotPath ? '' : ' panel--logo' %>">
+                <% if (p.screenshotPath) { %>
+                  <img class="frame__img" src="<%= p.screenshotPath %>" srcset="<%= small(p.screenshotPath) %> 800w, <%= p.screenshotPath %> 1440w" sizes="(max-width: 1023px) 100vw, 30vw" width="1440" height="900" alt="" loading="lazy" decoding="async" data-source="client" data-subject="<%= p.title %>">
+                <% } else if (p.logoPath) { %>
+                  <img class="project__biglogo" src="<%= p.logoPath %>" alt="" loading="lazy" data-source="client" data-subject="<%= p.title %>">
+                <% } %>
+              </div>
+              <h3><% if (p.logoPath) { %><img class="project__logo" src="<%= p.logoPath %>" alt="" width="28" height="28" loading="lazy"><% } %><span><%= p.title %></span></h3>
+              <p><%= p.description %></p>
+              <% if (p.year || p.tags.length) { %><p class="project__meta"><%= [p.year, ...p.tags].filter(Boolean).join(" · ") %></p><% } %>
+            </a>
+          <% } %>
+        </div>
       <% } %>
-    </ul>
+    </div>
+  </section>
 
-    <% if (content.about) { %><h2><%= t.about.title %></h2><p><%= content.about %></p><% } %>
+  <%# Chi sono: due blocchi figli di .wrap, così sul telefono .g2m li mette su due schermate (testo, poi ritratto) %>
+  <section class="section ground-inverse" id="chi-sono" aria-labelledby="chi-sono-h">
+    <div class="wrap grid grid--top about-wrap">
+      <div class="span-6 about group">
+        <h2 id="chi-sono-h"><%= t.about.title %></h2>
+        <% if (content.about) { %><p class="about__body"><%= content.about %></p><% } %>
+        <% if (linkedin) { %><p><a class="link" href="<%= linkedin.url %>" target="_blank" rel="me noopener"><%= t.about.linkedin %></a></p><% } %>
+        <% if (skills.length) { %>
+          <p class="t-label about__label"><%= t.about.skills %></p>
+          <ul class="skills" role="list">
+            <% for (const s of skills) { %>
+              <li class="skill" title="<%= s.name %>"><% if (s.iconPath) { %><img class="ic" src="<%= s.iconPath %>" alt="<%= s.name %>" width="32" height="32" loading="lazy"><% } else { %><span class="skill__text"><%= s.name %></span><% } %></li>
+            <% } %>
+          </ul>
+        <% } %>
+      </div>
+      <figure class="develop fill span-6 start-7" data-moment="picture-develops">
+        <img src="/assets/brand/ritratto-1000.webp" srcset="/assets/brand/ritratto-600.webp 600w, /assets/brand/ritratto-1000.webp 1000w" sizes="(max-width: 1023px) 100vw, 44vw" decoding="async" alt="<%= lang === 'en' ? 'Illustrated portrait of Marco Di Fatta' : 'Ritratto illustrato di Marco Di Fatta' %>" width="1000" height="1000" loading="lazy" data-source="client" data-subject="Marco Di Fatta">
+      </figure>
+    </div>
+  </section>
+</main>
 
-    <h2><%= t.skills.title %></h2>
-    <p class="skills">
-      <% for (const s of skills) { %><img src="<%= s.iconPath %>" alt="<%= s.name %>" title="<%= s.name %>" /> <% } %>
-    </p>
+<footer class="footer closing g2m" id="contatti" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--word">
+      <div class="section-head--split">
+        <div>
+          <h2 id="close-h"><%= t.close.title %></h2>
+          <% if (content.email) { %><p class="t-lead"><%= t.close.line.replace("{email}", content.email) %></p><% } %>
+        </div>
+        <a class="btn btn--primary" href="<%= mail %>"><%= t.mainAction %><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      </div>
+      <p class="close__word" aria-hidden="true">Marco Di Fatta</p>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top"><img class="site-logo" src="/assets/brand/logo-96.webp" alt="" width="40" height="40" loading="lazy">Marco Di Fatta</a>
+          <p class="footer__lede"><%= t.footer.lede %></p>
+        </div>
+        <div class="span-2 footer__col"><h3><%= t.footer.site %></h3><ul><li><a href="#progetti"><%= t.nav.projects %></a></li><li><a href="#chi-sono"><%= t.nav.about %></a></li></ul></div>
+        <% if (otherSocials.length) { %>
+          <div class="span-2 footer__col"><h3><%= t.footer.social %></h3><ul><% for (const s of otherSocials) { %><li><a href="<%= s.url %>" rel="me noopener" target="_blank"><%= s.label %></a></li><% } %></ul></div>
+        <% } %>
+        <% if (content.cvPath) { %>
+          <div class="span-2 footer__col"><h3><%= t.footer.documents %></h3><ul><li><a href="<%= content.cvPath %>" download><%= t.hero.cv %></a></li></ul></div>
+        <% } %>
+        <div class="span-2 footer__col"><h3><%= t.footer.language %></h3><ul><li><a href="<%= urls.switchTo %>" hreflang="<%= t.langSwitch.hreflang %>" lang="<%= t.langSwitch.hreflang %>"><%= t.langSwitch.label %></a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; <%= year %> Marco Di Fatta. <%= t.footer.rights %></span>
+        <div class="socials"></div>
+        <span class="credits"><%= t.footer.iconsCredit %></span>
+      </div>
+    </div>
+  </div>
+</footer>
 
-    <h2><%= t.contact.title %></h2>
-    <ul>
-      <% for (const s of socials) { %><li><a href="<%= s.url %>"><%= s.label %></a></li><% } %>
-      <% if (content.cvPath) { %><li><a href="<%= content.cvPath %>" download><%= t.contact.cv %></a></li><% } %>
-    </ul>
-  </body>
+<script type="module" src="/assets/kit/system.js"></script>
+<script type="module" src="/assets/kit/motion/motion.js"></script>
+<script type="module" src="/assets/kit/layout/layout.js"></script>
+</body>
 </html>

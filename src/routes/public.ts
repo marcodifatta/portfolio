@@ -5,6 +5,24 @@ import { LANG_COOKIE, homePath, messages, pick, preferredLang, type Lang } from 
 
 const ONE_YEAR = 365 * 24 * 60 * 60 * 1000;
 
+/** "3 web app online dal 2024": solo con numeri veri; senza anni noti la riga non compare. */
+function noticeLine(lang: Lang, count: number, firstYear: number): string | null {
+  if (count === 0 || !Number.isFinite(firstYear) || firstYear === 9999) return null;
+  const t = messages[lang].hero;
+  return (count === 1 ? t.noticeOne : t.notice).replace("{n}", String(count)).replace("{year}", String(firstYear));
+}
+
+type Item = { slug: string; title: string; url: string; year: number | null; screenshotPath: string | null };
+
+function heroFor<T extends Item>(items: T[], image: string | undefined, slug: string | undefined) {
+  const withShot = items.find((p) => p.screenshotPath) ?? null;
+  const chosen = (slug && items.find((p) => p.slug === slug)) || null;
+  return {
+    heroImage: image || withShot?.screenshotPath || null,
+    heroProject: chosen ?? (image ? items[0] ?? null : withShot),
+  };
+}
+
 export function publicRouter(prisma: PrismaClient, opts: { publicUrl: string; secureCookies: boolean }) {
   // strict: "/en" e "/en/" sono indirizzi diversi (il primo rimanda al secondo)
   const router = Router({ strict: true });
@@ -18,6 +36,16 @@ export function publicRouter(prisma: PrismaClient, opts: { publicUrl: string; se
     ]);
     const s = Object.fromEntries(settingRows.map((r) => [r.key, r]));
     const text = (key: string) => (s[key] ? pick(lang, s[key].valueIt, s[key].valueEn) : "");
+    const items = projects.map((p) => ({
+      slug: p.slug,
+      title: pick(lang, p.titleIt, p.titleEn),
+      description: pick(lang, p.descriptionIt, p.descriptionEn),
+      url: p.url,
+      year: p.year,
+      tags: p.tags,
+      logoPath: p.logoPath,
+      screenshotPath: p.screenshotPath,
+    }));
 
     res.set("Vary", "Accept-Language, Cookie");
     res.set("Content-Language", lang);
@@ -28,7 +56,7 @@ export function publicRouter(prisma: PrismaClient, opts: { publicUrl: string; se
         canonical: new URL(homePath(lang), opts.publicUrl).href,
         it: new URL("/", opts.publicUrl).href,
         en: new URL("/en/", opts.publicUrl).href,
-        switchTo: `/lang/${lang === "it" ? "en" : "it"}`,
+        switchTo: messages[lang].langSwitch.href,
       },
       content: {
         heroTitle: text("hero.title"),
@@ -37,18 +65,13 @@ export function publicRouter(prisma: PrismaClient, opts: { publicUrl: string; se
         email: s["contact.email"]?.valueIt ?? "",
         cvPath: s["cv.path"]?.valueIt ?? "",
       },
-      projects: projects.map((p) => ({
-        slug: p.slug,
-        title: pick(lang, p.titleIt, p.titleEn),
-        description: pick(lang, p.descriptionIt, p.descriptionEn),
-        url: p.url,
-        year: p.year,
-        tags: p.tags,
-        logoPath: p.logoPath,
-        screenshotPath: p.screenshotPath,
-      })),
+      projects: items,
       skills,
       socials,
+      notice: noticeLine(lang, projects.length, Math.min(...projects.map((p) => p.year ?? 9999))),
+      // prima schermata: l'immagine scelta nell'admin, altrimenti lo screenshot del primo progetto che ne ha uno;
+      // la scheda sopra cita il progetto scelto (se pubblicato), altrimenti quello dello screenshot
+      ...heroFor(items, s["hero.image"]?.valueIt, s["hero.project"]?.valueIt),
       year: new Date().getFullYear(),
     });
   }

@@ -83,6 +83,13 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 
 ### Novembre 2026
 
+- **09/11** - Fase 5, nuova homepage con tasteskill (in revisione):
+  - Tre bozze grafiche (`docs/rifacimento/mockup-*.jpg`), scelta la A "caldo editoriale" con i colori del logo
+  - Homepage costruita sul sistema di tasteskill: prima schermata con il lavoro vero, griglia dei progetti con screenshot, "Chi sono" su fascia scura con il ritratto, chiusura con il pulsante email
+  - Font ospitati in locale, compressione gzip, immagini in WebP con versioni ridotte: 366 KiB in tutto
+  - Admin: scelta dell'immagine della prima schermata e del progetto citato; titolo al massimo 45 caratteri
+  - Seed: testi nuovi in italiano e inglese, screenshot reali, icone ufficiali delle tecnologie (aggiunto PostgreSQL), MDK Manager in bozza
+  - Controllo finale di tasteskill superato (GATE: PASS); dettagli in `docs/rifacimento/DESIGN.md`
 - **09/11** - Fase 4, italiano e inglese:
   - Homepage su `/` (IT) e `/en/` (EN), scelta automatica dalla lingua del browser e selettore che la ricorda
   - Testi fissi in `src/i18n`, contenuti dal DB con ripiego sull'italiano quando manca l'inglese

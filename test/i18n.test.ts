@@ -39,7 +39,7 @@ describe("scelta della lingua", () => {
   test("browser in italiano (anche con inglese come seconda lingua): resta su /", async () => {
     const res = await ctx.agent().get("/").set("Accept-Language", "it-IT,it;q=0.9,en;q=0.8");
     assert.equal(res.status, 200);
-    assert.match(res.text, /<html lang="it">/);
+    assert.match(res.text, /<html lang="it"[ >]/);
   });
 
   test("browser in altra lingua: resta su / in italiano", async () => {
@@ -60,7 +60,7 @@ describe("scelta della lingua", () => {
   test("/en/ è in inglese, con hreflang e canonical", async () => {
     const res = await ctx.agent().get("/en/");
     assert.equal(res.status, 200);
-    assert.match(res.text, /<html lang="en">/);
+    assert.match(res.text, /<html lang="en"[ >]/);
     assert.match(res.text, /hreflang="it" href="https:\/\/mdfdev.xyz\/"/);
     assert.match(res.text, /rel="canonical" href="https:\/\/mdfdev.xyz\/en\/"/);
     assert.equal(res.headers["content-language"], "en");

@@ -8,7 +8,7 @@ import { multipart, uploadedFile, type AdminDeps } from "./index";
 
 /** Testi modificabili: chiave nel DB, etichetta, lunghezza massima, multilinea, traducibile. */
 export const CONTENT_FIELDS = [
-  { key: "hero.title", label: "Titolo della homepage", max: 120, multiline: false, translate: true },
+  { key: "hero.title", label: "Titolo della homepage (al massimo 45 caratteri: oltre va su quattro righe)", max: 45, multiline: false, translate: true },
   { key: "hero.subtitle", label: "Frase sotto il titolo", max: 300, multiline: true, translate: true },
   { key: "about.body", label: "Chi sono", max: 2000, multiline: true, translate: true },
   { key: "contact.email", label: "Email di contatto", max: 120, multiline: false, translate: false },
@@ -24,12 +24,50 @@ export function contentRouter({ prisma, uploads, translator }: AdminDeps) {
     return Object.fromEntries(rows.map((r) => [r.key, r]));
   }
 
+  /** Dati per la parte "prima schermata" e "curriculum" della pagina. */
+  async function heroLocals(settings: Awaited<ReturnType<typeof load>>) {
+    const projects = await prisma.project.findMany({ orderBy: [{ position: "asc" }, { id: "asc" }], select: { slug: true, titleIt: true, status: true } });
+    return {
+      cvPath: settings["cv.path"]?.valueIt ?? null,
+      heroImage: settings["hero.image"]?.valueIt ?? null,
+      heroProject: settings["hero.project"]?.valueIt ?? "",
+      projects,
+    };
+  }
+
+  async function setSetting(key: string, valueIt: string) {
+    await prisma.setting.upsert({ where: { key }, create: { key, valueIt }, update: { valueIt } });
+  }
+
+  router.post("/hero", ...multipart([{ name: "heroImage", maxCount: 1 }]), async (req, res) => {
+    const slug = String(req.body.heroProject ?? "");
+    if (slug === "" || (await prisma.project.count({ where: { slug } })) > 0) await setSetting("hero.project", slug);
+    const file = uploadedFile(req, "heroImage");
+    try {
+      if (file) {
+        const path = await uploads.saveImage("hero", "prima-schermata", file);
+        const previous = await prisma.setting.findUnique({ where: { key: "hero.image" } });
+        await setSetting("hero.image", path);
+        await uploads.remove(previous?.valueIt);
+      } else if (checkbox(req.body.removeHeroImage)) {
+        const previous = await prisma.setting.findUnique({ where: { key: "hero.image" } });
+        await prisma.setting.deleteMany({ where: { key: "hero.image" } });
+        await uploads.remove(previous?.valueIt);
+      }
+      flash(req, "ok", "Prima schermata aggiornata.");
+    } catch (err) {
+      if (!(err instanceof UploadError)) throw err;
+      flash(req, "error", err.message);
+    }
+    res.redirect(303, "/admin/content");
+  });
+
   router.get("/", async (_req, res) => {
     const settings = await load();
     const values = Object.fromEntries(
       CONTENT_FIELDS.map((f) => [f.key, { it: settings[f.key]?.valueIt ?? "", en: settings[f.key]?.valueEn ?? "", manual: settings[f.key]?.enManual ?? false }]),
     );
-    res.render("admin/content", { title: "Testi e CV", fields: CONTENT_FIELDS, values, errors: {}, cvPath: settings["cv.path"]?.valueIt ?? null });
+    res.render("admin/content", { title: "Testi e CV", fields: CONTENT_FIELDS, values, errors: {}, ...(await heroLocals(settings)) });
   });
 
   router.post("/", ...multipart([]), async (req, res) => {
@@ -49,7 +87,7 @@ export function contentRouter({ prisma, uploads, translator }: AdminDeps) {
       if (!parsed.success) errors["contact.email"] = fieldErrors(parsed.error)._form ?? "Email non valida";
     }
     if (Object.keys(errors).length > 0) {
-      res.status(422).render("admin/content", { title: "Testi e CV", fields: CONTENT_FIELDS, values, errors, cvPath: settings["cv.path"]?.valueIt ?? null });
+      res.status(422).render("admin/content", { title: "Testi e CV", fields: CONTENT_FIELDS, values, errors, ...(await heroLocals(settings)) });
       return;
     }
 

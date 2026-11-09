@@ -10,11 +10,16 @@ export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 
 const ACCEPTED_IMAGE_FORMATS = new Set(["jpeg", "png", "webp", "gif", "svg", "avif", "heif", "tiff"]);
 
-type ImageKind = "logo" | "screenshot" | "skill";
+type ImageKind = "logo" | "screenshot" | "skill" | "hero";
 
-const FOLDERS: Record<ImageKind, string> = { logo: "logos", screenshot: "screenshots", skill: "skills" };
+const FOLDERS: Record<ImageKind, string> = { logo: "logos", screenshot: "screenshots", skill: "skills", hero: "hero" };
 
 export class UploadError extends Error {}
+
+/** foto.webp -> foto-sm.webp: la versione ridotta di screenshot e immagine della prima schermata. */
+export function smallName(file: string): string {
+  return file.replace(/\.webp$/, "-sm.webp");
+}
 
 export function createUploadStore(uploadDir: string) {
   async function write(folder: string, name: string, data: Buffer): Promise<string> {
@@ -43,7 +48,13 @@ export function createUploadStore(uploadDir: string) {
       const img = sharp(input, { failOn: "error", density: format === "svg" ? 300 : undefined });
       let out: Buffer;
       try {
-        if (kind === "screenshot") {
+        if (kind === "hero") {
+          out = await img
+            .rotate()
+            .resize(1200, 1600, { fit: "inside", withoutEnlargement: true })
+            .webp({ quality: 82 })
+            .toBuffer();
+        } else if (kind === "screenshot") {
           out = await img
             .rotate()
             .resize(1600, 1000, { fit: "inside", withoutEnlargement: true })
@@ -59,7 +70,13 @@ export function createUploadStore(uploadDir: string) {
       } catch {
         throw new UploadError("Non riesco a leggere questa immagine: prova a esportarla di nuovo in PNG.");
       }
-      return write(FOLDERS[kind], fileName(base, "webp"), out);
+      const name = fileName(base, "webp");
+      // screenshot e prima schermata hanno anche una versione ridotta per i telefoni e la griglia (srcset)
+      if (kind === "screenshot" || kind === "hero") {
+        const small = await sharp(out).resize({ width: kind === "hero" ? 640 : 800, withoutEnlargement: true }).webp({ quality: 80 }).toBuffer();
+        await write(FOLDERS[kind], smallName(name), small);
+      }
+      return write(FOLDERS[kind], name, out);
     },
 
     async savePdf(base: string, input: Buffer): Promise<string> {
@@ -69,12 +86,14 @@ export function createUploadStore(uploadDir: string) {
       return write("cv", fileName(base, "pdf"), input);
     },
 
-    /** Cancella un file caricato. Ignora percorsi fuori dalla cartella degli upload. */
+    /** Cancella un file caricato (e la sua versione ridotta). Ignora percorsi fuori dalla cartella degli upload. */
     async remove(publicPath: string | null | undefined): Promise<void> {
       if (!publicPath?.startsWith("/uploads/")) return;
-      const target = path.resolve(uploadDir, publicPath.slice("/uploads/".length));
-      if (!target.startsWith(path.resolve(uploadDir) + path.sep)) return;
-      await rm(target, { force: true });
+      for (const p of [publicPath, smallName(publicPath)]) {
+        const target = path.resolve(uploadDir, p.slice("/uploads/".length));
+        if (!target.startsWith(path.resolve(uploadDir) + path.sep)) continue;
+        await rm(target, { force: true });
+      }
     },
   };
 }

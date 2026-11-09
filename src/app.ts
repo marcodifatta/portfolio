@@ -1,5 +1,6 @@
 // Applicazione Express: separata da server.ts per poterla avviare anche nei test.
 import path from "node:path";
+import compression from "compression";
 import express, { type ErrorRequestHandler } from "express";
 import helmet from "helmet";
 import { sessionMiddleware } from "./auth/session";
@@ -40,6 +41,8 @@ export function createApp({ prisma, config, translator }: AppDeps) {
       strictTransportSecurity: config.isProd,
     }),
   );
+
+  app.use(compression());
 
   app.get("/healthz", async (_req, res) => {
     try {
