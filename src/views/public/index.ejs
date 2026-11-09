@@ -86,6 +86,9 @@
 <link rel="modulepreload" href="/assets/kit/moments/picture-develops/moment.js">
 </head>
 <body>
+<%# Cloudflare (Scrape Shield) riscrive gli indirizzi email in link che funzionano solo con JavaScript:
+    email_off lo disattiva per tutta la pagina, così il pulsante "Scrivimi una email" apre sempre la posta %>
+<!--email_off-->
 <header class="nav nav--split">
   <div class="wrap nav__bar">
     <a class="skip-link" href="#top"><%= t.skip %></a>
@@ -223,5 +226,6 @@
 <script type="module" src="/assets/kit/system.js"></script>
 <script type="module" src="/assets/kit/motion/motion.js"></script>
 <script type="module" src="/assets/kit/layout/layout.js"></script>
+<!--/email_off-->
 </body>
 </html>
