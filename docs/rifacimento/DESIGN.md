@@ -33,7 +33,7 @@ Tecnica e asciutta, in prima persona ("progetto, sviluppo e metto online"), con 
 ## Regole da rispettare quando si modifica
 
 - **Titolo della prima schermata: massimo 45 caratteri** (l'admin lo impone), altrimenti va su quattro righe.
-- **Ogni sezione occupa una o due schermate esatte**, su desktop, tablet e telefono. Le regole sono in `public/assets/site/site.css`.
+- **Ogni sezione è alta una o due schermate quando il contenuto ci sta**, e cresce quando la finestra è più bassa. Non tornare ad altezze fisse: vedi "Finestre reali" qui sotto. Le regole sono in `public/assets/site/site.css`.
 - **Screenshot dei progetti in orizzontale (16:10).** L'admin crea anche una versione ridotta per telefono e griglia.
 - **Il kit sta in `public/assets/kit`.** Non va modificato: le correzioni vanno in `site.css`.
 
