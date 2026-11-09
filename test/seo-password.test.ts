@@ -89,8 +89,8 @@ describe("contatti e accesso dal sito", () => {
     const html = (await ctx.agent().get("/").set("Accept-Language", "it")).text;
     assert.match(html, /href="mailto:contact@mdfdev\.xyz"/);
     // Cloudflare non deve riscrivere l'indirizzo (Email Address Obfuscation)
-    assert.ok(html.indexOf("<!--email_off-->") < html.indexOf("mailto:"));
-    assert.ok(html.lastIndexOf("mailto:") < html.indexOf("<!--/email_off-->"));
+    assert.ok(html.indexOf("<!--email_off-->") < html.indexOf("href=\"mailto:"));
+    assert.ok(html.lastIndexOf("href=\"mailto:") < html.indexOf("<!--/email_off-->"));
   });
 
   test("nel footer c'è il link all'accesso admin, non seguito dai motori", async () => {

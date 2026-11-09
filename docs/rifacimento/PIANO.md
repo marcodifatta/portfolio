@@ -1,6 +1,6 @@
 # Piano — Rifacimento portfolio mdfdev.xyz
 
-**Stato:** Fasi 0-4 completate, Fase 5 in revisione con Marco (09/11/2026) · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
+**Stato:** ✅ completato, online dal 10/11/2026 · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
 ## 1. Requisiti (dalle 10 domande)
 
@@ -114,14 +114,14 @@ portfolio/
 3. Al salvataggio, se il campo EN è vuoto o non è marcato `enManual`, viene chiamato DeepL e il risultato scritto nel campo EN, sempre modificabile a mano. Se DeepL non risponde il salvataggio va comunque a buon fine e l'admin mostra un avviso.
 - **Fatto quando:** `curl -H 'Accept-Language: en-US' -I https://mdfdev.xyz/` → 302 verso `/en/`; un progetto salvato in italiano ha già il testo EN; una correzione EN fatta a mano non viene sovrascritta al salvataggio successivo.
 
-### Fase 5 — Pagina pubblica con tasteskill
+### Fase 5 — Pagina pubblica con tasteskill ✅ completata il 10/11/2026 (direzione A scelta da Marco; adattata alle finestre reali; dettagli in DESIGN.md)
 1. Armare il gate di tasteskill (il suo controllo finale) puntando al server di sviluppo: `gate.mjs --start http://localhost:3000/ --kind service --category "sviluppo web app per piccole attività" --primary "Vedi i progetti"`.
 2. Scrivere prima i testi (`copy-voice.md`); poi il deal di hero, palette, font e momenti; costruire le sezioni hero, progetti (griglia di card), chi sono e competenze, CV e contatti, e footer, usando il kit copiato in `public/assets`.
 3. Usare le icone vere delle tecnologie (`icons.mjs`); niente violetto; un'animazione al passaggio del mouse sulle card; un layout a colonna unica a 390px.
 4. Controlli: `copy-lint`, `consistency`, `check.mjs`, `perf.mjs`, ripetuti finché `gate.mjs` restituisce `GATE: PASS`.
 - **Fatto quando:** `GATE: PASS` (oppure `OPEN` con le eccezioni motivate in `.taste-skill/waivers.json`) e il peso delle immagini del primo schermo sotto i 300 KB (oggi i soli loghi pesano circa 1,4 MB).
 
-### Fase 6 — Docker e deploy
+### Fase 6 — Docker e deploy ✅ completata il 10/11/2026
 1. `Dockerfile` multi-stage (dipendenze, build, runtime come utente `node`), `HEALTHCHECK` su `/healthz`; `.dockerignore`.
 2. `docker-compose.yml`: servizio `portfolio` con `container_name: portfolio`, `restart: unless-stopped`, **nessuna `ports:`**, reti esterne `portainer_marco-network` e `db-net`, volume `portfolio_uploads`, variabili da `.env`.
 3. Al primo deploy sul server: avviare lo stack Postgres, creare il DB con `new-project-db.sh portfolio`, compilare il `.env`, fare `git pull` e `docker compose up -d --build`. Le migrazioni e il seed (solo con DB vuoto) partono da soli.
@@ -129,7 +129,7 @@ portfolio/
 5. Deploy successivi: `cd ~/portfolio && git pull && docker compose up -d --build`.
 - **Fatto quando:** `https://mdfdev.xyz` e `/en/` rispondono 200 dal nuovo container; il sito torna su da solo dopo `sudo reboot`; un riavvio del container non perde progetti né upload.
 
-### Fase 7 — Verifica finale (lane separata: verifier)
+### Fase 7 — Verifica finale (lane separata: verifier) ✅ completata il 10/11/2026
 - Prova end-to-end: login → creare un progetto con logo e screenshot → pubblicarlo → vederlo in `/` e `/en/` → riordinare → nasconderlo → eliminarlo.
 - Sicurezza: niente `/.git`, niente porte dirette dell'app, cookie con `Secure`, admin protetto, upload che accetta solo immagini e PDF entro i limiti.
 - Backup: un ripristino di prova del dump in un database temporaneo.
@@ -157,3 +157,19 @@ portfolio/
 - SEO e GEO: JSON-LD schema.org, Open Graph e Twitter, `sitemap.xml`, `robots.txt`, `llms.txt`.
 - Link "Accesso admin" nel footer.
 - Cambio password dall'admin (tabella `admin_credentials`) e reset da riga di comando (`npm run admin:reset-password`).
+
+## Differenze rispetto al piano (10/11/2026)
+
+- **Porta 8080 invece di "nessuna porta":** il container pubblica `8080`, come il sito precedente, così Nginx Proxy Manager non è cambiato. La porta resta chiusa da internet grazie al firewall Hetzner.
+- **Node 24 invece di 22**, eseguito con `tsx`, senza fase di build.
+- **Cloudflare davanti a NPM:** l'app legge `CF-Visitor` per riconoscere l'HTTPS e `CF-Connecting-IP` per il limite ai login, e usa `email_off` contro l'offuscamento delle email.
+- **Backup dei file caricati** con uno script a parte, `infra/backups/backup-uploads.sh` (cron alle 03:40).
+- **Verifica finale** del verifier indipendente: tutto PASS, tranne l'offuscamento dell'email da parte di Cloudflare, poi corretto. Il login e il CRUD dell'admin in produzione non li ha provati, per scelta: non si usano le credenziali reali. Sono coperti dai 53 test e dalla prova con password sbagliata dal bordo Cloudflare.
+
+### Ancora da fare (Marco)
+- Primo accesso con la password in `~/portfolio-admin-password.txt`, poi cambiarla e cancellare il file.
+- Cloudflare: SSL/TLS da "Flexible" a "Full (strict)".
+- Facoltativo: chiave DeepL API Free nel `.env` del server (`DEEPL_API_KEY`), poi `docker compose up -d`.
+- Facoltativo: record DMARC per `mdfdev.xyz`; sito in Google Search Console e Bing Webmaster Tools con la sitemap.
+- Tag delle tecnologie nei progetti; screenshot migliori per ShoppyList e QRator; ripubblicare MDK Manager quando il suo dominio torna online.
+- Dopo il 17/11: rimuovere `mdf-website-legacy` e `mdf-website-old` (comando in SERVER.md).

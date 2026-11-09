@@ -2,21 +2,22 @@
 
 Questo è il repository del mio portfolio personale, creato dopo aver completato il mio primo progetto (www.pizzabakery.biz). Il portfolio è stato sviluppato per mostrare i miei progetti e le mie competenze.
 
-## 🚧 Rifacimento in corso (novembre 2026)
+## Portfolio con area admin (online dal 10/11/2026)
 
-Il sito statico attuale sta per essere sostituito da un portfolio con **area admin** per gestire i progetti senza toccare il codice.
+Il sito statico è stato sostituito da un portfolio con **area admin**, per gestire i progetti senza toccare il codice. È online su **https://mdfdev.xyz**.
 
-- **Stack:** Node 22 + Express + EJS, PostgreSQL (istanza condivisa sul server), Prisma, Docker Compose
-- **Admin (`/admin`):** login con username e password; gestione di progetti (logo, titolo, descrizione, link, anno, tag, screenshot, bozza/pubblicato, ordine), testo Chi sono, CV, social e competenze
+- **Stack:** Node 24 + Express 5 + EJS, PostgreSQL 17 (istanza condivisa sul server), Prisma 7, Docker Compose
+- **Admin (`/admin`, link "Accesso admin" nel footer):** progetti (logo, titolo, descrizione, link, anno, tag, screenshot, bozza/pubblicato, ordine), testi della homepage, immagine della prima schermata, CV, social, competenze, cambio password
 - **Lingue:** italiano su `/` e inglese su `/en/`, con traduzione automatica (DeepL) correggibile dall'admin
-- **Grafica:** costruita con tasteskill, mantenendo il logo attuale e i suoi colori
-- **Deploy:** `git pull && docker compose up -d --build`
+- **Grafica:** costruita con tasteskill, con il logo e i suoi colori ([DESIGN.md](docs/rifacimento/DESIGN.md))
+- **SEO e GEO:** dati strutturati schema.org, sitemap, robots.txt e llms.txt generati dal database
+- **Deploy:** `git pull && docker compose up -d --build` (dettagli in [docs/infra/SERVER.md](docs/infra/SERVER.md))
 
 Il piano completo, con fasi e criteri di verifica, è in [docs/rifacimento/PIANO.md](docs/rifacimento/PIANO.md).
 
 ### Sviluppo locale
 
-Requisiti: Node 22 o superiore e un PostgreSQL locale (su Mac: `brew services start postgresql@15`).
+Requisiti: Node 22 o superiore (in produzione Node 24) e un PostgreSQL locale (su Mac: `brew services start postgresql@15`).
 
 ```bash
 createdb portfolio_dev
@@ -99,11 +100,18 @@ prisma/
 infra/postgres/      stack del Postgres condiviso sul server
 ```
 
-I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploads` in sviluppo), che non è versionata. Il vecchio sito statico (`index.html`, `css/`, `js/`, `photo/`) resta online finché il nuovo non lo sostituisce nella Fase 6.
+I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploads` in sviluppo, il volume `portfolio_uploads` in produzione), che non è versionata. `photo/` e `docs/cv/` contengono il materiale iniziale usato dal seed. Il vecchio sito statico è nella cronologia di git, fino al commit `23a0d05`.
 
 ## 📝 Changelog
 
 ### Novembre 2026
+
+- **10/11** - Fasi 6 e 7: il nuovo portfolio è online
+  - Container Docker `portfolio` (migrazioni e seed all'avvio, healthcheck) al posto del sito statico; Nginx Proxy Manager invariato
+  - Login dietro Cloudflare: lo schema https letto da `CF-Visitor` (Cloudflare è in SSL "Flexible")
+  - Email non più offuscata da Cloudflare (`email_off`): il pulsante "Scrivimi una email" funziona anche senza JavaScript
+  - Backup notturno dei file caricati (03:40) accanto a quello del database (03:30), con ripristino provato
+  - Verifica finale indipendente: pagine, SEO/GEO, sicurezza, prestazioni (circa 470 KB), server e repository tutti PASS
 
 - **10/11** - SEO, GEO, accesso e password:
   - Dati strutturati schema.org (persona, sito, pagina profilo, progetti), Open Graph e Twitter completi
