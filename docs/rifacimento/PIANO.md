@@ -1,6 +1,6 @@
 # Piano — Rifacimento portfolio mdfdev.xyz
 
-**Stato:** Fase 0 completata (09/11/2026), Fase 1 da avviare · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
+**Stato:** Fasi 0 e 1 completate (09/11/2026), Fase 2 da avviare · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
 ## 1. Requisiti (dalle 10 domande)
 
@@ -86,8 +86,8 @@ portfolio/
 2. **`gestione-scadenze` NON si tocca.** Le porte non necessarie si chiudono con il firewall del provider (console web): in entrata restano solo SSH, HTTP e HTTPS. I sottodomini continuano a funzionare perché il proxy raggiunge le app dall'interno del server. Per tornare indietro basta togliere la regola.
 - **Fatto quando:** `curl https://mdfdev.xyz/.git/HEAD` → 404; dall'esterno solo le porte 22, 80 e 443 risultano aperte; tutti i sottodomini rispondono come prima.
 
-### Fase 1 — Stack Postgres condiviso
-1. `infra/postgres/docker-compose.yml`: `postgres:17-alpine`, volume `pg_data`, rete `db-net` creata come esterna, porta `127.0.0.1:5432:5432`, healthcheck, `restart: unless-stopped`, limite di memoria a 256 MB.
+### Fase 1 — Stack Postgres condiviso ✅ completata il 09/11/2026
+1. `infra/postgres/docker-compose.yml`: `postgres:17-alpine` (container `pg-shared`), volume `pg_shared_data`, rete `db-net`, porta `127.0.0.1:5432:5432`, healthcheck, `restart: unless-stopped`, limite di memoria a 256 MB.
 2. `scripts/new-project-db.sh <nome>`: crea un ruolo e un database `<nome>` con password casuale, `REVOKE ALL ON DATABASE … FROM PUBLIC`, e stampa la `DATABASE_URL`.
 3. `scripts/backup.sh`: `pg_dumpall` compresso in `~/backups/postgres/` con 7 giorni di conservazione e una voce cron alle 03:30.
 4. Guida in `docs/DEPLOY.md` per collegarsi con TablePlus via tunnel SSH, e con DBeaver su Windows.

@@ -27,6 +27,10 @@ I database non sono esposti: ci si collega con un **tunnel SSH**.
 - **Over SSH:** host del server, utente `marco`, chiave SSH
 - **Database:** host `127.0.0.1`, porta del container (es. `5433` per scadenze, `5432` per l'istanza condivisa del portfolio), utente e password del database
 
+## Postgres condiviso (dal 09/11/2026)
+
+Container `pg-shared` in `~/infra/postgres`, rete Docker `db-net`, porta `127.0.0.1:5432`, backup notturno in `~/backups/postgres`. Ospita il database `portfolio`. `scadenze-db` resta separato e non è stato toccato. Guida completa: [infra/postgres/README.md](../../infra/postgres/README.md).
+
 ## Portfolio: deploy attuale (sito statico)
 
 ```bash

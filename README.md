@@ -18,6 +18,11 @@ Il piano completo, con fasi e criteri di verifica, è in [docs/rifacimento/PIANO
 
 ### Novembre 2026
 
+- **09/11** - Fase 1, Postgres condiviso:
+  - Nuovo stack `infra/postgres` (PostgreSQL 17, container `pg-shared`, rete `db-net`), raggiungibile solo dal server e via tunnel SSH
+  - Script `new-project-db.sh` per creare database e utente di ogni progetto, isolati tra loro
+  - Creato il database `portfolio`
+  - Backup notturno con controllo di integrità e conservazione di 7 giorni; ripristino provato
 - **09/11** - Fase 0, messa in sicurezza del sito attuale:
   - Aggiunto `.dockerignore`: nell'immagine nginx finiscono solo i file del sito, non più `.git`, README e Dockerfile
   - Container ridistribuito con riavvio automatico (`--restart unless-stopped`)
