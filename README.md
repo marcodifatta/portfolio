@@ -33,6 +33,25 @@ npm run dev                   # http://localhost:3000
 | `npm run typecheck` | controllo dei tipi TypeScript |
 | `npm run db:migrate` | crea e applica una nuova migrazione dopo una modifica a `prisma/schema.prisma` |
 | `npm run db:reset` | cancella il database di sviluppo, riapplica le migrazioni e il seed |
+| `npm test` | test automatici (database `portfolio_test`: `createdb portfolio_test` la prima volta) |
+| `npm run admin:password` | genera `ADMIN_PASSWORD_HASH` per il `.env` (chiede la password senza mostrarla) |
+
+### Area admin
+
+Indirizzo: `/admin`. Un solo utente, definito nel `.env`:
+
+```bash
+npm run admin:password          # scrivi la nuova password, copia la riga ADMIN_PASSWORD_HASH=... nel .env
+```
+
+| Sezione | Cosa si gestisce |
+|---|---|
+| Progetti | titolo, descrizione, link, anno, tecnologie, logo, screenshot, visibile/bozza, ordine (frecce ↑ ↓) |
+| Testi e CV | titolo e frase della homepage, testo "Chi sono", email di contatto (IT/EN), caricamento del CV in PDF |
+| Social | LinkedIn, GitHub, Instagram, email... con ordine |
+| Competenze | nome e icona delle tecnologie, con ordine |
+
+Sicurezza: password con hash scrypt; sessione salvata in Postgres, cookie `HttpOnly` e `SameSite=Lax` (`Secure` in produzione), durata 7 giorni; protezione CSRF su ogni form; 5 tentativi di login sbagliati ogni 15 minuti per IP; pagine admin mai in cache e non indicizzate. Le immagini caricate vengono sempre ricodificate in WebP: un file che non è un'immagine viene rifiutato, e un SVG con script diventa un'immagine innocua. I CV vengono accettati solo se sono veri PDF.
 
 Struttura:
 
@@ -57,6 +76,13 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 
 ### Novembre 2026
 
+- **09/11** - Fase 3, area admin:
+  - Login con utente e password (hash scrypt), sessioni in Postgres, CSRF, limite ai tentativi, header di sicurezza con helmet
+  - Gestione progetti: creazione, modifica, bozza/pubblicato, riordino, eliminazione con conferma, caricamento di logo e screenshot (convertiti in WebP)
+  - Gestione di testi della homepage, CV in PDF, social e competenze
+  - Servizio di traduzione automatica DeepL già collegato al salvataggio (si attiva con `DEEPL_API_KEY`)
+  - Logo e favicon esportati in versioni leggere (`public/assets/brand`, 2-12 KB invece di circa 700 KB)
+  - 31 test automatici (`npm test`): accesso, CSRF, progetti, upload, riordino, contenuti, sicurezza, traduzione
 - **09/11** - Fase 2, scheletro dell'app:
   - Progetto Node + TypeScript con Express 5, EJS, Prisma 7 (driver `pg`) e validazione della configurazione con zod
   - Schema del database e migrazione iniziale: progetti (con bozza/pubblicato, ordine, anno, tag, screenshot, testi IT/EN), competenze, social, impostazioni

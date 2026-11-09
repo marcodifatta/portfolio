@@ -1,0 +1,51 @@
+<%- include("partials/top", { title }) %>
+<div class="page-head">
+  <div>
+    <h1>Testi e CV</h1>
+    <p class="lead">I testi della homepage. La colonna inglese si compila da sola se la traduzione automatica è attiva.</p>
+  </div>
+</div>
+<% if (Object.keys(errors).length) { %><div class="flash error" role="alert">Controlla i campi evidenziati.</div><% } %>
+<form class="panel" method="post" action="/admin/content" enctype="multipart/form-data" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrf %>" />
+  <% for (const f of fields) { const v = values[f.key]; const id = f.key.replace(".", "-"); %>
+    <fieldset class="field" style="margin-bottom: 24px">
+      <legend><%= f.label %></legend>
+      <div class="<%= f.translate ? 'lang-pair' : '' %>">
+        <div>
+          <% if (f.translate) { %><label class="lang-tag" for="<%= id %>-it">ITALIANO</label><% } %>
+          <% if (f.multiline) { %>
+            <textarea id="<%= id %>-it" name="<%= f.key %>.it" maxlength="<%= f.max %>" <%- errors[f.key] ? `aria-invalid="true" aria-describedby="${id}-error"` : "" %>><%= v.it %></textarea>
+          <% } else { %>
+            <input id="<%= id %>-it" name="<%= f.key %>.it" type="<%= f.key === 'contact.email' ? 'email' : 'text' %>" maxlength="<%= f.max %>" value="<%= v.it %>" <%- errors[f.key] ? `aria-invalid="true" aria-describedby="${id}-error"` : "" %> <%- f.translate ? "" : `aria-label="${f.label}"` %> />
+          <% } %>
+        </div>
+        <% if (f.translate) { %>
+          <div>
+            <label class="lang-tag" for="<%= id %>-en">INGLESE</label>
+            <% if (f.multiline) { %>
+              <textarea id="<%= id %>-en" name="<%= f.key %>.en" maxlength="<%= f.max %>" lang="en"><%= v.en %></textarea>
+            <% } else { %>
+              <input id="<%= id %>-en" name="<%= f.key %>.en" type="text" maxlength="<%= f.max %>" lang="en" value="<%= v.en %>" />
+            <% } %>
+            <label class="check" style="margin-top: 6px"><input type="checkbox" name="<%= f.key %>.manual" <%= v.manual ? "checked" : "" %> /> Inglese corretto a mano</label>
+          </div>
+        <% } %>
+      </div>
+      <% if (errors[f.key]) { %><span class="error" id="<%= id %>-error"><%= errors[f.key] %></span><% } %>
+    </fieldset>
+  <% } %>
+  <div class="form-actions"><button class="btn" type="submit">Salva i testi</button></div>
+</form>
+
+<h2>Curriculum</h2>
+<form class="panel" method="post" action="/admin/content/cv" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>" />
+  <div class="field">
+    <% if (cvPath) { %><p>CV attuale: <a href="<%= cvPath %>" target="_blank" rel="noopener">apri il PDF</a></p><% } else { %><p class="lead">Nessun CV caricato.</p><% } %>
+    <label for="cv">Nuovo CV (PDF, fino a 5 MB)</label>
+    <input id="cv" name="cv" type="file" accept="application/pdf" required />
+  </div>
+  <div class="form-actions"><button class="btn" type="submit">Carica il CV</button></div>
+</form>
+<%- include("partials/bottom") %>

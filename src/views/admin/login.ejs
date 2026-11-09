@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Accedi · Admin mdfdev</title>
+    <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png" />
+    <link rel="stylesheet" href="/assets/admin/admin.css" />
+  </head>
+  <body>
+    <main class="login-wrap" id="main">
+      <form class="panel login" method="post" action="/admin/login" novalidate>
+        <div class="brand"><img src="/assets/brand/logo-144.webp" alt="" width="56" height="56" />Admin mdfdev</div>
+        <h1>Accedi</h1>
+        <% if (error) { %><p class="flash error" role="alert"><%= error %></p><% } %>
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <input type="hidden" name="next" value="<%= next %>" />
+        <div class="field">
+          <label for="username">Utente</label>
+          <input id="username" name="username" type="text" autocomplete="username" required value="<%= username %>" autofocus />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <button class="btn" type="submit">Accedi</button>
+      </form>
+    </main>
+  </body>
+</html>

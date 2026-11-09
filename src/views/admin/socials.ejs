@@ -1,0 +1,57 @@
+<%- include("partials/top", { title }) %>
+<% const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); const err = (k) => errors[k] ? `<span class="error" id="new-${k}-error">${esc(errors[k])}</span>` : ""; %>
+<div class="page-head">
+  <div>
+    <h1>Social e contatti</h1>
+    <p class="lead">I link mostrati nella sezione contatti, in quest'ordine.</p>
+  </div>
+</div>
+<% if (socials.length === 0) { %>
+  <div class="panel empty">Aggiungi LinkedIn, GitHub o la tua email qui sotto.</div>
+<% } else { %>
+  <ol class="rows">
+    <% socials.forEach((s, i) => { %>
+      <li>
+        <form method="post" action="/admin/socials/<%= s.id %>" class="main" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+          <input type="hidden" name="_csrf" value="<%= csrf %>" />
+          <select name="kind" aria-label="Tipo" style="width:auto">
+            <% for (const [k, label] of Object.entries(kinds)) { %><option value="<%= k %>" <%= s.kind === k ? "selected" : "" %>><%= label %></option><% } %>
+          </select>
+          <input name="label" type="text" value="<%= s.label %>" aria-label="Etichetta" style="width:140px" />
+          <input name="url" type="text" value="<%= s.url %>" aria-label="Link" style="flex:1; min-width:200px" />
+          <button class="btn btn-ghost btn-small" type="submit">Salva</button>
+        </form>
+        <div class="actions">
+          <form method="post" action="/admin/socials/<%= s.id %>/move"><input type="hidden" name="_csrf" value="<%= csrf %>" /><input type="hidden" name="direction" value="up" /><button class="btn btn-ghost btn-small icon-btn" aria-label="Sposta <%= s.label %> in su" <%= i === 0 ? "disabled" : "" %>>↑</button></form>
+          <form method="post" action="/admin/socials/<%= s.id %>/move"><input type="hidden" name="_csrf" value="<%= csrf %>" /><input type="hidden" name="direction" value="down" /><button class="btn btn-ghost btn-small icon-btn" aria-label="Sposta <%= s.label %> in giù" <%= i === socials.length - 1 ? "disabled" : "" %>>↓</button></form>
+          <form method="post" action="/admin/socials/<%= s.id %>/delete"><input type="hidden" name="_csrf" value="<%= csrf %>" /><button class="btn btn-ghost btn-small" aria-label="Elimina <%= s.label %>">Elimina</button></form>
+        </div>
+        <% if (editId === s.id && Object.keys(errors).length) { %><span class="error" style="width:100%"><%= Object.values(errors)[0] %></span><% } %>
+      </li>
+    <% }) %>
+  </ol>
+<% } %>
+
+<h2>Aggiungi un link</h2>
+<form class="panel" method="post" action="/admin/socials" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrf %>" />
+  <div class="form-grid">
+    <div class="field">
+      <label for="kind">Tipo</label>
+      <select id="kind" name="kind">
+        <% for (const [k, label] of Object.entries(kinds)) { %><option value="<%= k %>" <%= values.kind === k ? "selected" : "" %>><%= label %></option><% } %>
+      </select>
+    </div>
+    <div class="field">
+      <label for="label">Etichetta <span class="hint" style="display:inline">(facoltativa)</span></label>
+      <input id="label" name="label" type="text" maxlength="40" value="<%= editId ? "" : values.label %>" />
+    </div>
+    <div class="field full">
+      <label for="url">Link o indirizzo email</label>
+      <input id="url" name="url" type="text" placeholder="https://github.com/marcodifatta" value="<%= editId ? "" : values.url %>" <%- !editId && errors.url ? 'aria-invalid="true" aria-describedby="new-url-error"' : "" %> />
+      <%- editId ? "" : err("url") %>
+    </div>
+  </div>
+  <div class="form-actions"><button class="btn" type="submit">Aggiungi link</button></div>
+</form>
+<%- include("partials/bottom") %>

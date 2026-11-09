@@ -72,3 +72,13 @@ model Setting {
 
   @@map("settings")
 }
+
+/// Sessioni dell'area admin (formato richiesto da connect-pg-simple).
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+  @@map("session")
+}

@@ -21,3 +21,6 @@ package.json
 package-lock.json
 tsconfig.json
 prisma.config.ts
+public
+test
+scripts

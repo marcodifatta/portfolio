@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title><%= title %> · Admin mdfdev</title>
+    <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png" />
+    <link rel="stylesheet" href="/assets/admin/admin.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Vai al contenuto</a>
+    <header class="topbar">
+      <div class="inner">
+        <a class="brand" href="/admin"><img src="/assets/brand/logo-144.webp" alt="" width="36" height="36" />Admin</a>
+        <nav aria-label="Sezioni">
+          <% const sections = [["/admin/projects", "Progetti"], ["/admin/content", "Testi e CV"], ["/admin/socials", "Social"], ["/admin/skills", "Competenze"]]; %>
+          <% for (const [href, label] of sections) { %>
+            <a href="<%= href %>" <%- locals.path && ("/admin" + locals.path).startsWith(href) ? 'aria-current="page"' : "" %>><%= label %></a>
+          <% } %>
+          <a href="/" target="_blank" rel="noopener">Vedi il sito</a>
+        </nav>
+        <form method="post" action="/admin/logout">
+          <input type="hidden" name="_csrf" value="<%= csrf %>" />
+          <button class="btn btn-ghost btn-small" type="submit">Esci</button>
+        </form>
+      </div>
+    </header>
+    <main id="main">
+      <% if (locals.flash) { %>
+        <div class="flash <%= flash.type %>" role="<%= flash.type === 'error' ? 'alert' : 'status' %>"><%= flash.text %></div>
+      <% } %>

@@ -1,6 +1,6 @@
 # Piano — Rifacimento portfolio mdfdev.xyz
 
-**Stato:** Fasi 0, 1 e 2 completate (09/11/2026), Fase 3 da avviare · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
+**Stato:** Fasi 0-3 completate (09/11/2026), Fase 4 in corso · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
 ## 1. Requisiti (dalle 10 domande)
 
@@ -49,7 +49,7 @@ TablePlus (Mac) ──SSH tunnel <utente>@<IP-VPS>──► 127.0.0.1:5432
 - **Express 5 + EJS** con rendering lato server: la pagina pubblica arriva già pronta in HTML, senza framework frontend e senza build JS.
 - **Prisma 7** con driver `@prisma/adapter-pg` per schema e migrazioni (configurazione in `prisma.config.ts`, client generato in `src/generated/prisma`), applicate con `prisma migrate deploy` all'avvio del container.
 - TypeScript eseguito con `tsx` anche in produzione: nessuna fase di build, `tsc --noEmit` solo come controllo dei tipi.
-- Sessioni con `express-session` + `connect-pg-simple` (tabella `session` nel DB), password con `bcrypt`, `helmet`, `express-rate-limit` sul login, CSRF con `csrf-sync`.
+- Sessioni con `express-session` + `connect-pg-simple` (tabella `session` nel DB), password con hash `scrypt` di Node (formato senza `$`, sicuro nei `.env` di Compose), `helmet`, `express-rate-limit` sul login, CSRF con token di sessione (implementazione propria, nessuna dipendenza).
 - Upload con `multer` + `sharp`: loghi a 256×256 e screenshot a 1200px di larghezza in WebP, salvati nel volume `/data/uploads` e serviti da `/uploads/…`.
 - Traduzione: DeepL API Free (`DEEPL_API_KEY` nel `.env`). Senza chiave, il campo EN resta vuoto e la pagina inglese mostra il testo italiano.
 
@@ -101,7 +101,7 @@ portfolio/
 3. In sviluppo: Postgres di Homebrew sul Mac (database `portfolio_dev`), nessun Docker locale.
 - **Fatto quando:** `npm run dev` mostra i 4 progetti letti dal database; `npm run typecheck` passa senza errori.
 
-### Fase 3 — Area admin
+### Fase 3 — Area admin ✅ completata il 09/11/2026
 1. `/admin/login`: login, logout, sessione di 7 giorni con cookie `HttpOnly; Secure; SameSite=Lax`, 5 tentativi ogni 15 minuti per IP.
 2. Progetti: elenco, creazione, modifica ed eliminazione (con conferma), stato bozza/pubblicato, riordino con frecce su/giù (si aggiunge il drag and drop solo se resta semplice), upload di logo e screenshot con anteprima.
 3. Contenuti: testo Chi sono (IT/EN), social ed email, competenze con icona, upload del CV in PDF (massimo 5 MB).

@@ -1,0 +1,88 @@
+<%- include("../partials/top", { title }) %>
+<% const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); const err = (k) => errors[k] ? `<span class="error" id="${k}-error">${esc(errors[k])}</span>` : ""; const inv = (k) => errors[k] ? `aria-invalid="true" aria-describedby="${k}-error"` : ""; %>
+<div class="page-head">
+  <div>
+    <h1><%= project ? "Modifica progetto" : "Nuovo progetto" %></h1>
+    <p class="lead">Titolo e descrizione in italiano; l'inglese si compila da solo se la traduzione automatica è attiva.</p>
+  </div>
+</div>
+<% if (Object.keys(errors).length) { %><div class="flash error" role="alert">Controlla i campi evidenziati.</div><% } %>
+<form class="panel" method="post" action="<%= project ? `/admin/projects/${project.id}` : '/admin/projects' %>" enctype="multipart/form-data" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrf %>" />
+  <div class="form-grid">
+    <div class="field full">
+      <label for="titleIt">Titolo</label>
+      <input id="titleIt" name="titleIt" type="text" maxlength="120" required value="<%= values.titleIt %>" <%- inv("titleIt") %> />
+      <%- err("titleIt") %>
+    </div>
+    <div class="field full">
+      <label for="descriptionIt">Descrizione</label>
+      <textarea id="descriptionIt" name="descriptionIt" maxlength="1000" required <%- inv("descriptionIt") %>><%= values.descriptionIt %></textarea>
+      <%- err("descriptionIt") %>
+    </div>
+    <div class="field full">
+      <label for="url">Link al progetto online</label>
+      <input id="url" name="url" type="url" required placeholder="https://qrator.mdfdev.xyz" value="<%= values.url %>" <%- inv("url") %> />
+      <%- err("url") %>
+    </div>
+    <div class="field">
+      <label for="year">Anno</label>
+      <input id="year" name="year" type="number" min="2000" max="2100" inputmode="numeric" placeholder="2026" value="<%= values.year %>" <%- inv("year") %> />
+      <%- err("year") %>
+    </div>
+    <div class="field">
+      <label for="tags">Tecnologie</label>
+      <input id="tags" name="tags" type="text" placeholder="Node.js, PostgreSQL, Docker" value="<%= values.tags %>" <%- inv("tags") %> />
+      <span class="hint">Separate da virgola, al massimo 8.</span>
+      <%- err("tags") %>
+    </div>
+    <div class="field">
+      <label for="logo">Logo</label>
+      <% if (project && project.logoPath) { %><div class="preview"><img src="<%= project.logoPath %>" alt="Logo attuale" /></div><% } %>
+      <input id="logo" name="logo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif" <%- inv("logo") %> />
+      <span class="hint">PNG, JPG, WebP o SVG fino a 5 MB. Diventa un'immagine quadrata da 256px.</span>
+      <%- err("logo") %>
+    </div>
+    <div class="field">
+      <label for="screenshot">Screenshot</label>
+      <% if (project && project.screenshotPath) { %>
+        <div class="preview"><img class="wide" src="<%= project.screenshotPath %>" alt="Screenshot attuale" /></div>
+        <label class="check"><input type="checkbox" name="removeScreenshot" /> Rimuovi lo screenshot</label>
+      <% } %>
+      <input id="screenshot" name="screenshot" type="file" accept="image/png,image/jpeg,image/webp" <%- inv("screenshot") %> />
+      <span class="hint">Meglio orizzontale (16:10). Viene ridotto a 1600px di larghezza.</span>
+      <%- err("screenshot") %>
+    </div>
+    <div class="field full">
+      <label for="status">Visibilità</label>
+      <select id="status" name="status">
+        <option value="PUBLISHED" <%= values.status === "PUBLISHED" ? "selected" : "" %>>Visibile sul sito</option>
+        <option value="DRAFT" <%= values.status !== "PUBLISHED" ? "selected" : "" %>>Bozza (nascosto)</option>
+      </select>
+    </div>
+  </div>
+
+  <h2>Versione inglese</h2>
+  <div class="form-grid">
+    <div class="field full">
+      <label for="titleEn">Title</label>
+      <input id="titleEn" name="titleEn" type="text" maxlength="120" lang="en" value="<%= values.titleEn %>" <%- inv("titleEn") %> />
+      <%- err("titleEn") %>
+    </div>
+    <div class="field full">
+      <label for="descriptionEn">Description</label>
+      <textarea id="descriptionEn" name="descriptionEn" maxlength="1000" lang="en" <%- inv("descriptionEn") %>><%= values.descriptionEn %></textarea>
+      <%- err("descriptionEn") %>
+    </div>
+    <div class="field full">
+      <label class="check"><input type="checkbox" name="enManual" <%= values.enManual ? "checked" : "" %> /> Ho corretto l'inglese a mano: non tradurlo più in automatico</label>
+      <span class="hint">Senza questa spunta, quando cambi il testo italiano anche l'inglese viene rigenerato.</span>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <a class="btn btn-ghost" href="/admin/projects">Annulla</a>
+    <button class="btn" type="submit"><%= project ? "Salva modifiche" : "Crea progetto" %></button>
+  </div>
+</form>
+<%- include("../partials/bottom") %>

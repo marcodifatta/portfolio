@@ -1,0 +1,44 @@
+<%- include("partials/top", { title }) %>
+<div class="page-head">
+  <div>
+    <h1>Competenze</h1>
+    <p class="lead">Le tecnologie che usi, mostrate con la loro icona.</p>
+  </div>
+</div>
+<% if (skills.length === 0) { %>
+  <div class="panel empty">Aggiungi le tecnologie che conosci qui sotto.</div>
+<% } else { %>
+  <ol class="rows">
+    <% skills.forEach((s, i) => { %>
+      <li>
+        <% if (s.iconPath) { %><img class="thumb" src="<%= s.iconPath %>" alt="" width="48" height="48" /><% } else { %><span class="thumb" aria-hidden="true"></span><% } %>
+        <div class="main"><strong><%= s.name %></strong></div>
+        <div class="actions">
+          <form method="post" action="/admin/skills/<%= s.id %>/move"><input type="hidden" name="_csrf" value="<%= csrf %>" /><input type="hidden" name="direction" value="up" /><button class="btn btn-ghost btn-small icon-btn" aria-label="Sposta <%= s.name %> in su" <%= i === 0 ? "disabled" : "" %>>↑</button></form>
+          <form method="post" action="/admin/skills/<%= s.id %>/move"><input type="hidden" name="_csrf" value="<%= csrf %>" /><input type="hidden" name="direction" value="down" /><button class="btn btn-ghost btn-small icon-btn" aria-label="Sposta <%= s.name %> in giù" <%= i === skills.length - 1 ? "disabled" : "" %>>↓</button></form>
+          <form method="post" action="/admin/skills/<%= s.id %>/delete"><input type="hidden" name="_csrf" value="<%= csrf %>" /><button class="btn btn-ghost btn-small" aria-label="Elimina <%= s.name %>">Elimina</button></form>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+<% } %>
+
+<h2>Aggiungi una competenza</h2>
+<form class="panel" method="post" action="/admin/skills" enctype="multipart/form-data" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrf %>" />
+  <div class="form-grid">
+    <div class="field">
+      <label for="name">Nome</label>
+      <input id="name" name="name" type="text" maxlength="40" placeholder="PostgreSQL" value="<%= values.name %>" <%- errors.name ? 'aria-invalid="true" aria-describedby="name-error"' : "" %> />
+      <% if (errors.name) { %><span class="error" id="name-error"><%= errors.name %></span><% } %>
+    </div>
+    <div class="field">
+      <label for="icon">Icona</label>
+      <input id="icon" name="icon" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" <%- errors.icon ? 'aria-invalid="true" aria-describedby="icon-error"' : "" %> />
+      <span class="hint">SVG o PNG con sfondo trasparente.</span>
+      <% if (errors.icon) { %><span class="error" id="icon-error"><%= errors.icon %></span><% } %>
+    </div>
+  </div>
+  <div class="form-actions"><button class="btn" type="submit">Aggiungi competenza</button></div>
+</form>
+<%- include("partials/bottom") %>

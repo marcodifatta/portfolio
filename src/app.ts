@@ -1,15 +1,44 @@
 // Applicazione Express: separata da server.ts per poterla avviare anche nei test.
 import path from "node:path";
 import express, { type ErrorRequestHandler } from "express";
+import helmet from "helmet";
+import { sessionMiddleware } from "./auth/session";
+import type { Config } from "./config";
 import type { PrismaClient } from "./generated/prisma/client";
+import { adminRouter } from "./routes/admin/index";
 import { publicRouter } from "./routes/public";
+import { createTranslator, type Translator } from "./services/translate";
+import { createUploadStore } from "./services/uploads";
 
-export function createApp(prisma: PrismaClient, opts: { uploadDir: string; isProd: boolean }) {
+export type AppDeps = {
+  prisma: PrismaClient;
+  config: Config;
+  translator?: Translator;
+};
+
+export function createApp({ prisma, config, translator }: AppDeps) {
   const app = express();
   app.disable("x-powered-by");
   app.set("view engine", "ejs");
   app.set("views", path.join(import.meta.dirname, "views"));
-  if (opts.isProd) app.set("trust proxy", 1); // dietro Nginx Proxy Manager
+  if (config.isProd) app.set("trust proxy", 1); // dietro Nginx Proxy Manager
+
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          "default-src": ["'self'"],
+          "img-src": ["'self'", "data:"],
+          "style-src": ["'self'", "'unsafe-inline'"],
+          "script-src": ["'self'"],
+          "form-action": ["'self'"],
+          "frame-ancestors": ["'none'"],
+          "upgrade-insecure-requests": config.isProd ? [] : null,
+        },
+      },
+      strictTransportSecurity: config.isProd,
+    }),
+  );
 
   app.get("/healthz", async (_req, res) => {
     try {
@@ -20,23 +49,46 @@ export function createApp(prisma: PrismaClient, opts: { uploadDir: string; isPro
     }
   });
 
+  const staticOpts = { maxAge: config.isProd ? "7d" : 0, index: false as const, dotfiles: "deny" as const };
+  app.use("/uploads", express.static(config.UPLOAD_DIR, staticOpts));
+  app.use("/assets", express.static(path.join(import.meta.dirname, "..", "public", "assets"), staticOpts));
+  app.get("/favicon.ico", (_req, res) => res.redirect(301, "/assets/brand/favicon-32.png"));
+
+  const sessions = sessionMiddleware({
+    databaseUrl: config.DATABASE_URL,
+    secret: config.SESSION_SECRET,
+    secure: config.isProd,
+  });
+
   app.use(
-    "/uploads",
-    express.static(opts.uploadDir, { maxAge: opts.isProd ? "7d" : 0, index: false, dotfiles: "deny" }),
+    "/admin",
+    sessions.middleware,
+    adminRouter({
+      prisma,
+      uploads: createUploadStore(config.UPLOAD_DIR),
+      translator: translator ?? createTranslator(config.DEEPL_API_KEY),
+      admin: { username: config.ADMIN_USERNAME, passwordHash: config.ADMIN_PASSWORD_HASH },
+    }),
   );
-  app.use("/assets", express.static(path.join(import.meta.dirname, "..", "public", "assets"), { index: false }));
 
   app.use(publicRouter(prisma));
 
-  app.use((_req, res) => {
-    res.status(404).render("public/404");
+  app.use((req, res) => {
+    res.status(404).render(req.path.startsWith("/admin") ? "admin/error" : "public/404", {
+      title: "Pagina non trovata",
+      message: "Questa pagina non esiste.",
+    });
   });
 
-  const onError: ErrorRequestHandler = (err, _req, res, _next) => {
+  const onError: ErrorRequestHandler = (err, req, res, _next) => {
     console.error(err);
-    res.status(500).render("public/500");
+    if (res.headersSent) return;
+    res.status(500).render(req.path.startsWith("/admin") ? "admin/error" : "public/500", {
+      title: "Errore",
+      message: "Qualcosa è andato storto. Riprova tra qualche minuto.",
+    });
   };
   app.use(onError);
 
-  return app;
+  return { app, close: sessions.close };
 }

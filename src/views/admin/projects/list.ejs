@@ -1,0 +1,41 @@
+<%- include("../partials/top", { title }) %>
+<div class="page-head">
+  <div>
+    <h1>Progetti</h1>
+    <p class="lead">L'ordine qui è l'ordine della griglia sul sito. Le bozze non sono visibili.</p>
+  </div>
+  <a class="btn" href="/admin/projects/new">Nuovo progetto</a>
+</div>
+<% if (projects.length === 0) { %>
+  <div class="panel empty">Aggiungi il tuo primo progetto: comparirà nella griglia della homepage.</div>
+<% } else { %>
+  <ol class="rows">
+    <% projects.forEach((p, i) => { %>
+      <li>
+        <% if (p.logoPath) { %><img class="thumb" src="<%= p.logoPath %>" alt="" width="48" height="48" /><% } else { %><span class="thumb" aria-hidden="true"></span><% } %>
+        <div class="main">
+          <strong><%= p.titleIt %></strong>
+          <small><%= p.url %><% if (p.year) { %> · <%= p.year %><% } %></small>
+        </div>
+        <span class="badge <%= p.status === 'PUBLISHED' ? 'published' : 'draft' %>"><%= p.status === "PUBLISHED" ? "Visibile" : "Bozza" %></span>
+        <div class="actions">
+          <form method="post" action="/admin/projects/<%= p.id %>/move">
+            <input type="hidden" name="_csrf" value="<%= csrf %>" /><input type="hidden" name="direction" value="up" />
+            <button class="btn btn-ghost btn-small icon-btn" type="submit" aria-label="Sposta <%= p.titleIt %> in su" <%= i === 0 ? "disabled" : "" %>>↑</button>
+          </form>
+          <form method="post" action="/admin/projects/<%= p.id %>/move">
+            <input type="hidden" name="_csrf" value="<%= csrf %>" /><input type="hidden" name="direction" value="down" />
+            <button class="btn btn-ghost btn-small icon-btn" type="submit" aria-label="Sposta <%= p.titleIt %> in giù" <%= i === projects.length - 1 ? "disabled" : "" %>>↓</button>
+          </form>
+          <form method="post" action="/admin/projects/<%= p.id %>/status">
+            <input type="hidden" name="_csrf" value="<%= csrf %>" />
+            <button class="btn btn-ghost btn-small" type="submit"><%= p.status === "PUBLISHED" ? "Metti in bozza" : "Pubblica" %></button>
+          </form>
+          <a class="btn btn-ghost btn-small" href="/admin/projects/<%= p.id %>/edit">Modifica</a>
+          <a class="btn btn-ghost btn-small" href="/admin/projects/<%= p.id %>/delete">Elimina</a>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+<% } %>
+<%- include("../partials/bottom") %>

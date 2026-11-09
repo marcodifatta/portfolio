@@ -1,0 +1,11 @@
+<%- include("../partials/top", { title }) %>
+<div class="panel">
+  <h1>Eliminare "<%= project.titleIt %>"?</h1>
+  <p class="lead">Il progetto sparisce dal sito e vengono cancellati anche logo e screenshot. Non si può annullare: se vuoi solo nasconderlo, mettilo in bozza.</p>
+  <form method="post" action="/admin/projects/<%= project.id %>/delete" class="form-actions">
+    <input type="hidden" name="_csrf" value="<%= csrf %>" />
+    <a class="btn btn-ghost" href="/admin/projects">Annulla</a>
+    <button class="btn btn-danger" type="submit">Elimina definitivamente</button>
+  </form>
+</div>
+<%- include("../partials/bottom") %>
