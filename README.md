@@ -27,7 +27,7 @@ Il piano completo, con fasi e criteri di verifica, è in [docs/rifacimento/PIANO
 
 - **27/02** - Aggiunto nuovo progetto: MDKManager
 
-### Marzo 2024
+### Marzo 2025
 
 - **19/03** - Aggiunto nuovo progetto: ShoppyList
 
