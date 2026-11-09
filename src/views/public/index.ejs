@@ -1,0 +1,43 @@
+<!doctype html>
+<%# Pagina provvisoria della Fase 2: mostra i dati letti dal database. La grafica arriva nella Fase 5. %>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Marco Di Fatta · Portfolio</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 24px 16px; line-height: 1.5; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 0; list-style: none; }
+      .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; }
+      .card img { width: 56px; height: 56px; object-fit: contain; }
+      .skills img { width: 32px; height: 32px; }
+    </style>
+  </head>
+  <body>
+    <h1><%= settings["hero.title"] %></h1>
+    <p><%= settings["hero.subtitle"] %></p>
+
+    <h2>Progetti</h2>
+    <ul class="grid">
+      <% for (const p of projects) { %>
+        <li class="card" data-project="<%= p.slug %>">
+          <% if (p.logoPath) { %><img src="<%= p.logoPath %>" alt="" width="56" height="56" /><% } %>
+          <h3><a href="<%= p.url %>" rel="noopener" target="_blank"><%= p.titleIt %></a></h3>
+          <p><%= p.descriptionIt %></p>
+          <% if (p.year) { %><small><%= p.year %></small><% } %>
+        </li>
+      <% } %>
+    </ul>
+
+    <h2>Competenze</h2>
+    <p class="skills">
+      <% for (const s of skills) { %><img src="<%= s.iconPath %>" alt="<%= s.name %>" title="<%= s.name %>" /> <% } %>
+    </p>
+
+    <h2>Contatti</h2>
+    <ul>
+      <% for (const s of socials) { %><li><a href="<%= s.url %>"><%= s.label %></a></li><% } %>
+      <li><a href="<%= settings["cv.path"] %>" download>Scarica il CV</a></li>
+    </ul>
+  </body>
+</html>

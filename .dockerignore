@@ -14,3 +14,10 @@ node_modules
 .env.*
 shots
 infra
+src
+prisma
+data
+package.json
+package-lock.json
+tsconfig.json
+prisma.config.ts

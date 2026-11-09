@@ -14,10 +14,54 @@ Il sito statico attuale sta per essere sostituito da un portfolio con **area adm
 
 Il piano completo, con fasi e criteri di verifica, è in [docs/rifacimento/PIANO.md](docs/rifacimento/PIANO.md).
 
+### Sviluppo locale
+
+Requisiti: Node 22 o superiore e un PostgreSQL locale (su Mac: `brew services start postgresql@15`).
+
+```bash
+createdb portfolio_dev
+cp .env.example .env          # imposta DATABASE_URL, es. postgresql://<utente-mac>@localhost:5432/portfolio_dev
+npm install                   # genera anche il client Prisma
+npm run db:migrate            # applica le migrazioni
+npm run db:seed               # carica i contenuti del sito attuale (solo se il DB è vuoto)
+npm run dev                   # http://localhost:3000
+```
+
+| Comando | Cosa fa |
+|---|---|
+| `npm run dev` | server con ricarica automatica |
+| `npm run typecheck` | controllo dei tipi TypeScript |
+| `npm run db:migrate` | crea e applica una nuova migrazione dopo una modifica a `prisma/schema.prisma` |
+| `npm run db:reset` | cancella il database di sviluppo, riapplica le migrazioni e il seed |
+
+Struttura:
+
+```
+src/
+  server.ts          avvio del server e chiusura ordinata
+  app.ts             applicazione Express (rotte, file statici, errori)
+  config.ts          variabili d'ambiente validate all'avvio
+  db.ts              client Prisma con driver pg
+  routes/public.ts   pagine pubbliche
+  views/             template EJS
+prisma/
+  schema.prisma      tabelle: projects, skills, socials, settings
+  migrations/        migrazioni SQL versionate
+  seed.ts            contenuti iniziali presi dal sito statico
+infra/postgres/      stack del Postgres condiviso sul server
+```
+
+I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploads` in sviluppo), che non è versionata. Il vecchio sito statico (`index.html`, `css/`, `js/`, `photo/`) resta online finché il nuovo non lo sostituisce nella Fase 6.
+
 ## 📝 Changelog
 
 ### Novembre 2026
 
+- **09/11** - Fase 2, scheletro dell'app:
+  - Progetto Node + TypeScript con Express 5, EJS, Prisma 7 (driver `pg`) e validazione della configurazione con zod
+  - Schema del database e migrazione iniziale: progetti (con bozza/pubblicato, ordine, anno, tag, screenshot, testi IT/EN), competenze, social, impostazioni
+  - Seed con i 4 progetti, le competenze, i social, i testi e il CV del sito attuale; loghi PNG convertiti in WebP da 256px
+  - Pagina provvisoria che legge i dati dal database, `/healthz` per il controllo di salute, pagine 404 e 500
 - **09/11** - Fase 1, Postgres condiviso:
   - Nuovo stack `infra/postgres` (PostgreSQL 17, container `pg-shared`, rete `db-net`), raggiungibile solo dal server e via tunnel SSH
   - Script `new-project-db.sh` per creare database e utente di ogni progetto, isolati tra loro

@@ -1,0 +1,74 @@
+// Schema del database del portfolio.
+// Tabelle e colonne in snake_case, per leggerle comodamente da TablePlus.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+
+  @@map("project_status")
+}
+
+/// Un progetto mostrato nella griglia della homepage.
+model Project {
+  id             Int           @id @default(autoincrement())
+  slug           String        @unique
+  titleIt        String        @map("title_it")
+  titleEn        String?       @map("title_en")
+  descriptionIt  String        @map("description_it")
+  descriptionEn  String?       @map("description_en")
+  /// true quando i testi inglesi sono stati corretti a mano: la traduzione automatica non li sovrascrive
+  enManual       Boolean       @default(false) @map("en_manual")
+  url            String
+  year           Int?
+  tags           String[]      @default([])
+  logoPath       String?       @map("logo_path")
+  screenshotPath String?       @map("screenshot_path")
+  status         ProjectStatus @default(DRAFT)
+  position       Int           @default(0)
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  @@index([status, position])
+  @@map("projects")
+}
+
+/// Una tecnologia mostrata tra le competenze.
+model Skill {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique
+  iconPath String? @map("icon_path")
+  position Int     @default(0)
+
+  @@map("skills")
+}
+
+/// Un link social o di contatto (linkedin, instagram, github, email...).
+model Social {
+  id       Int    @id @default(autoincrement())
+  kind     String
+  label    String
+  url      String
+  position Int    @default(0)
+
+  @@map("socials")
+}
+
+/// Testi e impostazioni modificabili dall'admin (titolo, presentazione, email, CV...).
+model Setting {
+  key       String   @id
+  valueIt   String   @map("value_it")
+  valueEn   String?  @map("value_en")
+  enManual  Boolean  @default(false) @map("en_manual")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}

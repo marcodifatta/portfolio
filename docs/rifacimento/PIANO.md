@@ -1,6 +1,6 @@
 # Piano — Rifacimento portfolio mdfdev.xyz
 
-**Stato:** Fasi 0 e 1 completate (09/11/2026), Fase 2 da avviare · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
+**Stato:** Fasi 0, 1 e 2 completate (09/11/2026), Fase 3 da avviare · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
 ## 1. Requisiti (dalle 10 domande)
 
@@ -47,7 +47,8 @@ TablePlus (Mac) ──SSH tunnel <utente>@<IP-VPS>──► 127.0.0.1:5432
 
 ### Stack applicativo
 - **Express 5 + EJS** con rendering lato server: la pagina pubblica arriva già pronta in HTML, senza framework frontend e senza build JS.
-- **Prisma** per schema e migrazioni (già usato in `gestione-scadenze`), applicate con `prisma migrate deploy` all'avvio del container.
+- **Prisma 7** con driver `@prisma/adapter-pg` per schema e migrazioni (configurazione in `prisma.config.ts`, client generato in `src/generated/prisma`), applicate con `prisma migrate deploy` all'avvio del container.
+- TypeScript eseguito con `tsx` anche in produzione: nessuna fase di build, `tsc --noEmit` solo come controllo dei tipi.
 - Sessioni con `express-session` + `connect-pg-simple` (tabella `session` nel DB), password con `bcrypt`, `helmet`, `express-rate-limit` sul login, CSRF con `csrf-sync`.
 - Upload con `multer` + `sharp`: loghi a 256×256 e screenshot a 1200px di larghezza in WebP, salvati nel volume `/data/uploads` e serviti da `/uploads/…`.
 - Traduzione: DeepL API Free (`DEEPL_API_KEY` nel `.env`). Senza chiave, il campo EN resta vuoto e la pagina inglese mostra il testo italiano.
@@ -94,10 +95,10 @@ portfolio/
 - **Fatto quando:** TablePlus dal Mac si collega via tunnel SSH e vede il database `portfolio`; l'utente `portfolio` non può connettersi ad altri database; dall'esterno la porta 5432 risulta chiusa.
 - La migrazione di `scadenze-db` nell'istanza condivisa è un **follow-up separato**, non fa parte di questo piano.
 
-### Fase 2 — Scheletro app, schema e seed
-1. Progetto Node 22 + TypeScript (`tsx` in sviluppo, `tsc` per la build), Express, EJS, Prisma.
+### Fase 2 — Scheletro app, schema e seed ✅ completata il 09/11/2026
+1. Progetto Node 22+ e TypeScript (`tsx` per eseguire, `tsc --noEmit` per i tipi), Express 5, EJS, Prisma 7.
 2. Schema e migrazione iniziale; seed con i 4 progetti attuali (PizzaBakery, QRator, ShoppyList, MDKManager), i loro loghi, i testi di [index.html](../../index.html), social, email e CV.
-3. In sviluppo: `docker-compose.dev.yml` con un Postgres locale.
+3. In sviluppo: Postgres di Homebrew sul Mac (database `portfolio_dev`), nessun Docker locale.
 - **Fatto quando:** `npm run dev` mostra i 4 progetti letti dal database; `npm run typecheck` passa senza errori.
 
 ### Fase 3 — Area admin
