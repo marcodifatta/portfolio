@@ -104,3 +104,6 @@ footer.closing > .wrap { grid-template-rows: minmax(min-content, 1fr) auto; }
 }
 /* le nove icone stanno su una riga anche nella colonna più stretta (1280-1440) */
 .skills { gap: var(--s-2); }
+
+/* accesso all'area admin: un link discreto nella riga legale del footer */
+.footer__admin { color: var(--muted); }

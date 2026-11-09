@@ -82,3 +82,12 @@ model Session {
   @@index([expire], map: "IDX_session_expire")
   @@map("session")
 }
+
+/// Credenziali dell'admin cambiate dal pannello. Se la riga manca valgono ADMIN_USERNAME e ADMIN_PASSWORD_HASH del .env.
+model AdminCredential {
+  id           Int      @id @default(1)
+  passwordHash String   @map("password_hash")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("admin_credentials")
+}

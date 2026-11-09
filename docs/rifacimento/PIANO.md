@@ -151,3 +151,9 @@ portfolio/
 - Fare passare qrator, ShoppyList, scadenze e gli altri dal proxy tramite nome del container, togliendo le porte pubbliche; unificare le due reti `marco-network`.
 - Aggiungere la swap sulla VPS.
 - Accesso con OAuth GitHub (eventualmente in seguito).
+
+## Aggiunte del 10/11/2026 (richieste di Marco)
+
+- SEO e GEO: JSON-LD schema.org, Open Graph e Twitter, `sitemap.xml`, `robots.txt`, `llms.txt`.
+- Link "Accesso admin" nel footer.
+- Cambio password dall'admin (tabella `admin_credentials`) e reset da riga di comando (`npm run admin:reset-password`).

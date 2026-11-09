@@ -51,6 +51,28 @@ npm run admin:password          # scrivi la nuova password, copia la riga ADMIN_
 | Social | LinkedIn, GitHub, Instagram, email... con ordine |
 | Competenze | nome e icona delle tecnologie, con ordine |
 
+### Password dell'admin
+
+- **Cambio da loggato:** pulsante **Cambia password** in alto nell'admin. Chiede la password attuale e una nuova di almeno 12 caratteri, salva il nuovo hash nel database (tabella `admin_credentials`) e chiude le sessioni aperte su altri browser o dispositivi.
+- **Password dimenticata:** dal server, `docker compose exec portfolio npm run admin:reset-password` chiede una nuova password. Con `-- --random` la genera, con `-- --env` torna a valere quella del `.env`. In tutti i casi chiude tutte le sessioni.
+- La password del `.env` (`ADMIN_PASSWORD_HASH`) vale finché non la cambi dal pannello.
+- Nel sito, il link **Accesso admin** è nella riga in fondo al footer.
+
+### SEO e GEO
+
+Il sito si fa trovare dai motori di ricerca classici (SEO) e da quelli generativi come ChatGPT, Perplexity, Claude e le risposte AI di Google (GEO). Tutto è generato dal database, quindi resta aggiornato a ogni modifica fatta dall'admin.
+
+| Cosa | Dove | A cosa serve |
+|---|---|---|
+| Dati strutturati schema.org (JSON-LD) | in ogni pagina | dicono ai motori chi sei (Person: nome, lavoro, competenze, profili social), cos'è il sito e quali progetti hai (WebApplication), in italiano o in inglese |
+| `title`, `description`, `canonical`, `hreflang` | in ogni pagina | risultato di ricerca corretto nelle due lingue |
+| Open Graph e Twitter | in ogni pagina | anteprima con immagine quando si condivide il link (LinkedIn, WhatsApp, X…) |
+| `/sitemap.xml` | generata | le due pagine con lingua e data dell'ultima modifica |
+| `/robots.txt` | generato | sito aperto ai motori e ai crawler AI (GPTBot, ClaudeBot, PerplexityBot…), admin chiuso |
+| `/llms.txt` | generato | il portfolio in Markdown, pensato per i modelli linguistici (standard llmstxt.org) |
+
+Dopo la messa online conviene aggiungere il sito a Google Search Console e a Bing Webmaster Tools, inviando `https://mdfdev.xyz/sitemap.xml`.
+
 ### Lingue
 
 - `/` è in italiano e `/en/` in inglese. Alla prima visita di `/`, un browser che preferisce l'inglese (e non ha l'italiano tra le lingue) viene mandato su `/en/`. Il selettore di lingua (`/lang/it`, `/lang/en`) salva la scelta in un cookie per un anno, e la scelta vince sulla lingua del browser.
@@ -82,6 +104,14 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 ## 📝 Changelog
 
 ### Novembre 2026
+
+- **10/11** - SEO, GEO, accesso e password:
+  - Dati strutturati schema.org (persona, sito, pagina profilo, progetti), Open Graph e Twitter completi
+  - `/sitemap.xml`, `/robots.txt` (aperto ai crawler AI, admin chiuso) e `/llms.txt`, generati dal database
+  - Link "Accesso admin" nel footer; pagina **Cambia password** nell'admin; script `admin:reset-password` per la password dimenticata
+  - Limite ai tentativi di login sull'IP reale del visitatore (il sito passa da Cloudflare) e limite globale
+  - Verificata l'email `contact@mdfdev.xyz`: MX, SPF e DKIM di Zoho corretti; manca DMARC
+  - 52 test automatici; controllo finale di tasteskill superato
 
 - **10/11** - Fase 5, correzione per le finestre reali del browser:
   - Su un Mac (finestre 1512×780, 1366×620) il nome grande del footer copriva i link e le card dei progetti finivano sotto la sezione dopo

@@ -30,7 +30,7 @@ export async function setupApp(opts: { translator?: Translator } = {}) {
   };
   const prisma = createPrisma(TEST_DATABASE_URL);
   await prisma.$executeRawUnsafe(
-    'TRUNCATE "projects", "skills", "socials", "settings", "session" RESTART IDENTITY',
+    'TRUNCATE "projects", "skills", "socials", "settings", "session", "admin_credentials" RESTART IDENTITY',
   );
   const { app, close } = createApp({ prisma, config, translator: opts.translator });
   return {

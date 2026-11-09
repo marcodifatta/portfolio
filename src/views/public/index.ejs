@@ -24,12 +24,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title><%= t.siteTitle %></title>
 <meta name="description" content="<%= t.metaDescription %>">
-<meta property="og:type" content="website">
+<meta name="author" content="Marco Di Fatta">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Marco Di Fatta">
+<meta property="og:url" content="<%= urls.canonical %>">
 <meta property="og:title" content="<%= t.siteTitle %>">
 <meta property="og:description" content="<%= t.metaDescription %>">
-<meta property="og:image" content="<%= urls.it %>assets/brand/share.jpg">
+<meta property="og:image" content="<%= urls.base %>assets/brand/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="<%= content.heroTitle %>">
 <meta property="og:locale" content="<%= t.locale %>">
+<meta property="og:locale:alternate" content="<%= t.htmlLang === 'it' ? 'en_GB' : 'it_IT' %>">
+<meta property="profile:first_name" content="Marco">
+<meta property="profile:last_name" content="Di Fatta">
+<meta property="og:updated_time" content="<%= lastModified %>">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= t.siteTitle %>">
+<meta name="twitter:description" content="<%= t.metaDescription %>">
+<meta name="twitter:image" content="<%= urls.base %>assets/brand/share.jpg">
+<link rel="alternate" type="text/markdown" href="/llms.txt" title="llms.txt">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<%# dati strutturati schema.org (src/routes/seo.ts): persona, sito, pagina profilo, progetti %>
+<script type="application/ld+json"><%- jsonLd %></script>
 <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#f7f2ef">
@@ -194,6 +212,7 @@
       </div>
       <div class="footer__legal">
         <span>&copy; <%= year %> Marco Di Fatta. <%= t.footer.rights %></span>
+        <a class="footer__admin" href="/admin/login" rel="nofollow"><%= t.footer.admin %></a>
         <div class="socials"></div>
         <span class="credits"><%= t.footer.iconsCredit %></span>
       </div>

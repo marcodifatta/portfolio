@@ -18,7 +18,8 @@
     "db:reset": "prisma migrate reset --force && prisma db seed",
     "postinstall": "prisma generate",
     "admin:password": "tsx scripts/hash-password.ts",
-    "test": "node --import tsx --test --test-concurrency=1 test/*.test.ts"
+    "test": "node --import tsx --test --test-concurrency=1 test/*.test.ts",
+    "admin:reset-password": "tsx scripts/reset-admin-password.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",

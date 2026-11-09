@@ -33,6 +33,7 @@ export const it = {
     documents: "Documenti",
     language: "Lingua",
     rights: "Tutti i diritti riservati.",
+    admin: "Accesso admin",
     iconsCredit: "Loghi delle tecnologie: SVG Logos e VSCode Icons. I nomi sono marchi dei rispettivi proprietari.",
   },
   langSwitch: { label: "English", href: "/lang/en", hreflang: "en", aria: "Read this site in English" },

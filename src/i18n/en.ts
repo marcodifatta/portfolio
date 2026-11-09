@@ -34,6 +34,7 @@ export const en: Messages = {
     documents: "Documents",
     language: "Language",
     rights: "All rights reserved.",
+    admin: "Admin login",
     iconsCredit: "Technology logos: SVG Logos and VSCode Icons. Names are trademarks of their owners.",
   },
   langSwitch: { label: "Italiano", href: "/lang/it", hreflang: "it", aria: "Leggi il sito in italiano" },

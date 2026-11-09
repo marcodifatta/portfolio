@@ -9,6 +9,7 @@ import type { PrismaClient } from "./generated/prisma/client";
 import { messages } from "./i18n/index";
 import { adminRouter } from "./routes/admin/index";
 import { publicRouter } from "./routes/public";
+import { seoRouter } from "./routes/seo";
 import { createTranslator, type Translator } from "./services/translate";
 import { createUploadStore } from "./services/uploads";
 
@@ -75,6 +76,7 @@ export function createApp({ prisma, config, translator }: AppDeps) {
     }),
   );
 
+  app.use(seoRouter(prisma, { publicUrl: config.PUBLIC_URL }));
   app.use(publicRouter(prisma, { publicUrl: config.PUBLIC_URL, secureCookies: config.isProd }));
 
   app.use((req, res) => {

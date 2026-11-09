@@ -1,9 +1,10 @@
 // Area admin: login/logout e montaggio delle sezioni protette.
 import express, { Router, type RequestHandler } from "express";
-import { rateLimit } from "express-rate-limit";
+import { ipKeyGenerator, rateLimit } from "express-rate-limit";
 import multer from "multer";
-import { verifyPassword } from "../../auth/password";
-import { csrfToken, requireAdmin, verifyCsrf } from "../../auth/session";
+import { hashPassword, verifyPassword } from "../../auth/password";
+import { z } from "zod";
+import { csrfToken, flash, requireAdmin, verifyCsrf } from "../../auth/session";
 import type { PrismaClient } from "../../generated/prisma/client";
 import type { Translator } from "../../services/translate";
 import { MAX_UPLOAD_BYTES, type UploadStore } from "../../services/uploads";
@@ -60,19 +61,35 @@ export function adminRouter(deps: AdminDeps) {
     next();
   });
 
+  /** Hash in uso: quello cambiato dal pannello (tabella admin_credentials), altrimenti quello del .env. */
+  async function currentHash(): Promise<string> {
+    const row = await deps.prisma.adminCredential.findUnique({ where: { id: 1 } });
+    return row?.passwordHash ?? deps.admin.passwordHash;
+  }
+
+  // Il sito passa da Cloudflare: l'IP del visitatore arriva in CF-Connecting-IP. Il limite globale qui sotto
+  // copre chi prova a falsificare l'intestazione chiamando il server direttamente.
+  const clientKey = (req: express.Request) => ipKeyGenerator(String(req.headers["cf-connecting-ip"] ?? req.ip ?? "0.0.0.0"));
+  const tooMany = (_req: express.Request, res: express.Response) => {
+    res.status(429).render("admin/login", { error: "Troppi tentativi. Riprova tra 15 minuti.", username: "", next: "" });
+  };
+  const globalLoginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 30,
+    skipSuccessfulRequests: true,
+    keyGenerator: () => "tutti",
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    handler: tooMany,
+  });
   const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     limit: 5,
     skipSuccessfulRequests: true,
+    keyGenerator: clientKey,
     standardHeaders: "draft-8",
     legacyHeaders: false,
-    handler: (_req, res) => {
-      res.status(429).render("admin/login", {
-        error: "Troppi tentativi. Riprova tra 15 minuti.",
-        username: "",
-        next: "",
-      });
-    },
+    handler: tooMany,
   });
 
   router.get("/login", (req, res) => {
@@ -83,12 +100,12 @@ export function adminRouter(deps: AdminDeps) {
     res.render("admin/login", { error: null, username: "", next: String(req.query.next ?? "") });
   });
 
-  router.post("/login", loginLimiter, verifyCsrf, async (req, res, next) => {
+  router.post("/login", globalLoginLimiter, loginLimiter, verifyCsrf, async (req, res, next) => {
     const username = String(req.body.username ?? "").trim();
     const password = String(req.body.password ?? "");
     const target = String(req.body.next ?? "");
     // La password si verifica sempre, anche con utente sbagliato: stessi tempi di risposta
-    const passwordOk = await verifyPassword(password, deps.admin.passwordHash);
+    const passwordOk = await verifyPassword(password, await currentHash());
     if (!passwordOk || username !== deps.admin.username) {
       res.status(401).render("admin/login", { error: "Utente o password non corretti.", username, next: target });
       return;
@@ -118,6 +135,51 @@ export function adminRouter(deps: AdminDeps) {
   router.use("/content", contentRouter(deps));
   router.use("/socials", socialsRouter(deps));
   router.use("/skills", skillsRouter(deps));
+
+  // Cambio password (da loggati): chiede quella attuale, salva il nuovo hash nel DB e chiude le altre sessioni
+  const passwordSchema = z
+    .object({
+      current: z.string().min(1, "Scrivi la password attuale"),
+      next: z.string().min(12, "Almeno 12 caratteri").max(200, "Al massimo 200 caratteri"),
+      confirm: z.string(),
+    })
+    .refine((v) => v.next === v.confirm, { path: ["confirm"], message: "Le due password non coincidono" })
+    .refine((v) => v.next !== v.current, { path: ["next"], message: "Scegli una password diversa da quella attuale" });
+
+  const passwordLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, keyGenerator: clientKey, standardHeaders: "draft-8", legacyHeaders: false });
+
+  router.get("/password", (_req, res) => {
+    res.render("admin/password", { title: "Cambia password", errors: {} });
+  });
+
+  router.post("/password", passwordLimiter, verifyCsrf, async (req, res, next) => {
+    const parsed = passwordSchema.safeParse({
+      current: String(req.body.current ?? ""),
+      next: String(req.body.next ?? ""),
+      confirm: String(req.body.confirm ?? ""),
+    });
+    const errors: Record<string, string> = {};
+    if (!parsed.success) {
+      for (const issue of parsed.error.issues) errors[String(issue.path[0])] ??= issue.message;
+    } else if (!(await verifyPassword(parsed.data.current, await currentHash()))) {
+      errors.current = "La password attuale non è corretta";
+    }
+    if (Object.keys(errors).length || !parsed.success) {
+      res.status(422).render("admin/password", { title: "Cambia password", errors });
+      return;
+    }
+    const passwordHash = await hashPassword(parsed.data.next);
+    await deps.prisma.adminCredential.upsert({ where: { id: 1 }, create: { id: 1, passwordHash }, update: { passwordHash } });
+    // le altre sessioni (altri browser o dispositivi) vengono chiuse; questa resta e riceve un nuovo id
+    await deps.prisma.session.deleteMany({ where: { sid: { not: req.sessionID } } });
+    const admin = req.session.admin;
+    req.session.regenerate((err) => {
+      if (err) return next(err);
+      req.session.admin = admin;
+      flash(req, "ok", "Password cambiata. Le altre sessioni aperte sono state chiuse.");
+      req.session.save((saveErr) => (saveErr ? next(saveErr) : res.redirect(303, "/admin/projects")));
+    });
+  });
 
   return router;
 }

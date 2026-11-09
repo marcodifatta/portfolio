@@ -2,6 +2,7 @@
 import { Router, type Request, type Response } from "express";
 import type { PrismaClient } from "../generated/prisma/client";
 import { LANG_COOKIE, homePath, messages, pick, preferredLang, type Lang } from "../i18n/index";
+import { jsonLd, loadSite } from "./seo";
 
 const ONE_YEAR = 365 * 24 * 60 * 60 * 1000;
 
@@ -28,13 +29,9 @@ export function publicRouter(prisma: PrismaClient, opts: { publicUrl: string; se
   const router = Router({ strict: true });
 
   async function render(res: Response, lang: Lang) {
-    const [projects, skills, socials, settingRows] = await Promise.all([
-      prisma.project.findMany({ where: { status: "PUBLISHED" }, orderBy: [{ position: "asc" }, { id: "asc" }] }),
-      prisma.skill.findMany({ orderBy: [{ position: "asc" }, { id: "asc" }] }),
-      prisma.social.findMany({ orderBy: [{ position: "asc" }, { id: "asc" }] }),
-      prisma.setting.findMany(),
-    ]);
-    const s = Object.fromEntries(settingRows.map((r) => [r.key, r]));
+    const site = await loadSite(prisma);
+    const { projects, skills, socials } = site;
+    const s = site.settings;
     const text = (key: string) => (s[key] ? pick(lang, s[key].valueIt, s[key].valueEn) : "");
     const items = projects.map((p) => ({
       slug: p.slug,
@@ -57,6 +54,7 @@ export function publicRouter(prisma: PrismaClient, opts: { publicUrl: string; se
         it: new URL("/", opts.publicUrl).href,
         en: new URL("/en/", opts.publicUrl).href,
         switchTo: messages[lang].langSwitch.href,
+        base: new URL("/", opts.publicUrl).href,
       },
       content: {
         heroTitle: text("hero.title"),
@@ -72,6 +70,8 @@ export function publicRouter(prisma: PrismaClient, opts: { publicUrl: string; se
       // prima schermata: l'immagine scelta nell'admin, altrimenti lo screenshot del primo progetto che ne ha uno;
       // la scheda sopra cita il progetto scelto (se pubblicato), altrimenti quello dello screenshot
       ...heroFor(items, s["hero.image"]?.valueIt, s["hero.project"]?.valueIt),
+      jsonLd: jsonLd(site, lang, opts.publicUrl),
+      lastModified: site.lastModified.toISOString(),
       year: new Date().getFullYear(),
     });
   }
