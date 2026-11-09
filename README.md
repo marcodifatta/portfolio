@@ -2,7 +2,26 @@
 
 Questo è il repository del mio portfolio personale, creato dopo aver completato il mio primo progetto (www.pizzabakery.biz). Il portfolio è stato sviluppato per mostrare i miei progetti e le mie competenze.
 
+## 🚧 Rifacimento in corso (novembre 2026)
+
+Il sito statico attuale sta per essere sostituito da un portfolio con **area admin** per gestire i progetti senza toccare il codice.
+
+- **Stack:** Node 22 + Express + EJS, PostgreSQL (istanza condivisa sul server), Prisma, Docker Compose
+- **Admin (`/admin`):** login con username e password; gestione di progetti (logo, titolo, descrizione, link, anno, tag, screenshot, bozza/pubblicato, ordine), testo Chi sono, CV, social e competenze
+- **Lingue:** italiano su `/` e inglese su `/en/`, con traduzione automatica (DeepL) correggibile dall'admin
+- **Grafica:** costruita con tasteskill, mantenendo il logo attuale e i suoi colori
+- **Deploy:** `git pull && docker compose up -d --build`
+
+Il piano completo, con fasi e criteri di verifica, è in [docs/rifacimento/PIANO.md](docs/rifacimento/PIANO.md).
+
 ## 📝 Changelog
+
+### Novembre 2026
+
+- **09/11** - Pianificazione del rifacimento:
+  - Analisi del sito attuale e del server
+  - Definiti requisiti, architettura e fasi in `docs/rifacimento/PIANO.md`
+  - Aggiunto `.gitignore` (stato locale degli strumenti, `node_modules`, `.env`)
 
 ### Febbraio 2026
 
