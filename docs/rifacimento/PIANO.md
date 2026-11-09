@@ -1,6 +1,6 @@
 # Piano — Rifacimento portfolio mdfdev.xyz
 
-**Stato:** piano approvato, Fase 0 in attesa del via · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
+**Stato:** Fase 0 completata (09/11/2026), Fase 1 da avviare · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
 ## 1. Requisiti (dalle 10 domande)
 
@@ -23,7 +23,7 @@ Deploy desiderato sul server: `git pull && docker compose up -d --build`.
 
 ## 2. Situazione attuale del server
 
-L'analisi del server ha trovato alcuni problemi di sicurezza e di affidabilità (deploy manuale senza riavvio automatico, servizi raggiungibili senza passare dal proxy). Vengono risolti nella Fase 0; i dettagli restano fuori dal repository pubblico finché non sono chiusi.
+Problemi trovati e risolti nella Fase 0 (09/11/2026): la cartella `.git` era pubblicata dal sito, il container non aveva riavvio automatico e le porte dei container (database compreso) erano raggiungibili da internet scavalcando il proxy. Dettagli e configurazione attuale in [../infra/SERVER.md](../infra/SERVER.md).
 
 ## 3. Architettura proposta
 
@@ -81,7 +81,7 @@ portfolio/
 
 ## 4. Fasi di lavoro
 
-### Fase 0 — Messa in sicurezza immediata (prima di tutto, da approvare a parte)
+### Fase 0 — Messa in sicurezza immediata ✅ completata il 09/11/2026
 1. Sul sito attuale: aggiungere `.dockerignore` (`.git`, `.omc`, `README.md`, `Dockerfile`, `.DS_Store`), ricostruire l'immagine e rilanciare il container con `--restart unless-stopped`.
 2. **`gestione-scadenze` NON si tocca.** Le porte non necessarie si chiudono con il firewall del provider (console web): in entrata restano solo SSH, HTTP e HTTPS. I sottodomini continuano a funzionare perché il proxy raggiunge le app dall'interno del server. Per tornare indietro basta togliere la regola.
 - **Fatto quando:** `curl https://mdfdev.xyz/.git/HEAD` → 404; dall'esterno solo le porte 22, 80 e 443 risultano aperte; tutti i sottodomini rispondono come prima.
