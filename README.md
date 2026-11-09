@@ -18,6 +18,9 @@ Il piano completo, con fasi e criteri di verifica, è in [docs/rifacimento/PIANO
 
 ### Novembre 2026
 
+- **09/11** - Fase 0, messa in sicurezza del sito attuale:
+  - Aggiunto `.dockerignore`: nell'immagine nginx finiscono solo i file del sito, non più `.git`, README e Dockerfile
+  - Container ridistribuito con riavvio automatico (`--restart unless-stopped`)
 - **09/11** - Pianificazione del rifacimento:
   - Analisi del sito attuale e del server
   - Definiti requisiti, architettura e fasi in `docs/rifacimento/PIANO.md`

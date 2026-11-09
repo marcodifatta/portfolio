@@ -1,0 +1,15 @@
+# Nell'immagine nginx finiscono solo i file del sito
+.git
+.gitignore
+.dockerignore
+.omc
+.taste-skill
+.DS_Store
+**/.DS_Store
+Dockerfile
+README.md
+docs/rifacimento
+node_modules
+.env
+.env.*
+shots
