@@ -19,7 +19,7 @@ mkdir -p "$BACKUP_DIR"
 chmod 700 "$BACKUP_DIR"
 NAME="portfolio-uploads-$(date '+%Y%m%d-%H%M').tgz"
 
-docker run --rm --user 0 -v "$VOLUME":/data:ro -v "$BACKUP_DIR":/backup --entrypoint tar "$IMAGE" \
+docker run --rm --user "$(id -u):$(id -g)" -v "$VOLUME":/data:ro -v "$BACKUP_DIR":/backup --entrypoint tar "$IMAGE" \
   czf "/backup/$NAME.partial" -C /data .
 # l'archivio deve essere leggibile per intero, altrimenti viene scartato
 if ! tar tzf "$BACKUP_DIR/$NAME.partial" >/dev/null 2>&1; then
