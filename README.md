@@ -83,6 +83,11 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 
 ### Novembre 2026
 
+- **10/11** - Fase 5, correzione per le finestre reali del browser:
+  - Su un Mac (finestre 1512×780, 1366×620) il nome grande del footer copriva i link e le card dei progetti finivano sotto la sezione dopo
+  - Ora le sezioni sono alte almeno uno schermo e crescono con il contenuto; nome, screenshot e prima schermata si adattano anche all'altezza
+  - Verificato su 18 dimensioni, dai telefoni da 320px ai monitor da 2560px; controllo finale di tasteskill ancora superato
+
 - **09/11** - Fase 5, nuova homepage con tasteskill (in revisione):
   - Tre bozze grafiche (`docs/rifacimento/mockup-*.jpg`), scelta la A "caldo editoriale" con i colori del logo
   - Homepage costruita sul sistema di tasteskill: prima schermata con il lavoro vero, griglia dei progetti con screenshot, "Chi sono" su fascia scura con il ritratto, chiusura con il pulsante email

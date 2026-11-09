@@ -37,7 +37,22 @@ Tecnica e asciutta, in prima persona ("progetto, sviluppo e metto online"), con 
 - **Screenshot dei progetti in orizzontale (16:10).** L'admin crea anche una versione ridotta per telefono e griglia.
 - **Il kit sta in `public/assets/kit`.** Non va modificato: le correzioni vanno in `site.css`.
 
-## Controlli (09/11/2026)
+## Finestre reali (correzione del 10/11/2026)
+
+Tasteskill progetta su 1440×900, ma nel browser di un Mac la finestra è più bassa. A 1512×780 e a 1366×620 il nome grande del footer finiva sopra i link, e a 1366×620 le card dei progetti finivano sotto "Chi sono". Ora:
+
+- Da 1280px in su **ogni sezione è alta almeno uno schermo e cresce con il contenuto**, come il kit fa già sotto i 1280px. A 1440×900 non cambia nulla.
+- **Il nome grande del footer** ha una dimensione calcolata su larghezza e altezza della finestra, e la sua riga non si comprime mai sotto il contenuto.
+- **Gli screenshot dei progetti si abbassano** nelle finestre basse.
+- **La prima schermata cresce** nelle finestre basse e nel telefono in orizzontale, così i pulsanti restano interi.
+
+Verificato con uno script che misura ogni elemento contro la sua sezione: nessun elemento fuori sezione, nome mai sopra i link, nessuno scorrimento orizzontale. Lo script è stato verificato a sua volta: con la vecchia regola trova il difetto. Dimensioni provate:
+
+- desktop: 1280×560, 1280×650, 1366×620, 1440×760, 1440×900, 1512×780, 1728×1000, 1920×940, 2560×1300;
+- tablet: 1180×820, 1024×640, 1024×768, 820×1180, 768×1024 (anche in inglese);
+- telefono: 844×390, 390×844, 360×640, 320×568.
+
+## Controlli (09-10/11/2026)
 
 | Controllo | Esito |
 |---|---|

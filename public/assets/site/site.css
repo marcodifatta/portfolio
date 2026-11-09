@@ -65,3 +65,42 @@
 
 /* il ritratto si vede sempre intero (il momento ritaglia a riempimento per le fotografie) */
 #chi-sono .develop > img { object-fit: contain; }
+
+/* ---------------------------------------------------------------------------------------------
+   Finestre reali (10/11/2026). Il kit fissa ogni sezione a esattamente uno schermo da 1280px in su,
+   pensando a 1440x900; nel browser di un Mac la finestra è spesso più bassa (1512x780, 1366x620) e il
+   contenuto debordava sulla sezione successiva (il nome grande sopra i link del footer, le card dei
+   progetti sotto "Chi sono"). Come il kit fa già sotto i 1280px: ogni sezione è alta ALMENO uno schermo
+   e cresce con il contenuto, mai sovrapposta. A 1440x900 non cambia nulla (il contenuto ci sta). */
+@media (min-width: 1280px) {
+  main > :is(section, .section):not(.hero, .section--hero), footer.closing {
+    height: auto; min-height: calc(var(--h, 1) * 100vh); min-height: calc(var(--h, 1) * 100svh);
+  }
+  :where(main > :is(section, .section):not(.hero, .section--hero), footer.closing) { display: flex; flex-direction: column; }
+  main > :is(section, .section):not(.hero, .section--hero) > :is(.wrap, .container), footer.closing > .wrap { flex: 1 0 auto; height: auto; min-height: 0; }
+}
+/* il footer: la chiusura non si comprime mai sotto il suo contenuto */
+footer.closing > .wrap { grid-template-rows: minmax(min-content, 1fr) auto; }
+/* il nome grande: misurato su larghezza E altezza della finestra, così non riempie mezza finestra bassa */
+.close__word { font-size: clamp(56px, min(14.5vw, 19svh), 216px); }
+@media (max-width: 639px) { .close__word { font-size: clamp(48px, min(19vw, 12svh), 96px); } }
+
+/* finestre basse da desktop: screenshot dei progetti e ritratto più bassi, il resto resta leggibile */
+@media (min-width: 1024px) {
+  .projects .span-4 .panel { --p-h: clamp(150px, calc(100svh - 600px), 256px); }
+  .projects .span-3 .panel { --p-h: clamp(130px, calc(100svh - 680px), 190px); }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .projects .span-4 .panel { --p-h: clamp(140px, calc(100svh - 600px), 180px); }
+}
+/* finestre basse (portatili piccoli, telefono in orizzontale): la prima schermata cresce con il suo
+   contenuto invece di tagliare i pulsanti; l'immagine resta di un'altezza leggibile */
+@media (max-height: 640px) and (min-width: 640px) {
+  main > .hero { height: auto; min-height: 100svh; }
+  .hero__media { min-height: 300px; }
+}
+@media (max-height: 640px) and (min-width: 1024px) {
+  .hero__media { min-height: 380px; }
+}
+/* le nove icone stanno su una riga anche nella colonna più stretta (1280-1440) */
+.skills { gap: var(--s-2); }
