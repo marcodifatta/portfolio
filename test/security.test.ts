@@ -59,3 +59,28 @@ test("i file di sistema non sono raggiungibili da /uploads", async () => {
   const res = await ctx.agent().get("/uploads/..%2f..%2fpackage.json");
   assert.equal(res.status, 404);
 });
+
+test("dietro Cloudflare (CF-Visitor https) il cookie dell'admin viene creato e marcato Secure", async () => {
+  const { mkdtemp } = await import("node:fs/promises");
+  const { createApp } = await import("../src/app");
+  const { hashPassword } = await import("../src/auth/password");
+  const { createPrisma } = await import("../src/db");
+  const { TEST_DATABASE_URL } = await import("./helpers");
+  const request = (await import("supertest")).default;
+  const prisma = createPrisma(TEST_DATABASE_URL);
+  const { app, close } = createApp({
+    prisma,
+    config: {
+      NODE_ENV: "production", PORT: 0, DATABASE_URL: TEST_DATABASE_URL,
+      UPLOAD_DIR: await mkdtemp(path.join(tmpdir(), "up-")), SESSION_SECRET: "y".repeat(40), ADMIN_USERNAME: "marco",
+      ADMIN_PASSWORD_HASH: await hashPassword("password-di-prova-123"), PUBLIC_URL: "https://mdfdev.xyz",
+      DEEPL_API_KEY: undefined, isProd: true,
+    },
+  });
+  const plain = await request(app).get("/admin/login").set("X-Forwarded-Proto", "http");
+  assert.equal(plain.headers["set-cookie"], undefined, "senza https nessun cookie Secure");
+  const viaCf = await request(app).get("/admin/login").set("X-Forwarded-Proto", "http").set("CF-Visitor", '{"scheme":"https"}');
+  assert.match(String(viaCf.headers["set-cookie"]), /mdf\.sid=.*; Secure; SameSite=Lax/);
+  await close();
+  await prisma.$disconnect();
+});

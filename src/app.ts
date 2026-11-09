@@ -24,7 +24,17 @@ export function createApp({ prisma, config, translator }: AppDeps) {
   app.disable("x-powered-by");
   app.set("view engine", "ejs");
   app.set("views", path.join(import.meta.dirname, "views"));
-  if (config.isProd) app.set("trust proxy", 1); // dietro Nginx Proxy Manager
+  if (config.isProd) {
+    app.set("trust proxy", 1); // dietro Nginx Proxy Manager
+    // Il sito passa da Cloudflare: con SSL "Flexible" Cloudflare raggiunge il server in http e NPM passa
+    // X-Forwarded-Proto: http. Lo schema vero del visitatore è in CF-Visitor: se era https, la richiesta
+    // va trattata come sicura (altrimenti il cookie Secure dell'admin non viene creato e il login non funziona).
+    app.use((req, _res, next) => {
+      const visitor = req.headers["cf-visitor"];
+      if (typeof visitor === "string" && /"scheme"\s*:\s*"https"/.test(visitor)) req.headers["x-forwarded-proto"] = "https";
+      next();
+    });
+  }
 
   app.use(
     helmet({
