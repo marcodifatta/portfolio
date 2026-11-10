@@ -57,7 +57,7 @@ npm run admin:password          # scrivi la nuova password, copia la riga ADMIN_
 - **Cambio da loggato:** pulsante **Cambia password** in alto nell'admin. Chiede la password attuale e una nuova di almeno 12 caratteri, salva il nuovo hash nel database (tabella `admin_credentials`) e chiude le sessioni aperte su altri browser o dispositivi.
 - **Password dimenticata:** dal server, `docker compose exec portfolio npm run admin:reset-password` chiede una nuova password. Con `-- --random` la genera, con `-- --env` torna a valere quella del `.env`. In tutti i casi chiude tutte le sessioni.
 - La password del `.env` (`ADMIN_PASSWORD_HASH`) vale finché non la cambi dal pannello.
-- Nel sito, il link **Accesso admin** è nella riga in fondo al footer.
+- Nel sito, il pulsante **Accesso admin** è nel footer, sotto il nome.
 
 ### SEO e GEO
 
@@ -105,6 +105,8 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 ## 📝 Changelog
 
 ### Novembre 2026
+
+- **10/11** - "Accesso admin" diventa un pulsante visibile (con lucchetto) nel footer, sotto il nome; prima era un link grigio nella riga del copyright
 
 - **10/11** - Fasi 6 e 7: il nuovo portfolio è online
   - Container Docker `portfolio` (migrazioni e seed all'avvio, healthcheck) al posto del sito statico; Nginx Proxy Manager invariato

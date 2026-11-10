@@ -95,7 +95,7 @@ describe("contatti e accesso dal sito", () => {
 
   test("nel footer c'è il link all'accesso admin, non seguito dai motori", async () => {
     const html = (await ctx.agent().get("/").set("Accept-Language", "it")).text;
-    assert.match(html, /<a class="footer__admin" href="\/admin\/login" rel="nofollow">Accesso admin<\/a>/);
+    assert.match(html, /<a class="btn btn--secondary footer__admin" href="\/admin\/login" rel="nofollow">.*Accesso admin<\/a>/);
   });
 });
 

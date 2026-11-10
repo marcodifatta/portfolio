@@ -106,4 +106,5 @@ footer.closing > .wrap { grid-template-rows: minmax(min-content, 1fr) auto; }
 .skills { gap: var(--s-2); }
 
 /* accesso all'area admin: un link discreto nella riga legale del footer */
-.footer__admin { color: var(--muted); }
+.footer__admin { align-self: flex-start; gap: 8px; }
+.footer__lock { flex: none; }
