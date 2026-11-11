@@ -76,21 +76,6 @@ const projects = [
     screenshot: "prisma/seed-assets/screenshots/shoppylist.webp",
     published: true,
   },
-  {
-    slug: "mdkmanager",
-    titleIt: "MDK Manager",
-    descriptionIt:
-      "MDK Manager è la soluzione semplice e intuitiva per la gestione di strutture ricettive. Ti permette di controllare prenotazioni, ospiti, ricevute e spese da un'unica piattaforma, eliminando file Excel disordinati e riducendo il rischio di errori.",
-    titleEn: "MDK Manager",
-    descriptionEn:
-      "MDK Manager is a simple tool for running guest accommodation. Bookings, guests, receipts and expenses in one place, instead of messy Excel files.",
-    url: "https://mdkmanager.mdfdev.net/",
-    year: 2026,
-    logo: "photo/project-logos/MDKM512x512.png",
-    screenshot: null,
-    // in bozza: il 09/11/2026 il sottodominio non risolveva (DNS); si ripubblica dall'admin
-    published: false,
-  },
 ];
 
 // Icone ufficiali a colori (SVG Logos, VSCode Icons) scaricate con icons.mjs di tasteskill
