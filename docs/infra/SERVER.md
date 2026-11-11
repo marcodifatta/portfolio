@@ -1,6 +1,6 @@
 # Server — note operative
 
-VPS Hetzner Cloud (`marco-vps`), Ubuntu, Docker. Ogni progetto vive nella sua cartella `~/<progetto>` con il proprio container; Nginx Proxy Manager (stack `~/portainer`) gestisce HTTPS e smista i sottodomini di `mdfdev.xyz`.
+VPS Hetzner Cloud (`marco-vps`), Ubuntu, Docker. Ogni progetto vive nella sua cartella `~/<progetto>` con il proprio container; Nginx Proxy Manager (stack `~/portainer`) gestisce HTTPS e smista i sottodomini di `mdfdev.net`.
 
 ## Firewall (Hetzner Cloud, dal 09/11/2026)
 
@@ -59,15 +59,15 @@ docker compose restart portfolio                         # riavvio
 
 ### Primo accesso all'admin
 
-La password iniziale è in `~/portfolio-admin-password.txt` (leggibile solo da `marco`): `cat ~/portfolio-admin-password.txt`. Entra su https://mdfdev.xyz/admin, cambiala con **Cambia password**, poi cancella il file con `rm ~/portfolio-admin-password.txt`.
+La password iniziale è in `~/portfolio-admin-password.txt` (leggibile solo da `marco`): `cat ~/portfolio-admin-password.txt`. Entra su https://mdfdev.net/admin, cambiala con **Cambia password**, poi cancella il file con `rm ~/portfolio-admin-password.txt`.
 
 ### Cloudflare
 
-`mdfdev.xyz` passa da Cloudflare (proxy arancione). Il 10/11/2026 la modalità SSL/TLS era **Flexible**: Cloudflare raggiunge il server in `http`, e il traffico tra Cloudflare e il server viaggia in chiaro. L'app legge lo schema reale del visitatore da `CF-Visitor`, così il login funziona anche così, ma conviene passare a **Full (strict)**. Nginx Proxy Manager ha già un certificato Let's Encrypt valido per `mdfdev.xyz`:
+`mdfdev.net` passa da Cloudflare (proxy arancione). Il 10/11/2026 la modalità SSL/TLS era **Flexible**: Cloudflare raggiunge il server in `http`, e il traffico tra Cloudflare e il server viaggia in chiaro. L'app legge lo schema reale del visitatore da `CF-Visitor`, così il login funziona anche così, ma conviene passare a **Full (strict)**. Nginx Proxy Manager ha già un certificato Let's Encrypt valido per `mdfdev.net`:
 
-1. Cloudflare → il dominio `mdfdev.xyz` → **SSL/TLS** → **Overview**
+1. Cloudflare → il dominio `mdfdev.net` → **SSL/TLS** → **Overview**
 2. Modalità di cifratura: **Full (strict)**
-3. Ricarica https://mdfdev.xyz: deve rispondere come prima
+3. Ricarica https://mdfdev.net: deve rispondere come prima
 
 Se dopo il cambio un sottodominio desse errore 526, quel proxy host in NPM non ha un certificato valido: torna a "Full" per quel sito, o crea il certificato in NPM.
 

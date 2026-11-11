@@ -62,7 +62,7 @@ networks:
 
 Nuova connessione PostgreSQL:
 
-- **Over SSH**: attivo · host `mdfdev.xyz` (o l'IP del server) · porta `22` · utente `marco` · autenticazione con la tua chiave SSH
+- **Over SSH**: attivo · host `mdfdev.net` (o l'IP del server) · porta `22` · utente `marco` · autenticazione con la tua chiave SSH
 - **Database**: host `127.0.0.1` · porta `5432` · utente e password del progetto (da `credentials/<nome>.env`) · database `<nome>`
 
 Per amministrare tutto si usa l'utente `postgres`, con la password nel `.env` dello stack. In DBeaver la scheda si chiama "SSH" e i campi sono gli stessi.

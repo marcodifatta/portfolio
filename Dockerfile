@@ -1,4 +1,4 @@
-# Portfolio mdfdev.xyz: app Node (Express + EJS + Prisma) in un solo container.
+# Portfolio mdfdev.net: app Node (Express + EJS + Prisma) in un solo container.
 # Le migrazioni del database e il seed (solo a database vuoto) partono all'avvio: vedi docker-entrypoint.sh.
 FROM node:24-alpine
 

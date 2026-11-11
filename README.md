@@ -4,7 +4,7 @@ Questo è il repository del mio portfolio personale, creato dopo aver completato
 
 ## Portfolio con area admin (online dal 10/11/2026)
 
-Il sito statico è stato sostituito da un portfolio con **area admin**, per gestire i progetti senza toccare il codice. È online su **https://mdfdev.xyz**.
+Il sito statico è stato sostituito da un portfolio con **area admin**, per gestire i progetti senza toccare il codice. È online su **https://mdfdev.net** (dall'11/11/2026; prima `mdfdev.xyz`, che ora rimanda qui).
 
 - **Stack:** Node 24 + Express 5 + EJS, PostgreSQL 17 (istanza condivisa sul server), Prisma 7, Docker Compose
 - **Admin (`/admin`, link "Accesso admin" nel footer):** progetti (logo, titolo, descrizione, link, anno, tag, screenshot, bozza/pubblicato, ordine), testi della homepage, immagine della prima schermata, CV, social, competenze, cambio password
@@ -72,7 +72,7 @@ Il sito si fa trovare dai motori di ricerca classici (SEO) e da quelli generativ
 | `/robots.txt` | generato | sito aperto ai motori e ai crawler AI (GPTBot, ClaudeBot, PerplexityBot…), admin chiuso |
 | `/llms.txt` | generato | il portfolio in Markdown, pensato per i modelli linguistici (standard llmstxt.org) |
 
-Dopo la messa online conviene aggiungere il sito a Google Search Console e a Bing Webmaster Tools, inviando `https://mdfdev.xyz/sitemap.xml`.
+Dopo la messa online conviene aggiungere il sito a Google Search Console e a Bing Webmaster Tools, inviando `https://mdfdev.net/sitemap.xml`.
 
 ### Lingue
 
@@ -105,6 +105,11 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 ## 📝 Changelog
 
 ### Novembre 2026
+
+- **11/11** - Dominio spostato da `mdfdev.xyz` a `mdfdev.net`:
+  - Produzione: `PUBLIC_URL` già su `https://mdfdev.net` (canonical, hreflang, sitemap, dati strutturati, anteprime social); link di QRator, ShoppyList e MDK Manager aggiornati nel database
+  - `www.mdfdev.net` rimanda con un 301 a `mdfdev.net` (un solo indirizzo per i motori di ricerca); `mdfdev.xyz` rimanda già a `mdfdev.net` da Cloudflare
+  - Codice, seed, test e documentazione aggiornati
 
 - **11/11** - Email di contatto cambiata in `mdfdev08@gmail.com`, come negli altri progetti: Zoho Mail (`contact@mdfdev.xyz`) è stato dismesso. Aggiornati il database di produzione (email di contatto e link email), il seed e i test
 

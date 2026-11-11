@@ -1,4 +1,4 @@
-# Piano — Rifacimento portfolio mdfdev.xyz
+# Piano — Rifacimento portfolio mdfdev.net (prima mdfdev.xyz)
 
 **Stato:** ✅ completato, online dal 10/11/2026 · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
@@ -170,6 +170,6 @@ portfolio/
 - Primo accesso con la password in `~/portfolio-admin-password.txt`, poi cambiarla e cancellare il file.
 - Cloudflare: SSL/TLS da "Flexible" a "Full (strict)".
 - Facoltativo: chiave DeepL API Free nel `.env` del server (`DEEPL_API_KEY`), poi `docker compose up -d`.
-- Facoltativo: record DMARC per `mdfdev.xyz`; sito in Google Search Console e Bing Webmaster Tools con la sitemap.
+- Facoltativo: record DMARC per `mdfdev.net`; sito in Google Search Console e Bing Webmaster Tools con la sitemap.
 - Tag delle tecnologie nei progetti; screenshot migliori per ShoppyList e QRator; ripubblicare MDK Manager quando il suo dominio torna online.
 - Dopo il 17/11: rimuovere `mdf-website-legacy` e `mdf-website-old` (comando in SERVER.md).

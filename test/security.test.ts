@@ -73,7 +73,7 @@ test("dietro Cloudflare (CF-Visitor https) il cookie dell'admin viene creato e m
     config: {
       NODE_ENV: "production", PORT: 0, DATABASE_URL: TEST_DATABASE_URL,
       UPLOAD_DIR: await mkdtemp(path.join(tmpdir(), "up-")), SESSION_SECRET: "y".repeat(40), ADMIN_USERNAME: "marco",
-      ADMIN_PASSWORD_HASH: await hashPassword("password-di-prova-123"), PUBLIC_URL: "https://mdfdev.xyz",
+      ADMIN_PASSWORD_HASH: await hashPassword("password-di-prova-123"), PUBLIC_URL: "https://mdfdev.net",
       DEEPL_API_KEY: undefined, isProd: true,
     },
   });

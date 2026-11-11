@@ -18,7 +18,7 @@ before(async () => {
       slug: "solo-italiano",
       titleIt: "Solo italiano",
       descriptionIt: "Descrizione solo in italiano.",
-      url: "https://a.mdfdev.xyz",
+      url: "https://a.mdfdev.net",
       status: "PUBLISHED",
       position: 0,
     },
@@ -61,8 +61,8 @@ describe("scelta della lingua", () => {
     const res = await ctx.agent().get("/en/");
     assert.equal(res.status, 200);
     assert.match(res.text, /<html lang="en"[ >]/);
-    assert.match(res.text, /hreflang="it" href="https:\/\/mdfdev.xyz\/"/);
-    assert.match(res.text, /rel="canonical" href="https:\/\/mdfdev.xyz\/en\/"/);
+    assert.match(res.text, /hreflang="it" href="https:\/\/mdfdev.net\/"/);
+    assert.match(res.text, /rel="canonical" href="https:\/\/mdfdev.net\/en\/"/);
     assert.equal(res.headers["content-language"], "en");
   });
 
@@ -88,7 +88,7 @@ describe("traduzione al salvataggio", () => {
       .field("_csrf", await csrf(agent))
       .field("titleIt", "Gestionale")
       .field("descriptionIt", "Un gestionale semplice.")
-      .field("url", "https://g.mdfdev.xyz")
+      .field("url", "https://g.mdfdev.net")
       .field("year", "")
       .field("tags", "")
       .field("status", "PUBLISHED")
@@ -111,7 +111,7 @@ describe("traduzione al salvataggio", () => {
       .field("_csrf", await csrf(agent))
       .field("titleIt", "Gestionale nuovo")
       .field("descriptionIt", "Un gestionale semplice e veloce.")
-      .field("url", "https://g.mdfdev.xyz")
+      .field("url", "https://g.mdfdev.net")
       .field("year", "")
       .field("tags", "")
       .field("status", "PUBLISHED")

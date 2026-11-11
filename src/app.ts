@@ -36,6 +36,17 @@ export function createApp({ prisma, config, translator }: AppDeps) {
     });
   }
 
+  // Un solo indirizzo per il sito: www.<dominio> rimanda in modo permanente al dominio di PUBLIC_URL
+  // (per i motori di ricerca due host con la stessa pagina sono contenuto duplicato).
+  const canonical = new URL(config.PUBLIC_URL);
+  app.use((req, res, next) => {
+    if (req.hostname === `www.${canonical.hostname}`) {
+      res.redirect(301, new URL(req.originalUrl, canonical).href);
+      return;
+    }
+    next();
+  });
+
   app.use(
     helmet({
       contentSecurityPolicy: {

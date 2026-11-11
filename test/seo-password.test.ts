@@ -7,10 +7,10 @@ let ctx: Awaited<ReturnType<typeof setupApp>>;
 before(async () => {
   ctx = await setupApp();
   await ctx.prisma.project.create({
-    data: { slug: "qrator", titleIt: "QRator", descriptionIt: "Generatore di codici QR.", url: "https://qrator.mdfdev.xyz/", year: 2024, status: "PUBLISHED", position: 0 },
+    data: { slug: "qrator", titleIt: "QRator", descriptionIt: "Generatore di codici QR.", url: "https://qrator.mdfdev.net/", year: 2024, status: "PUBLISHED", position: 0 },
   });
   await ctx.prisma.project.create({
-    data: { slug: "segreto", titleIt: "Segreto", descriptionIt: "Una bozza da non mostrare.", url: "https://s.mdfdev.xyz/", status: "DRAFT", position: 1 },
+    data: { slug: "segreto", titleIt: "Segreto", descriptionIt: "Una bozza da non mostrare.", url: "https://s.mdfdev.net/", status: "DRAFT", position: 1 },
   });
   await ctx.prisma.social.create({ data: { kind: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/in/esempio/", position: 0 } });
   await ctx.prisma.setting.createMany({
@@ -31,15 +31,15 @@ describe("SEO e GEO", () => {
     assert.match(res.text, /User-agent: \*\nAllow: \/\nDisallow: \/admin/);
     assert.match(res.text, /User-agent: GPTBot/);
     assert.match(res.text, /User-agent: ClaudeBot/);
-    assert.match(res.text, /Sitemap: https:\/\/mdfdev\.xyz\/sitemap\.xml/);
+    assert.match(res.text, /Sitemap: https:\/\/mdfdev\.net\/sitemap\.xml/);
   });
 
   test("sitemap.xml: le due lingue con hreflang", async () => {
     const res = await ctx.agent().get("/sitemap.xml");
     assert.equal(res.status, 200);
     assert.match(res.headers["content-type"] ?? "", /xml/);
-    assert.match(res.text, /<loc>https:\/\/mdfdev\.xyz\/<\/loc>/);
-    assert.match(res.text, /<loc>https:\/\/mdfdev\.xyz\/en\/<\/loc>/);
+    assert.match(res.text, /<loc>https:\/\/mdfdev\.net\/<\/loc>/);
+    assert.match(res.text, /<loc>https:\/\/mdfdev\.net\/en\/<\/loc>/);
     assert.match(res.text, /hreflang="x-default"/);
   });
 
@@ -47,7 +47,7 @@ describe("SEO e GEO", () => {
     const res = await ctx.agent().get("/llms.txt");
     assert.equal(res.status, 200);
     assert.match(res.text, /^# Marco Di Fatta/);
-    assert.match(res.text, /\[QRator\]\(https:\/\/qrator\.mdfdev\.xyz\/\)/);
+    assert.match(res.text, /\[QRator\]\(https:\/\/qrator\.mdfdev\.net\/\)/);
     assert.doesNotMatch(res.text, /Segreto/);
   });
 
@@ -77,8 +77,8 @@ describe("SEO e GEO", () => {
 
   test("meta per i link condivisi: og e twitter con URL assoluti", async () => {
     const html = (await ctx.agent().get("/en/")).text;
-    assert.match(html, /property="og:url" content="https:\/\/mdfdev\.xyz\/en\/"/);
-    assert.match(html, /property="og:image" content="https:\/\/mdfdev\.xyz\/assets\/brand\/share\.jpg"/);
+    assert.match(html, /property="og:url" content="https:\/\/mdfdev\.net\/en\/"/);
+    assert.match(html, /property="og:image" content="https:\/\/mdfdev\.net\/assets\/brand\/share\.jpg"/);
     assert.match(html, /name="twitter:title"/);
     assert.match(html, /property="og:locale" content="en_GB"/);
   });
@@ -135,5 +135,18 @@ describe("cambio password", () => {
     assert.equal((await login(ctx.agent(), "la-mia-nuova-password-2026")).status, 303);
     const row = await ctx.prisma.adminCredential.findUniqueOrThrow({ where: { id: 1 } });
     assert.match(row.passwordHash, /^scrypt:/);
+  });
+});
+
+describe("dominio", () => {
+  test("www.mdfdev.net rimanda in modo permanente a mdfdev.net mantenendo il percorso", async () => {
+    const res = await ctx.agent().get("/en/?x=1").set("Host", "www.mdfdev.net");
+    assert.equal(res.status, 301);
+    assert.equal(res.headers.location, "https://mdfdev.net/en/?x=1");
+  });
+
+  test("il dominio principale non viene rimandato", async () => {
+    const res = await ctx.agent().get("/robots.txt").set("Host", "mdfdev.net");
+    assert.equal(res.status, 200);
   });
 });

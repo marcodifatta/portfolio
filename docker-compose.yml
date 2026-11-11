@@ -1,4 +1,4 @@
-# Portfolio su mdfdev.xyz. Deploy: git pull && docker compose up -d --build
+# Portfolio su mdfdev.net. Deploy: git pull && docker compose up -d --build
 # Prima di tutto serve lo stack del Postgres condiviso (infra/postgres) e il file .env (vedi .env.example).
 services:
   portfolio:
@@ -13,7 +13,7 @@ services:
       PORT: "3000"
     volumes:
       - portfolio_uploads:/data/uploads
-    # Nginx Proxy Manager inoltra mdfdev.xyz a <IP del server>:8080. La porta non è raggiungibile da
+    # Nginx Proxy Manager inoltra mdfdev.net a <IP del server>:8080. La porta non è raggiungibile da
     # internet: il firewall Hetzner lascia passare solo 22, 80 e 443.
     ports:
       - "8080:3000"

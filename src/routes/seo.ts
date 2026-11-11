@@ -96,7 +96,7 @@ export function seoRouter(prisma: PrismaClient, opts: { publicUrl: string }) {
 
   router.get("/robots.txt", (_req, res) => {
     const lines = [
-      "# robots.txt di mdfdev.xyz: il portfolio è pubblico, l'area admin no.",
+      "# robots.txt di mdfdev.net: il portfolio è pubblico, l'area admin no.",
       "User-agent: *",
       "Allow: /",
       "Disallow: /admin",

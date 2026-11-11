@@ -56,7 +56,7 @@ const projects = [
     titleEn: "QRator",
     descriptionEn:
       "QRator is a free QR code generator. You paste a link into the text box and download its QR code inside a PDF file.",
-    url: "https://qrator.mdfdev.xyz/",
+    url: "https://qrator.mdfdev.net/",
     year: 2024,
     logo: "photo/project-logos/qrator.svg",
     screenshot: "prisma/seed-assets/screenshots/qrator.webp",
@@ -70,7 +70,7 @@ const projects = [
     titleEn: "ShoppyList",
     descriptionEn:
       "ShoppyList is a free web app for shopping lists. You sign up, share a list with other members, add products with quantities and prices, and keep track of what you spend together.",
-    url: "https://shoppylist.mdfdev.xyz/",
+    url: "https://shoppylist.mdfdev.net/",
     year: 2025,
     logo: "photo/project-logos/shoppylist.svg",
     screenshot: "prisma/seed-assets/screenshots/shoppylist.webp",
@@ -84,7 +84,7 @@ const projects = [
     titleEn: "MDK Manager",
     descriptionEn:
       "MDK Manager is a simple tool for running guest accommodation. Bookings, guests, receipts and expenses in one place, instead of messy Excel files.",
-    url: "https://mdkmanager.mdfdev.xyz/",
+    url: "https://mdkmanager.mdfdev.net/",
     year: 2026,
     logo: "photo/project-logos/MDKM512x512.png",
     screenshot: null,

@@ -13,7 +13,7 @@ const schema = z.object({
   ADMIN_PASSWORD_HASH: z
     .string()
     .regex(/^scrypt:\d+:[0-9a-f]{32}:[0-9a-f]{128}$/, "ADMIN_PASSWORD_HASH non valido: generalo con npm run admin:password"),
-  PUBLIC_URL: z.url({ protocol: /^https?$/ }).default("https://mdfdev.xyz"),
+  PUBLIC_URL: z.url({ protocol: /^https?$/ }).default("https://mdfdev.net"),
   DEEPL_API_KEY: z.string().optional().transform((v) => (v ? v : undefined)),
 });
 
