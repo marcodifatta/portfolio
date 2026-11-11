@@ -149,7 +149,7 @@ async function main() {
     data: [
       { kind: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/in/marco-di-fatta-76728b15b/", position: 0 },
       { kind: "instagram", label: "Instagram", url: "https://www.instagram.com/mdfdev08/", position: 1 },
-      { kind: "email", label: "Email", url: "mailto:contact@mdfdev.xyz", position: 2 },
+      { kind: "email", label: "Email", url: "mailto:mdfdev08@gmail.com", position: 2 },
     ],
   });
 
@@ -184,7 +184,7 @@ async function main() {
         valueEn:
           "My first project was the web menu for PizzaBakery in Cefalù, in 2024. Since then I build web apps that solve one clear problem, and I take them all the way online, server included.",
       },
-      { key: "contact.email", valueIt: "contact@mdfdev.xyz" },
+      { key: "contact.email", valueIt: "mdfdev08@gmail.com" },
       { key: "cv.path", valueIt: "/uploads/cv/MDF_CV.pdf" },
       { key: "hero.image", valueIt: "/uploads/hero/hero.webp" },
       { key: "hero.project", valueIt: "pizzabakery" },

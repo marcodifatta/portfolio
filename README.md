@@ -106,6 +106,8 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 
 ### Novembre 2026
 
+- **11/11** - Email di contatto cambiata in `mdfdev08@gmail.com`, come negli altri progetti: Zoho Mail (`contact@mdfdev.xyz`) è stato dismesso. Aggiornati il database di produzione (email di contatto e link email), il seed e i test
+
 - **10/11** - "Accesso admin" diventa un pulsante visibile (con lucchetto) nel footer, sotto il nome; prima era un link grigio nella riga del copyright
 
 - **10/11** - Fasi 6 e 7: il nuovo portfolio è online

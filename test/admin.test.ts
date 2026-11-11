@@ -196,7 +196,7 @@ describe("contenuti, CV, social e competenze", () => {
       .field("hero.title.it", "Ciao, sono Marco")
       .field("hero.subtitle.it", "Costruisco web app.")
       .field("about.body.it", "")
-      .field("contact.email.it", "contact@mdfdev.xyz");
+      .field("contact.email.it", "mdfdev08@gmail.com");
     assert.equal(res.status, 303);
     const home = (await ctx.agent().get("/")).text;
     assert.match(home, /Ciao, sono Marco/);
@@ -233,9 +233,9 @@ describe("contenuti, CV, social e competenze", () => {
     await agent
       .post("/admin/socials")
       .type("form")
-      .send({ _csrf: await csrf(agent, "/admin/socials"), kind: "email", label: "", url: "contact@mdfdev.xyz" });
+      .send({ _csrf: await csrf(agent, "/admin/socials"), kind: "email", label: "", url: "mdfdev08@gmail.com" });
     const s = await ctx.prisma.social.findFirstOrThrow({ where: { kind: "email" } });
-    assert.equal(s.url, "mailto:contact@mdfdev.xyz");
+    assert.equal(s.url, "mailto:mdfdev08@gmail.com");
     assert.equal(s.label, "Email");
   });
 

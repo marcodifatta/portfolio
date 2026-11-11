@@ -16,7 +16,7 @@ before(async () => {
   await ctx.prisma.setting.createMany({
     data: [
       { key: "hero.title", valueIt: "Web app su misura per piccole attività", valueEn: "Custom web apps for small businesses" },
-      { key: "contact.email", valueIt: "contact@mdfdev.xyz" },
+      { key: "contact.email", valueIt: "mdfdev08@gmail.com" },
     ],
   });
 });
@@ -87,7 +87,7 @@ describe("SEO e GEO", () => {
 describe("contatti e accesso dal sito", () => {
   test("il pulsante email apre l'indirizzo di contatto", async () => {
     const html = (await ctx.agent().get("/").set("Accept-Language", "it")).text;
-    assert.match(html, /href="mailto:contact@mdfdev\.xyz"/);
+    assert.match(html, /href="mailto:mdfdev08@gmail\.com"/);
     // Cloudflare non deve riscrivere l'indirizzo (Email Address Obfuscation)
     assert.ok(html.indexOf("<!--email_off-->") < html.indexOf("href=\"mailto:"));
     assert.ok(html.lastIndexOf("href=\"mailto:") < html.indexOf("<!--/email_off-->"));
