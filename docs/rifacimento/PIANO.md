@@ -1,4 +1,4 @@
-# Piano — Rifacimento portfolio mdfdev.net (prima mdfdev.xyz)
+# Piano — Rifacimento portfolio mdfdev.net
 
 **Stato:** ✅ completato, online dal 10/11/2026 · **Data:** 2026-11-09 · **Modalità:** OMC plan --direct
 
@@ -85,7 +85,7 @@ portfolio/
 ### Fase 0 — Messa in sicurezza immediata ✅ completata il 09/11/2026
 1. Sul sito attuale: aggiungere `.dockerignore` (`.git`, `.omc`, `README.md`, `Dockerfile`, `.DS_Store`), ricostruire l'immagine e rilanciare il container con `--restart unless-stopped`.
 2. **`gestione-scadenze` NON si tocca.** Le porte non necessarie si chiudono con il firewall del provider (console web): in entrata restano solo SSH, HTTP e HTTPS. I sottodomini continuano a funzionare perché il proxy raggiunge le app dall'interno del server. Per tornare indietro basta togliere la regola.
-- **Fatto quando:** `curl https://mdfdev.xyz/.git/HEAD` → 404; dall'esterno solo le porte 22, 80 e 443 risultano aperte; tutti i sottodomini rispondono come prima.
+- **Fatto quando:** `curl https://mdfdev.net/.git/HEAD` → 404; dall'esterno solo le porte 22, 80 e 443 risultano aperte; tutti i sottodomini rispondono come prima.
 
 ### Fase 1 — Stack Postgres condiviso ✅ completata il 09/11/2026
 1. `infra/postgres/docker-compose.yml`: `postgres:17-alpine` (container `pg-shared`), volume `pg_shared_data`, rete `db-net`, porta `127.0.0.1:5432:5432`, healthcheck, `restart: unless-stopped`, limite di memoria a 256 MB.
@@ -112,7 +112,7 @@ portfolio/
 1. Dizionari `i18n/it.json` e `i18n/en.json` per i testi fissi dell'interfaccia.
 2. Route `/` (IT) e `/en/` (EN). Alla prima visita di `/`, un browser con `Accept-Language: en` viene mandato a `/en/` con un 302, a meno che non ci sia già il cookie `lang`. Il selettore IT/EN salva il cookie. Nella pagina ci sono `hreflang` e `<html lang>` corretti.
 3. Al salvataggio, se il campo EN è vuoto o non è marcato `enManual`, viene chiamato DeepL e il risultato scritto nel campo EN, sempre modificabile a mano. Se DeepL non risponde il salvataggio va comunque a buon fine e l'admin mostra un avviso.
-- **Fatto quando:** `curl -H 'Accept-Language: en-US' -I https://mdfdev.xyz/` → 302 verso `/en/`; un progetto salvato in italiano ha già il testo EN; una correzione EN fatta a mano non viene sovrascritta al salvataggio successivo.
+- **Fatto quando:** `curl -H 'Accept-Language: en-US' -I https://mdfdev.net/` → 302 verso `/en/`; un progetto salvato in italiano ha già il testo EN; una correzione EN fatta a mano non viene sovrascritta al salvataggio successivo.
 
 ### Fase 5 — Pagina pubblica con tasteskill ✅ completata il 10/11/2026 (direzione A scelta da Marco; adattata alle finestre reali; dettagli in DESIGN.md)
 1. Armare il gate di tasteskill (il suo controllo finale) puntando al server di sviluppo: `gate.mjs --start http://localhost:3000/ --kind service --category "sviluppo web app per piccole attività" --primary "Vedi i progetti"`.
@@ -125,9 +125,9 @@ portfolio/
 1. `Dockerfile` multi-stage (dipendenze, build, runtime come utente `node`), `HEALTHCHECK` su `/healthz`; `.dockerignore`.
 2. `docker-compose.yml`: servizio `portfolio` con `container_name: portfolio`, `restart: unless-stopped`, **nessuna `ports:`**, reti esterne `portainer_marco-network` e `db-net`, volume `portfolio_uploads`, variabili da `.env`.
 3. Al primo deploy sul server: avviare lo stack Postgres, creare il DB con `new-project-db.sh portfolio`, compilare il `.env`, fare `git pull` e `docker compose up -d --build`. Le migrazioni e il seed (solo con DB vuoto) partono da soli.
-4. Cambio senza interruzioni: in NPM l'host `mdfdev.xyz` passa dal vecchio container a `portfolio:3000`. Il vecchio `mdf-website-container` resta fermo ma non eliminato per 7 giorni, così si può tornare indietro al volo.
+4. Cambio senza interruzioni: in NPM l'host `mdfdev.net` passa dal vecchio container a `portfolio:3000`. Il vecchio `mdf-website-container` resta fermo ma non eliminato per 7 giorni, così si può tornare indietro al volo.
 5. Deploy successivi: `cd ~/portfolio && git pull && docker compose up -d --build`.
-- **Fatto quando:** `https://mdfdev.xyz` e `/en/` rispondono 200 dal nuovo container; il sito torna su da solo dopo `sudo reboot`; un riavvio del container non perde progetti né upload.
+- **Fatto quando:** `https://mdfdev.net` e `/en/` rispondono 200 dal nuovo container; il sito torna su da solo dopo `sudo reboot`; un riavvio del container non perde progetti né upload.
 
 ### Fase 7 — Verifica finale (lane separata: verifier) ✅ completata il 10/11/2026
 - Prova end-to-end: login → creare un progetto con logo e screenshot → pubblicarlo → vederlo in `/` e `/en/` → riordinare → nasconderlo → eliminarlo.

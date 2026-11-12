@@ -4,7 +4,7 @@ Questo è il repository del mio portfolio personale, creato dopo aver completato
 
 ## Portfolio con area admin (online dal 10/11/2026)
 
-Il sito statico è stato sostituito da un portfolio con **area admin**, per gestire i progetti senza toccare il codice. È online su **https://mdfdev.net** (dall'11/11/2026; prima `mdfdev.xyz`, che ora rimanda qui).
+Il sito statico è stato sostituito da un portfolio con **area admin**, per gestire i progetti senza toccare il codice. È online su **https://mdfdev.net** (dall'11/11/2026; il dominio precedente ora rimanda qui).
 
 - **Stack:** Node 24 + Express 5 + EJS, PostgreSQL 17 (istanza condivisa sul server), Prisma 7, Docker Compose
 - **Admin (`/admin`, link "Accesso admin" nel footer):** progetti (logo, titolo, descrizione, link, anno, tag, screenshot, bozza/pubblicato, ordine), testi della homepage, immagine della prima schermata, CV, social, competenze, cambio password
@@ -106,12 +106,14 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 
 ### Novembre 2026
 
-- **11/11** - Dominio spostato da `mdfdev.xyz` a `mdfdev.net`:
+- **12/11** - Pulizia completa del vecchio dominio: CV (testo, link e dati Europass incorporati) corretto su `mdfdev.net` e ripubblicato come `/uploads/cv/Marco-Di-Fatta-CV-2026.pdf` (nome nuovo, così nessuna cache serve la versione precedente); immagini della documentazione rifatte dal sito attuale; voci storiche riscritte. Nel repository non resta alcun riferimento al dominio precedente
+
+- **11/11** - Dominio spostato su `mdfdev.net`:
   - Produzione: `PUBLIC_URL` già su `https://mdfdev.net` (canonical, hreflang, sitemap, dati strutturati, anteprime social); link di QRator, ShoppyList e MDK Manager aggiornati nel database
-  - `www.mdfdev.net` rimanda con un 301 a `mdfdev.net` (un solo indirizzo per i motori di ricerca); `mdfdev.xyz` rimanda già a `mdfdev.net` da Cloudflare
+  - `www.mdfdev.net` rimanda con un 301 a `mdfdev.net` (un solo indirizzo per i motori di ricerca); il dominio precedente rimanda già a `mdfdev.net` da Cloudflare
   - Codice, seed, test e documentazione aggiornati
 
-- **11/11** - Email di contatto cambiata in `mdfdev08@gmail.com`, come negli altri progetti: Zoho Mail (`contact@mdfdev.xyz`) è stato dismesso. Aggiornati il database di produzione (email di contatto e link email), il seed e i test
+- **11/11** - Email di contatto cambiata in `mdfdev08@gmail.com`, come negli altri progetti: la casella su Zoho Mail è stata dismessa. Aggiornati il database di produzione (email di contatto e link email), il seed e i test
 
 - **10/11** - "Accesso admin" diventa un pulsante visibile (con lucchetto) nel footer, sotto il nome; prima era un link grigio nella riga del copyright
 
@@ -127,7 +129,7 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
   - `/sitemap.xml`, `/robots.txt` (aperto ai crawler AI, admin chiuso) e `/llms.txt`, generati dal database
   - Link "Accesso admin" nel footer; pagina **Cambia password** nell'admin; script `admin:reset-password` per la password dimenticata
   - Limite ai tentativi di login sull'IP reale del visitatore (il sito passa da Cloudflare) e limite globale
-  - Verificata l'email `contact@mdfdev.xyz`: MX, SPF e DKIM di Zoho corretti; manca DMARC
+  - Verificata la casella email del dominio su Zoho Mail: MX, SPF e DKIM corretti; mancava DMARC (casella poi dismessa l'11/11)
   - 52 test automatici; controllo finale di tasteskill superato
 
 - **10/11** - Fase 5, correzione per le finestre reali del browser:
