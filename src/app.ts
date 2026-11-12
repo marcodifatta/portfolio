@@ -54,7 +54,9 @@ export function createApp({ prisma, config, translator }: AppDeps) {
           "default-src": ["'self'"],
           "img-src": ["'self'", "data:"],
           "style-src": ["'self'", "'unsafe-inline'"],
-          "script-src": ["'self'"],
+          // Cloudflare Web Analytics (senza cookie): Cloudflare inserisce lo script e lui invia le visite.
+          "script-src": ["'self'", "https://static.cloudflareinsights.com"],
+          "connect-src": ["'self'", "https://cloudflareinsights.com"],
           "form-action": ["'self'"],
           "frame-ancestors": ["'none'"],
           "upgrade-insecure-requests": config.isProd ? [] : null,
