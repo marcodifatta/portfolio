@@ -171,5 +171,5 @@ portfolio/
 - Cloudflare: SSL/TLS da "Flexible" a "Full (strict)".
 - Facoltativo: chiave DeepL API Free nel `.env` del server (`DEEPL_API_KEY`), poi `docker compose up -d`.
 - Facoltativo: record DMARC per `mdfdev.net`; sito in Google Search Console e Bing Webmaster Tools con la sitemap.
-- Tag delle tecnologie nei progetti; screenshot migliori per ShoppyList e QRator; ripubblicare MDK Manager quando il suo dominio torna online.
+- Tag delle tecnologie nei progetti; screenshot migliori per ShoppyList e QRator. (MDK Manager dismesso l'11/11/2026.)
 - Dopo il 17/11: rimuovere `mdf-website-legacy` e `mdf-website-old` (comando in SERVER.md).

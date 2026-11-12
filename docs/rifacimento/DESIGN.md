@@ -74,4 +74,4 @@ WARN tenuti, con il motivo:
 
 - **Tag delle tecnologie di ogni progetto:** dall'admin. Non li ho inventati.
 - **Screenshot più rappresentativi di ShoppyList e QRator:** quelli attuali mostrano solo le pagine iniziali.
-- **MDK Manager** è in bozza finché `mdkmanager.mdfdev.net` non torna online (il 09/11/2026 il DNS non risolveva).
+- **MDK Manager** è stato dismesso l'11/11/2026: rimosso dal seed e dal sito.

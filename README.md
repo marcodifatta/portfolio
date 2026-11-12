@@ -106,6 +106,8 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 
 ### Novembre 2026
 
+- **11/11** - MDK Manager dismesso: rimosso dal seed, dai loghi e dal database di produzione
+
 - **12/11** - Pulizia completa del vecchio dominio: CV (testo, link e dati Europass incorporati) corretto su `mdfdev.net` e ripubblicato come `/uploads/cv/Marco-Di-Fatta-CV-2026.pdf` (nome nuovo, così nessuna cache serve la versione precedente); immagini della documentazione rifatte dal sito attuale; voci storiche riscritte. Nel repository non resta alcun riferimento al dominio precedente
 
 - **11/11** - Dominio spostato su `mdfdev.net`:
