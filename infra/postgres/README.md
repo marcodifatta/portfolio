@@ -1,6 +1,8 @@
 # Postgres condiviso (`pg-shared`)
 
-Un'unica istanza PostgreSQL 17 per i progetti sul server: **un database e un utente per ogni progetto**, ogni app nel proprio container. Sul server vive in `~/infra/postgres`, indipendente dai progetti; questa cartella del repo ne è la sorgente.
+Un'unica istanza PostgreSQL 17 per i progetti sul server: **un database e un utente per ogni progetto**, ogni app nel proprio container. Sul server vive in `~/infra/postgres`, indipendente dai progetti.
+
+> **Dal 12/11/2026 la sorgente è il repository [`mdf-infra`](https://github.com/marcodifatta/mdf-infra) (cartella `postgres/`).** Questa copia resta per riferimento storico: le modifiche vanno fatte lì.
 
 | Cosa | Valore |
 |---|---|
