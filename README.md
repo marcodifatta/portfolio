@@ -52,6 +52,24 @@ npm run admin:password          # scrivi la nuova password, copia la riga ADMIN_
 | Social | LinkedIn, GitHub, Instagram, email... con ordine |
 | Competenze | nome e icona delle tecnologie, con ordine |
 
+### Vetrina dei progetti
+
+I progetti si gestiscono dall'admin. La vetrina "ufficiale" sta anche in un file versionato, [`prisma/vetrina/vetrina.json`](prisma/vetrina/vetrina.json): per ogni app titolo e descrizione (IT/EN), link diretto, anno, tecnologie, logo quadrato (`prisma/vetrina/loghi/`) e screenshot (`prisma/vetrina/screenshots/`).
+
+```bash
+npm run vetrina                                   # in sviluppo
+docker compose exec portfolio npm run vetrina     # in produzione
+```
+
+Lo script crea o aggiorna i progetti del file (per `slug`), carica logo e screenshot con lo stesso servizio dell'admin (WebP con versione ridotta, file vecchi cancellati) e mette la griglia nell'ordine del file. I progetti aggiunti solo dall'admin restano, in coda. Il seed di un'installazione nuova usa lo stesso file.
+
+| App | Link | Logo per la vetrina |
+|---|---|---|
+| Saldora (SteamBot) | https://sconti.mdfdev.net/ | icona del sito Saldora |
+| ShoppyList | https://shoppylist.mdfdev.net/ | icona dell'app |
+| QRator | https://qrator.mdfdev.net/ | icona dell'app |
+| PizzaBakery | https://www.pizzabakery.biz/ | tessera quadrata creata dal logotipo originale (in crema su verde salvia) |
+
 ### Password dell'admin
 
 - **Cambio da loggato:** pulsante **Cambia password** in alto nell'admin. Chiede la password attuale e una nuova di almeno 12 caratteri, salva il nuovo hash nel database (tabella `admin_credentials`) e chiude le sessioni aperte su altri browser o dispositivi.
@@ -105,6 +123,8 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 ## 📝 Changelog
 
 ### Novembre 2026
+
+- **13/11** - Vetrina aggiornata: aggiunto **Saldora** (il sito di SteamBot); descrizioni nuove IT/EN per tutte e quattro le app, link diretti, tecnologie, screenshot catturati dai siti veri (QRator e ShoppyList mostrano la versione 2.0); set di loghi quadrati coerenti (per PizzaBakery creato dal logotipo originale). Contenuti in `prisma/vetrina/` e script `npm run vetrina`. Su telefono, con 4 progetti, lo screenshot delle card diventa una fascia per stare in due schermate
 
 - **11/11** - MDK Manager dismesso: rimosso dal seed, dai loghi e dal database di produzione
 

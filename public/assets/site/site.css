@@ -53,8 +53,10 @@
 }
 /* telefono: tre progetti in due schermate; "Chi sono" in una schermata, le icone su tre colonne */
 @media (max-width: 639px) {
-  #progetti:is([data-count="2"], [data-count="3"]) { --hm: 2; }
+  #progetti:is([data-count="2"], [data-count="3"], [data-count="4"]) { --hm: 2; }
   #progetti .panel { --p-h: 220px; }
+  /* quattro progetti: lo screenshot diventa una fascia (la parte alta del sito), così stanno in due schermate */
+  #progetti[data-count="4"] .projects .panel { --p-h: 112px; }
   .about__body { font-size: var(--t-body); }
   .about__label { margin-top: var(--s-5); }
   .skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); width: 100%; }

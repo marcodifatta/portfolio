@@ -1,0 +1,53 @@
+{
+  "_nota": "Contenuti della vetrina dei progetti. Si applicano con: npm run vetrina (in produzione: docker compose exec portfolio npm run vetrina). Ordine = ordine della griglia. Loghi e screenshot sono percorsi relativi alla radice del repository. Screenshot catturati dai siti veri il 13/11/2026.",
+  "progetti": [
+    {
+      "slug": "saldora",
+      "titleIt": "Saldora",
+      "titleEn": "Saldora",
+      "descriptionIt": "Le offerte sui giochi PC di Steam, GOG, Epic e altri negozi, con il minimo storico accanto a ogni prezzo, aggiornate ogni tre ore. È nato come bot Discord, che pubblica gli sconti e avvisa quando un gioco della wishlist cala.",
+      "descriptionEn": "PC game deals from Steam, GOG, Epic and other stores, with the historical low next to every price, refreshed every three hours. It started as a Discord bot that posts the discounts and sends a message when a wishlisted game drops.",
+      "url": "https://sconti.mdfdev.net/",
+      "year": 2026,
+      "tags": ["Python", "Discord", "Next.js", "PostgreSQL"],
+      "logo": "prisma/vetrina/loghi/saldora.png",
+      "screenshot": "prisma/vetrina/screenshots/saldora.webp"
+    },
+    {
+      "slug": "shoppylist",
+      "titleIt": "ShoppyList",
+      "titleEn": "ShoppyList",
+      "descriptionIt": "La lista della spesa condivisa in famiglia, in tempo reale e anche senza rete. Si invita chi vive in casa con un link, si spunta mentre si compra e si installa come app con le notifiche.",
+      "descriptionEn": "The shopping list your family shares, live and even offline. You invite the people you live with by link, tick items off as you shop, and install it as an app with notifications.",
+      "url": "https://shoppylist.mdfdev.net/",
+      "year": 2025,
+      "tags": ["Next.js", "PostgreSQL", "PWA", "Docker"],
+      "logo": "prisma/vetrina/loghi/shoppylist.png",
+      "screenshot": "prisma/vetrina/screenshots/shoppylist.webp"
+    },
+    {
+      "slug": "qrator",
+      "titleIt": "QRator",
+      "titleEn": "QRator",
+      "descriptionIt": "Generatore di codici QR per link e reti Wi-Fi, da scaricare in PNG, SVG o PDF senza account. Con l'account i QR diventano dinamici: si cambia la destinazione dopo la stampa e si contano le scansioni.",
+      "descriptionEn": "QR code generator for links and Wi-Fi networks, downloadable as PNG, SVG or PDF with no account. With an account the codes become dynamic: you change the destination after printing and count the scans.",
+      "url": "https://qrator.mdfdev.net/",
+      "year": 2024,
+      "tags": ["Next.js", "PostgreSQL", "Prisma", "Docker"],
+      "logo": "prisma/vetrina/loghi/qrator.png",
+      "screenshot": "prisma/vetrina/screenshots/qrator.webp"
+    },
+    {
+      "slug": "pizzabakery",
+      "titleIt": "PizzaBakery",
+      "titleEn": "PizzaBakery",
+      "descriptionIt": "Il menù digitale della pizzeria PizzaBakery di Cefalù, in italiano e inglese. Il titolare aggiorna pizze, antipasti, bevande e dessert da un pannello admin e le modifiche compaiono subito.",
+      "descriptionEn": "The digital menu of the PizzaBakery pizzeria in Cefalù, in Italian and English. The owner updates pizzas, starters, drinks and desserts from an admin panel, and the changes show up straight away.",
+      "url": "https://www.pizzabakery.biz/",
+      "year": 2024,
+      "tags": ["Node.js", "Express", "MongoDB", "Docker"],
+      "logo": "prisma/vetrina/loghi/pizzabakery.png",
+      "screenshot": "prisma/vetrina/screenshots/pizzabakery.webp"
+    }
+  ]
+}

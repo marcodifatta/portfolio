@@ -4,12 +4,14 @@
 //
 // I testi inglesi sono tradotti a mano qui; poi li aggiorna la traduzione automatica quando cambia l'italiano.
 // I tag tecnologici restano vuoti: si compilano dall'admin (non li conosco con certezza).
-// Screenshot: catture dei siti online fatte il 09/11/2026 (prisma/seed-assets/screenshots).
+// Progetti, loghi e screenshot: prisma/vetrina (vedi vetrina.json).
 import "dotenv/config";
 import { copyFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 import { createPrisma } from "../src/db";
+import { createUploadStore } from "../src/services/uploads";
+import { applyVetrina, loadVetrina } from "../src/services/vetrina";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const UPLOAD_DIR = path.resolve(process.env["UPLOAD_DIR"] ?? "./data/uploads");
@@ -33,50 +35,7 @@ async function importImage(src: string, folder: string, name: string): Promise<s
   return `/uploads/${folder}/${name}.webp`;
 }
 
-const projects = [
-  {
-    slug: "pizzabakery",
-    titleIt: "PizzaBakery",
-    descriptionIt:
-      "Web Menù per la pizzeria PizzaBakery di Cefalù. Il menù è accessibile sia da telefono che da desktop. L'amministratore può aggiungere, rimuovere e modificare le pizze all'interno di ogni categoria.",
-    titleEn: "PizzaBakery",
-    descriptionEn:
-      "Web menu for the PizzaBakery pizzeria in Cefalù. It works on phones and desktops, and the owner adds, removes and edits the pizzas in each category.",
-    url: "https://www.pizzabakery.biz",
-    year: 2024,
-    logo: "photo/project-logos/PizzaBakery.png",
-    screenshot: "prisma/seed-assets/screenshots/pizzabakery.webp",
-    published: true,
-  },
-  {
-    slug: "qrator",
-    titleIt: "QRator",
-    descriptionIt:
-      "QRator è un generatore di codici QR gratuito. L'utente inserisce un link nella casella di testo e ottiene un codice QR dentro un file PDF, che viene scaricato.",
-    titleEn: "QRator",
-    descriptionEn:
-      "QRator is a free QR code generator. You paste a link into the text box and download its QR code inside a PDF file.",
-    url: "https://qrator.mdfdev.net/",
-    year: 2024,
-    logo: "photo/project-logos/qrator.svg",
-    screenshot: "prisma/seed-assets/screenshots/qrator.webp",
-    published: true,
-  },
-  {
-    slug: "shoppylist",
-    titleIt: "ShoppyList",
-    descriptionIt:
-      "ShoppyList è un'app web gratuita per la gestione della lista della spesa. L'utente può registrarsi, creare una lista condivisa con altri membri, aggiungere prodotti con quantità e prezzi, e tenere traccia delle spese in modo collaborativo.",
-    titleEn: "ShoppyList",
-    descriptionEn:
-      "ShoppyList is a free web app for shopping lists. You sign up, share a list with other members, add products with quantities and prices, and keep track of what you spend together.",
-    url: "https://shoppylist.mdfdev.net/",
-    year: 2025,
-    logo: "photo/project-logos/shoppylist.svg",
-    screenshot: "prisma/seed-assets/screenshots/shoppylist.webp",
-    published: true,
-  },
-];
+// I progetti arrivano da prisma/vetrina/vetrina.json (lo stesso file di "npm run vetrina").
 
 // Icone ufficiali a colori (SVG Logos, VSCode Icons) scaricate con icons.mjs di tasteskill
 const skills = [
@@ -98,32 +57,9 @@ async function main() {
     return;
   }
 
-  for (const [position, p] of projects.entries()) {
-    const logoPath = await importImage(p.logo, "logos", p.slug);
-    let screenshotPath: string | null = null;
-    if (p.screenshot) {
-      const dir = path.join(UPLOAD_DIR, "screenshots");
-      await mkdir(dir, { recursive: true });
-      await copyFile(path.join(ROOT, p.screenshot), path.join(dir, `${p.slug}.webp`));
-      await sharp(path.join(ROOT, p.screenshot)).resize({ width: 800 }).webp({ quality: 80 }).toFile(path.join(dir, `${p.slug}-sm.webp`));
-      screenshotPath = `/uploads/screenshots/${p.slug}.webp`;
-    }
-    await prisma.project.create({
-      data: {
-        slug: p.slug,
-        titleIt: p.titleIt,
-        descriptionIt: p.descriptionIt,
-        titleEn: p.titleEn,
-        descriptionEn: p.descriptionEn,
-        url: p.url,
-        year: p.year,
-        logoPath,
-        screenshotPath,
-        status: p.published ? "PUBLISHED" : "DRAFT",
-        position,
-      },
-    });
-  }
+  const vetrina = await loadVetrina(path.join(ROOT, "prisma/vetrina/vetrina.json"));
+  await applyVetrina(prisma, createUploadStore(UPLOAD_DIR), vetrina, ROOT);
+
 
   for (const [position, [name, icon]] of skills.entries()) {
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "");
@@ -176,7 +112,7 @@ async function main() {
     ],
   });
 
-  console.log(`Seed completato: ${projects.length} progetti, ${skills.length} competenze, 3 social, 7 impostazioni.`);
+  console.log(`Seed completato: ${vetrina.progetti.length} progetti, ${skills.length} competenze, 3 social, 7 impostazioni.`);
 }
 
 try {

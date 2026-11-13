@@ -19,7 +19,8 @@
     "postinstall": "prisma generate",
     "admin:password": "tsx scripts/hash-password.ts",
     "test": "node --import tsx --test --test-concurrency=1 test/*.test.ts",
-    "admin:reset-password": "tsx scripts/reset-admin-password.ts"
+    "admin:reset-password": "tsx scripts/reset-admin-password.ts",
+    "vetrina": "tsx scripts/aggiorna-vetrina.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",
