@@ -10,6 +10,7 @@ Il sito statico è stato sostituito da un portfolio con **area admin**, per gest
 - **Admin (`/admin`, link "Accesso admin" nel footer):** progetti (logo, titolo, descrizione, link, anno, tag, screenshot, bozza/pubblicato, ordine), testi della homepage, immagine della prima schermata, CV, social, competenze, cambio password
 - **Lingue:** italiano su `/` e inglese su `/en/`, con traduzione automatica (DeepL) correggibile dall'admin
 - **Grafica:** costruita con tasteskill, con il logo e i suoi colori ([DESIGN.md](docs/rifacimento/DESIGN.md))
+- **Link in bio (`/link`):** pagina unica per Instagram e TikTok con le app pubblicate (ShoppyList, Saldora, QRator e PizzaBakery in testa) e i contatti. `?src=instagram|tiktok` imposta gli UTM di ogni link ([src/routes/link.ts](src/routes/link.ts))
 - **SEO e GEO:** dati strutturati schema.org, sitemap, robots.txt e llms.txt generati dal database
 - **Deploy:** `git pull && docker compose up -d --build` (dettagli in [docs/infra/SERVER.md](docs/infra/SERVER.md))
 
@@ -123,6 +124,8 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 ## 📝 Changelog
 
 ### Novembre 2026
+
+- **17/11** - Nuova pagina **link in bio** (`/link`) per Instagram e TikTok: le app pubblicate (ShoppyList, Saldora, QRator e PizzaBakery in testa), il portfolio, DM su Instagram ed email. `?src=instagram|tiktok` imposta gli UTM di ogni link; pagina `noindex`. Immagine di anteprima con indirizzo assoluto e testo del pulsante principale scuro sul corallo (contrasto 5,65:1)
 
 - **17/11** - Google Safe Browsing segnalava `mdfdev.net` come "pagine ingannevoli" (Search Console, Problemi di sicurezza). Nessun contenuto dannoso: la causa probabile è il download forzato del CV su un dominio appena registrato. Il CV ora si apre nel browser (link `type="application/pdf"` in una nuova scheda, etichetta "Apri il CV (PDF)" / "Open my CV (PDF)") e nessun link pubblico usa più l'attributo `download`; test aggiunti. Dopo il deploy va chiesta la revisione da Search Console
 

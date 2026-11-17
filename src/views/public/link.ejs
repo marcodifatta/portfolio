@@ -1,0 +1,66 @@
+<!doctype html>
+<%# Pagina "link in bio" per Instagram e TikTok (src/routes/link.ts). Una colonna, pensata per il telefono. %>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marco Di Fatta · App e siti su misura</title>
+<meta name="description" content="Le app di Marco Di Fatta (mdfdev): ShoppyList, Saldora, QRator e i siti su misura. Hai un'idea? Scrivimi.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#2A0000">
+<link rel="canonical" href="<%= canonical %>">
+<meta property="og:type" content="website">
+<meta property="og:url" content="<%= canonical %>">
+<meta property="og:title" content="Marco Di Fatta · App e siti su misura">
+<meta property="og:image" content="<%= shareImage %>">
+<link rel="icon" href="/assets/brand/favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/site/link.css">
+</head>
+<body>
+<main class="lk">
+  <header class="lk-head">
+    <img class="lk-avatar" src="/assets/brand/logo-144.webp" srcset="/assets/brand/logo-144.webp 1x, /assets/brand/logo-288.webp 2x" width="96" height="96" alt="Logo di mdfdev">
+    <h1>Marco <em>·</em> mdfdev</h1>
+    <p>Creo app e siti che risolvono problemi veri.</p>
+  </header>
+
+  <section class="lk-contact" aria-label="Contatti">
+    <a class="lk-cta" href="https://ig.me/m/mdfdev08">Hai un'idea? Scrivimi in DM</a>
+    <% if (email) { %><a class="lk-cta lk-cta--ghost" href="mailto:<%= email %>?subject=Un'app%20per%20me">Oppure via email</a><% } %>
+  </section>
+
+  <section aria-label="Le mie app">
+    <h2 class="lk-label">Le mie app</h2>
+    <ul class="lk-list">
+      <% projects.forEach((p) => { %>
+      <li>
+        <a class="lk-item" href="<%= p.href %>" data-slug="<%= p.slug %>">
+          <% if (p.logoPath) { %><img src="<%= p.logoPath %>" alt="" width="48" height="48"><% } else { %><span class="lk-ph" aria-hidden="true"><%= p.title.slice(0, 1) %></span><% } %>
+          <span class="lk-text"><strong><%= p.title %></strong><span><%= p.line %></span></span>
+          <span class="lk-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <% }) %>
+      <li>
+        <a class="lk-item lk-item--home" href="<%= home %>">
+          <img src="/assets/brand/logo-96.webp" alt="" width="48" height="48">
+          <span class="lk-text"><strong>Portfolio</strong><span>Tutti i progetti e chi sono</span></span>
+          <span class="lk-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <% if (socials.length) { %>
+  <nav class="lk-socials" aria-label="Social">
+    <% socials.forEach((s) => { %><a href="<%= s.url %>" rel="me noopener"><%= s.label %></a><% }) %>
+  </nav>
+  <% } %>
+
+  <footer class="lk-foot">© <%= year %> Marco Di Fatta · <a href="/">mdfdev.net</a></footer>
+</main>
+</body>
+</html>
