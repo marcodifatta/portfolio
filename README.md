@@ -7,10 +7,10 @@ Questo è il repository del mio portfolio personale, creato dopo aver completato
 Il sito statico è stato sostituito da un portfolio con **area admin**, per gestire i progetti senza toccare il codice. È online su **https://mdfdev.net** (dall'11/11/2026; il dominio precedente ora rimanda qui).
 
 - **Stack:** Node 24 + Express 5 + EJS, PostgreSQL 17 (istanza condivisa sul server), Prisma 7, Docker Compose
-- **Admin (`/admin`, link "Accesso admin" nel footer):** progetti (logo, titolo, descrizione, link, anno, tag, screenshot, bozza/pubblicato, ordine), testi della homepage, immagine della prima schermata, CV, social, competenze, cambio password
+- **Admin (`/admin`, link "Accesso admin" nel footer):** progetti (logo, titolo, descrizione, link, anno, tag, screenshot, bozza/pubblicato, ordine), link in bio della pagina `/link`, testi della homepage, immagine della prima schermata, CV, social, competenze, cambio password
 - **Lingue:** italiano su `/` e inglese su `/en/`, con traduzione automatica (DeepL) correggibile dall'admin
 - **Grafica:** costruita con tasteskill, con il logo e i suoi colori ([DESIGN.md](docs/rifacimento/DESIGN.md))
-- **Link in bio (`/link`):** pagina unica per Instagram e TikTok con le app pubblicate (ShoppyList, Saldora, QRator e PizzaBakery in testa) e i contatti. `?src=instagram|tiktok` imposta gli UTM di ogni link ([src/routes/link.ts](src/routes/link.ts))
+- **Link in bio (`/link`):** pagina unica per Instagram e TikTok con i link scelti dall'admin (sezione **Link in bio**: logo, testo, sottotesto e collegamento, ordine con le frecce, "Nascondi" per toglierli senza cancellarli) e i contatti. `?src=instagram|tiktok` imposta gli UTM di ogni link ([src/routes/link.ts](src/routes/link.ts), [src/routes/admin/bio.ts](src/routes/admin/bio.ts))
 - **SEO e GEO:** dati strutturati schema.org, sitemap, robots.txt e llms.txt generati dal database
 - **Deploy:** `git pull && docker compose up -d --build` (dettagli in [docs/infra/SERVER.md](docs/infra/SERVER.md))
 
@@ -52,6 +52,7 @@ npm run admin:password          # scrivi la nuova password, copia la riga ADMIN_
 | Testi e CV | titolo e frase della homepage, testo "Chi sono", email di contatto (IT/EN), caricamento del CV in PDF |
 | Social | LinkedIn, GitHub, Instagram, email... con ordine |
 | Competenze | nome e icona delle tecnologie, con ordine |
+| Link in bio | i link della pagina `/link`: logo, testo, sottotesto, collegamento (https o email), ordine (frecce ↑ ↓), Nascondi/Mostra, Elimina |
 
 ### Vetrina dei progetti
 
@@ -124,6 +125,8 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 ## 📝 Changelog
 
 ### Novembre 2026
+
+- **17/11** - Sezione **Link in bio** nell'admin: i link della pagina `/link` si aggiungono, modificano (logo, testo, sottotesto, collegamento), spostano, nascondono ed eliminano dal pannello. Nuova tabella `bio_links` (migrazione `20261117201728_bio_links`); al primo avvio il server ci copia i 5 link che la pagina mostrava prima, con una copia propria dei loghi in `uploads/bio/`, così la pagina resta uguale
 
 - **17/11** - Nuova pagina **link in bio** (`/link`) per Instagram e TikTok: le app pubblicate (ShoppyList, Saldora, QRator e PizzaBakery in testa), il portfolio, DM su Instagram ed email. `?src=instagram|tiktok` imposta gli UTM di ogni link; pagina `noindex`. Immagine di anteprima con indirizzo assoluto e testo del pulsante principale scuro sul corallo (contrasto 5,65:1)
 

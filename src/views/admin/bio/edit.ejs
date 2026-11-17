@@ -1,0 +1,22 @@
+<%- include("../partials/top", { title }) %>
+<div class="page-head">
+  <div>
+    <h1>Modifica link</h1>
+    <p class="lead"><a href="/admin/bio">← Torna ai link in bio</a></p>
+  </div>
+</div>
+<form class="panel" method="post" action="/admin/bio/<%= link.id %>" enctype="multipart/form-data" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrf %>" />
+  <% if (link.iconPath) { %>
+    <div class="preview">
+      <img src="<%= link.iconPath %>" alt="Logo attuale" width="64" height="64" />
+      <label class="check"><input type="checkbox" name="removeIcon" /> Togli il logo</label>
+    </div>
+  <% } %>
+  <%- include("fields", { values, errors }) %>
+  <div class="form-actions">
+    <a class="btn btn-ghost" href="/admin/bio">Annulla</a>
+    <button class="btn" type="submit">Salva</button>
+  </div>
+</form>
+<%- include("../partials/bottom") %>

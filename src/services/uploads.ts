@@ -10,9 +10,9 @@ export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 
 const ACCEPTED_IMAGE_FORMATS = new Set(["jpeg", "png", "webp", "gif", "svg", "avif", "heif", "tiff"]);
 
-type ImageKind = "logo" | "screenshot" | "skill" | "hero";
+type ImageKind = "logo" | "screenshot" | "skill" | "hero" | "bio";
 
-const FOLDERS: Record<ImageKind, string> = { logo: "logos", screenshot: "screenshots", skill: "skills", hero: "hero" };
+const FOLDERS: Record<ImageKind, string> = { logo: "logos", screenshot: "screenshots", skill: "skills", hero: "hero", bio: "bio" };
 
 export class UploadError extends Error {}
 
@@ -61,7 +61,7 @@ export function createUploadStore(uploadDir: string) {
             .webp({ quality: 82 })
             .toBuffer();
         } else {
-          const size = kind === "logo" ? 256 : 128;
+          const size = kind === "logo" || kind === "bio" ? 256 : 128;
           out = await img
             .resize(size, size, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
             .webp({ quality: 90 })

@@ -1,0 +1,39 @@
+<%- include("../partials/top", { title }) %>
+<div class="page-head">
+  <div>
+    <h1>Link in bio</h1>
+    <p class="lead">I link della pagina /link per Instagram e TikTok, in quest'ordine.</p>
+  </div>
+  <a class="btn btn-ghost" href="/link" target="_blank" rel="noopener">Apri la pagina /link</a>
+</div>
+<% if (links.length === 0) { %>
+  <div class="panel empty">Nessun link: la pagina mostra solo i contatti. Aggiungine uno qui sotto.</div>
+<% } else { %>
+  <ol class="rows">
+    <% links.forEach((l, i) => { %>
+      <li>
+        <% if (l.iconPath) { %><img class="thumb" src="<%= l.iconPath %>" alt="" width="48" height="48" /><% } else { %><span class="thumb thumb--letter" aria-hidden="true"><%= l.title.slice(0, 1) %></span><% } %>
+        <div class="main">
+          <strong><%= l.title %> <% if (!l.visible) { %><span class="badge draft">Nascosto</span><% } %></strong>
+          <% if (l.subtitle) { %><small><%= l.subtitle %></small><br /><% } %>
+          <small class="url"><%= l.url %></small>
+        </div>
+        <div class="actions">
+          <form method="post" action="/admin/bio/<%= l.id %>/move"><input type="hidden" name="_csrf" value="<%= csrf %>" /><input type="hidden" name="direction" value="up" /><button class="btn btn-ghost btn-small icon-btn" aria-label="Sposta <%= l.title %> in su" <%= i === 0 ? "disabled" : "" %>>↑</button></form>
+          <form method="post" action="/admin/bio/<%= l.id %>/move"><input type="hidden" name="_csrf" value="<%= csrf %>" /><input type="hidden" name="direction" value="down" /><button class="btn btn-ghost btn-small icon-btn" aria-label="Sposta <%= l.title %> in giù" <%= i === links.length - 1 ? "disabled" : "" %>>↓</button></form>
+          <a class="btn btn-ghost btn-small" href="/admin/bio/<%= l.id %>" aria-label="Modifica <%= l.title %>">Modifica</a>
+          <form method="post" action="/admin/bio/<%= l.id %>/visibility"><input type="hidden" name="_csrf" value="<%= csrf %>" /><button class="btn btn-ghost btn-small" aria-label="<%= l.visible ? 'Nascondi' : 'Mostra' %> <%= l.title %>"><%= l.visible ? "Nascondi" : "Mostra" %></button></form>
+          <form method="post" action="/admin/bio/<%= l.id %>/delete"><input type="hidden" name="_csrf" value="<%= csrf %>" /><button class="btn btn-ghost btn-small" aria-label="Elimina <%= l.title %>">Elimina</button></form>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+<% } %>
+
+<h2>Aggiungi un link</h2>
+<form class="panel" method="post" action="/admin/bio" enctype="multipart/form-data" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrf %>" />
+  <%- include("fields", { values, errors }) %>
+  <div class="form-actions"><button class="btn" type="submit">Aggiungi link</button></div>
+</form>
+<%- include("../partials/bottom") %>

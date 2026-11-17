@@ -62,6 +62,23 @@ model Social {
   @@map("socials")
 }
 
+/// Un link della pagina "link in bio" (/link), gestito dalla sezione "Link in bio" dell'admin.
+model BioLink {
+  id        Int      @id @default(autoincrement())
+  title     String
+  subtitle  String   @default("")
+  url       String
+  iconPath  String?  @map("icon_path")
+  /// false = nascosto dalla pagina senza cancellarlo
+  visible   Boolean  @default(true)
+  position  Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([visible, position])
+  @@map("bio_links")
+}
+
 /// Testi e impostazioni modificabili dall'admin (titolo, presentazione, email, CV...).
 model Setting {
   key       String   @id

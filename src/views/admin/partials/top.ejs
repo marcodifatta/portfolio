@@ -14,7 +14,7 @@
       <div class="inner">
         <a class="brand" href="/admin"><img src="/assets/brand/logo-144.webp" alt="" width="36" height="36" />Admin</a>
         <nav aria-label="Sezioni">
-          <% const sections = [["/admin/projects", "Progetti"], ["/admin/content", "Testi e CV"], ["/admin/socials", "Social"], ["/admin/skills", "Competenze"]]; %>
+          <% const sections = [["/admin/projects", "Progetti"], ["/admin/content", "Testi e CV"], ["/admin/socials", "Social"], ["/admin/skills", "Competenze"], ["/admin/bio", "Link in bio"]]; %>
           <% for (const [href, label] of sections) { %>
             <a href="<%= href %>" <%- locals.path && ("/admin" + locals.path).startsWith(href) ? 'aria-current="page"' : "" %>><%= label %></a>
           <% } %>

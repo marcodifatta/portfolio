@@ -8,6 +8,7 @@ import { csrfToken, flash, requireAdmin, verifyCsrf } from "../../auth/session";
 import type { PrismaClient } from "../../generated/prisma/client";
 import type { Translator } from "../../services/translate";
 import { MAX_UPLOAD_BYTES, type UploadStore } from "../../services/uploads";
+import { bioRouter } from "./bio";
 import { contentRouter } from "./content";
 import { projectsRouter } from "./projects";
 import { skillsRouter } from "./skills";
@@ -135,6 +136,7 @@ export function adminRouter(deps: AdminDeps) {
   router.use("/content", contentRouter(deps));
   router.use("/socials", socialsRouter(deps));
   router.use("/skills", skillsRouter(deps));
+  router.use("/bio", bioRouter(deps));
 
   // Cambio password (da loggati): chiede quella attuale, salva il nuovo hash nel DB e chiude le altre sessioni
   const passwordSchema = z

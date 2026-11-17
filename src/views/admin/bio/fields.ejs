@@ -1,0 +1,28 @@
+<%# Campi comuni ai form "aggiungi" e "modifica" di un link della pagina /link. %>
+<div class="form-grid">
+  <div class="field">
+    <label for="title">Testo del link</label>
+    <input id="title" name="title" type="text" maxlength="40" placeholder="ShoppyList" value="<%= values.title %>" <%- errors.title ? 'aria-invalid="true" aria-describedby="title-error"' : "" %> />
+    <% if (errors.title) { %><span class="error" id="title-error"><%= errors.title %></span><% } %>
+  </div>
+  <div class="field">
+    <label for="icon">Logo <span class="hint" style="display:inline">(facoltativo)</span></label>
+    <input id="icon" name="icon" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" <%- errors.icon ? 'aria-invalid="true" aria-describedby="icon-error"' : "" %> />
+    <span class="hint">Quadrato, PNG o SVG. Senza logo compare l'iniziale del testo.</span>
+    <% if (errors.icon) { %><span class="error" id="icon-error"><%= errors.icon %></span><% } %>
+  </div>
+  <div class="field full">
+    <label for="subtitle">Sottotesto <span class="hint" style="display:inline">(facoltativo)</span></label>
+    <input id="subtitle" name="subtitle" type="text" maxlength="90" placeholder="Lista della spesa condivisa" value="<%= values.subtitle %>" <%- errors.subtitle ? 'aria-invalid="true" aria-describedby="subtitle-error"' : "" %> />
+    <% if (errors.subtitle) { %><span class="error" id="subtitle-error"><%= errors.subtitle %></span><% } %>
+  </div>
+  <div class="field full">
+    <label for="url">Collegamento</label>
+    <input id="url" name="url" type="text" placeholder="https://shoppylist.mdfdev.net/" value="<%= values.url %>" <%- errors.url ? 'aria-invalid="true" aria-describedby="url-error"' : "" %> />
+    <span class="hint">Un indirizzo https://… oppure un'email. Ai link web si aggiunge da solo da quale social arriva la visita.</span>
+    <% if (errors.url) { %><span class="error" id="url-error"><%= errors.url %></span><% } %>
+  </div>
+  <div class="field full">
+    <label class="check"><input type="checkbox" name="visible" <%= values.visible ? "checked" : "" %> /> Visibile sulla pagina /link</label>
+  </div>
+</div>
