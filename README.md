@@ -124,6 +124,8 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 
 ### Novembre 2026
 
+- **17/11** - Google Safe Browsing segnalava `mdfdev.net` come "pagine ingannevoli" (Search Console, Problemi di sicurezza). Nessun contenuto dannoso: la causa probabile è il download forzato del CV su un dominio appena registrato. Il CV ora si apre nel browser (link `type="application/pdf"` in una nuova scheda, etichetta "Apri il CV (PDF)" / "Open my CV (PDF)") e nessun link pubblico usa più l'attributo `download`; test aggiunti. Dopo il deploy va chiesta la revisione da Search Console
+
 - **13/11** - Vetrina aggiornata: aggiunto **Saldora** (il sito di SteamBot); descrizioni nuove IT/EN per tutte e quattro le app, link diretti, tecnologie, screenshot catturati dai siti veri (QRator e ShoppyList mostrano la versione 2.0); set di loghi quadrati coerenti (per PizzaBakery creato dal logotipo originale). Contenuti in `prisma/vetrina/` e script `npm run vetrina`. Su telefono, con 4 progetti, lo screenshot delle card diventa una fascia per stare in due schermate
 
 - **11/11** - MDK Manager dismesso: rimosso dal seed, dai loghi e dal database di produzione

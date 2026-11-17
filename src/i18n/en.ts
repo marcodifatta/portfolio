@@ -13,7 +13,7 @@ export const en: Messages = {
     notice: "{n} web apps live since {year}",
     noticeOne: "1 web app live since {year}",
     floatLabel: "Live",
-    cv: "Download my CV",
+    cv: "Open my CV (PDF)",
   },
   mainAction: "Email me",
   projects: {

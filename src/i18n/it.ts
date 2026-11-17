@@ -12,7 +12,7 @@ export const it = {
     notice: "{n} web app online dal {year}",
     noticeOne: "1 web app online dal {year}",
     floatLabel: "Online",
-    cv: "Scarica il CV",
+    cv: "Apri il CV (PDF)",
   },
   mainAction: "Scrivimi una email",
   projects: {

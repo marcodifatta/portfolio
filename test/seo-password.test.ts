@@ -150,3 +150,26 @@ describe("dominio", () => {
     assert.equal(res.status, 200);
   });
 });
+
+describe("niente download forzati (Google Safe Browsing)", () => {
+  test("le pagine pubbliche non hanno link con l'attributo download", async () => {
+    for (const p of ["/", "/en/"]) {
+      const html = (await ctx.agent().get(p).set("Accept-Language", "it")).text;
+      assert.doesNotMatch(html, /<a[^>]*\sdownload[\s>=]/, `download forzato su ${p}`);
+    }
+  });
+
+  test("il CV si apre nel browser: PDF senza Content-Disposition attachment", async () => {
+    const { mkdir, writeFile } = await import("node:fs/promises");
+    const pathMod = await import("node:path");
+    await mkdir(pathMod.join(ctx.uploadDir, "cv"), { recursive: true });
+    await writeFile(pathMod.join(ctx.uploadDir, "cv", "cv-prova.pdf"), "%PDF-1.7\n%%EOF");
+    await ctx.prisma.setting.upsert({ where: { key: "cv.path" }, create: { key: "cv.path", valueIt: "/uploads/cv/cv-prova.pdf" }, update: { valueIt: "/uploads/cv/cv-prova.pdf" } });
+    const html = (await ctx.agent().get("/").set("Accept-Language", "it")).text;
+    assert.match(html, /href="\/uploads\/cv\/cv-prova\.pdf" type="application\/pdf" target="_blank" rel="noopener">Apri il CV \(PDF\)/);
+    const res = await ctx.agent().get("/uploads/cv/cv-prova.pdf");
+    assert.equal(res.status, 200);
+    assert.match(res.headers["content-type"] ?? "", /application\/pdf/);
+    assert.doesNotMatch(String(res.headers["content-disposition"] ?? ""), /attachment/);
+  });
+});

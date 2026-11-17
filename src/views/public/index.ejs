@@ -116,7 +116,7 @@
         <% if (content.heroSubtitle) { %><p class="hero__lead"><%= content.heroSubtitle %></p><% } %>
         <div class="btn-row">
           <a class="btn btn--primary" href="<%= mail %>"><%= t.mainAction %><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
-          <% if (content.cvPath) { %><a class="btn btn--secondary" href="<%= content.cvPath %>" download><%= t.hero.cv %></a><% } %>
+          <% if (content.cvPath) { %><a class="btn btn--secondary" href="<%= content.cvPath %>" type="application/pdf" target="_blank" rel="noopener"><%= t.hero.cv %></a><% } %>
         </div>
       </div>
       <div class="hero__media span-6 start-7">
@@ -210,7 +210,7 @@
           <div class="span-2 footer__col"><h3><%= t.footer.social %></h3><ul><% for (const s of otherSocials) { %><li><a href="<%= s.url %>" rel="me noopener" target="_blank"><%= s.label %></a></li><% } %></ul></div>
         <% } %>
         <% if (content.cvPath) { %>
-          <div class="span-2 footer__col"><h3><%= t.footer.documents %></h3><ul><li><a href="<%= content.cvPath %>" download><%= t.hero.cv %></a></li></ul></div>
+          <div class="span-2 footer__col"><h3><%= t.footer.documents %></h3><ul><li><a href="<%= content.cvPath %>" type="application/pdf" target="_blank" rel="noopener"><%= t.hero.cv %></a></li></ul></div>
         <% } %>
         <div class="span-2 footer__col"><h3><%= t.footer.language %></h3><ul><li><a href="<%= urls.switchTo %>" hreflang="<%= t.langSwitch.hreflang %>" lang="<%= t.langSwitch.hreflang %>"><%= t.langSwitch.label %></a></li></ul></div>
       </div>
