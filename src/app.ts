@@ -11,6 +11,7 @@ import { adminRouter } from "./routes/admin/index";
 import { linkRouter } from "./routes/link";
 import { publicRouter } from "./routes/public";
 import { seoRouter } from "./routes/seo";
+import { umamiRouter } from "./routes/umami";
 import { createTranslator, type Translator } from "./services/translate";
 import { createUploadStore } from "./services/uploads";
 
@@ -68,6 +69,10 @@ export function createApp({ prisma, config, translator }: AppDeps) {
   );
 
   app.use(compression());
+
+  // Statistiche Umami solo in produzione (in sviluppo e nei test lo script non c'è).
+  app.locals.umami = config.isProd && config.UMAMI_WEBSITE_ID ? { websiteId: config.UMAMI_WEBSITE_ID, domain: new URL(config.PUBLIC_URL).hostname } : null;
+  app.use(umamiRouter(config.UMAMI_URL));
 
   app.get("/healthz", async (_req, res) => {
     try {

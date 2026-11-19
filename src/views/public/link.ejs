@@ -18,6 +18,7 @@
 <link rel="preload" href="/assets/fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/site/link.css">
+<% if (locals.umami) { %><script defer src="/u/script.js" data-website-id="<%= umami.websiteId %>" data-domains="<%= umami.domain %>"></script><% } %>
 </head>
 <body>
 <main class="lk">
@@ -28,8 +29,8 @@
   </header>
 
   <section class="lk-contact" aria-label="Contatti">
-    <a class="lk-cta" href="https://ig.me/m/mdfdev08">Hai un'idea? Scrivimi in DM</a>
-    <% if (email) { %><a class="lk-cta lk-cta--ghost" href="mailto:<%= email %>?subject=Un'app%20per%20me">Oppure via email</a><% } %>
+    <a class="lk-cta" href="https://ig.me/m/mdfdev08" data-umami-event="click-dm" data-umami-event-fonte="<%= source %>">Hai un'idea? Scrivimi in DM</a>
+    <% if (email) { %><a class="lk-cta lk-cta--ghost" data-umami-event="click-email" data-umami-event-fonte="<%= source %>" href="mailto:<%= email %>?subject=Un'app%20per%20me">Oppure via email</a><% } %>
   </section>
 
   <% if (links.length) { %>
@@ -38,7 +39,7 @@
     <ul class="lk-list">
       <% links.forEach((l) => { %>
       <li>
-        <a class="lk-item" href="<%= l.href %>" data-id="<%= l.id %>">
+        <a class="lk-item" href="<%= l.href %>" data-id="<%= l.id %>" data-umami-event="<%= l.event %>" data-umami-event-fonte="<%= source %>">
           <% if (l.iconPath) { %><img src="<%= l.iconPath %>" alt="" width="48" height="48"><% } else { %><span class="lk-ph" aria-hidden="true"><%= l.title.slice(0, 1) %></span><% } %>
           <span class="lk-text"><strong><%= l.title %></strong><% if (l.subtitle) { %><span><%= l.subtitle %></span><% } %></span>
           <span class="lk-arrow" aria-hidden="true">→</span>

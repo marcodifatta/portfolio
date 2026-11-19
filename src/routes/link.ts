@@ -27,6 +27,17 @@ export function withUtm(href: string, source: Source): string {
   }
 }
 
+/** Nome dell'evento Umami per un pulsante: "click-" + titolo in minuscolo senza spazi né accenti. */
+export function eventName(title: string): string {
+  const slug = title
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `click-${slug || "link"}`.slice(0, 50);
+}
+
 export function linkRouter(prisma: PrismaClient, opts: { publicUrl: string }) {
   const router = Router({ strict: true });
 
@@ -43,11 +54,13 @@ export function linkRouter(prisma: PrismaClient, opts: { publicUrl: string }) {
       canonical: new URL("/link", opts.publicUrl).href,
       shareImage: new URL("/assets/brand/share.jpg", opts.publicUrl).href,
       email,
+      source,
       links: links.map((l) => ({
         id: l.id,
         title: l.title,
         subtitle: l.subtitle,
         href: withUtm(l.url, source),
+        event: eventName(l.title),
         iconPath: l.iconPath,
       })),
       socials: site.socials.filter((s) => s.kind !== "email"),

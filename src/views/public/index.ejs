@@ -84,6 +84,7 @@
 <link rel="modulepreload" href="/assets/kit/moments/moments.js">
 <link rel="modulepreload" href="/assets/kit/moments/lib.js">
 <link rel="modulepreload" href="/assets/kit/moments/picture-develops/moment.js">
+<% if (locals.umami) { %><script defer src="/u/script.js" data-website-id="<%= umami.websiteId %>" data-domains="<%= umami.domain %>"></script><% } %>
 </head>
 <body>
 <%# Cloudflare (Scrape Shield) riscrive gli indirizzi email in link che funzionano solo con JavaScript:

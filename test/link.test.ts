@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { after, before, describe, test } from "node:test";
-import { sourceFrom, withUtm } from "../src/routes/link";
+import { eventName, sourceFrom, withUtm } from "../src/routes/link";
 import { initBioLinks } from "../src/services/bio-links";
 import { createUploadStore } from "../src/services/uploads";
 import { csrf, login, pngBuffer, setupApp } from "./helpers";
@@ -35,6 +35,13 @@ const init = () =>
   initBioLinks(ctx.prisma, createUploadStore(ctx.uploadDir), { uploadDir: ctx.uploadDir, publicDir: path.join(ROOT, "public"), publicUrl: "https://mdfdev.net" });
 
 describe("funzioni della pagina /link", () => {
+  test("nome dell'evento Umami dal titolo del pulsante", () => {
+    assert.equal(eventName("Saldora"), "click-saldora");
+    assert.equal(eventName("ShoppyList"), "click-shoppylist");
+    assert.equal(eventName("Città & Più!"), "click-citta-piu");
+    assert.equal(eventName("  "), "click-link");
+  });
+
   test("sourceFrom accetta solo instagram e tiktok", () => {
     assert.equal(sourceFrom("instagram"), "instagram");
     assert.equal(sourceFrom("tiktok"), "tiktok");

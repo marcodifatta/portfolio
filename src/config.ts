@@ -14,6 +14,9 @@ const schema = z.object({
     .string()
     .regex(/^scrypt:\d+:[0-9a-f]{32}:[0-9a-f]{128}$/, "ADMIN_PASSWORD_HASH non valido: generalo con npm run admin:password"),
   PUBLIC_URL: z.url({ protocol: /^https?$/ }).default("https://mdfdev.net"),
+  // Statistiche Umami: il container sta nello stack di steamgames. Senza ID del sito lo script non si carica.
+  UMAMI_URL: z.string().default("http://steamgames-umami:3000"),
+  UMAMI_WEBSITE_ID: z.string().default("7bb52e18-52b8-406d-bd61-9bc69a4a5f87"),
   DEEPL_API_KEY: z.string().optional().transform((v) => (v ? v : undefined)),
 });
 
