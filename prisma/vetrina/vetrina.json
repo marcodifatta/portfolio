@@ -2,6 +2,23 @@
   "_nota": "Contenuti della vetrina dei progetti. Si applicano con: npm run vetrina (in produzione: docker compose exec portfolio npm run vetrina). Ordine = ordine della griglia. Loghi e screenshot sono percorsi relativi alla radice del repository. Screenshot catturati dai siti veri il 13/11/2026.",
   "progetti": [
     {
+      "slug": "sparti",
+      "titleIt": "Sparti",
+      "titleEn": "Sparti",
+      "descriptionIt": "Per dividere la spesa della cena tra amici: chi ha pagato, quanto ha speso, quanti siete. Calcola la quota a testa e chi dà quanto a chi, al centesimo o arrotondata, e prepara il messaggio per il gruppo WhatsApp. Gratis, senza account, funziona anche senza rete.",
+      "descriptionEn": "Splits the cost of a dinner among friends: who paid, how much, how many of you. It works out the share per person and who owes whom, to the cent or rounded, and writes the message for the WhatsApp group. Free, no account, works offline too.",
+      "url": "https://sparti.mdfdev.net/",
+      "year": 2026,
+      "tags": [
+        "Next.js",
+        "PWA",
+        "Docker",
+        "Stripe"
+      ],
+      "logo": "prisma/vetrina/loghi/sparti.png",
+      "screenshot": "prisma/vetrina/screenshots/sparti.webp"
+    },
+    {
       "slug": "saldora",
       "titleIt": "Saldora",
       "titleEn": "Saldora",
@@ -9,7 +26,12 @@
       "descriptionEn": "PC game deals from Steam, GOG, Epic and other stores, with the historical low next to every price, refreshed every three hours. It started as a Discord bot that posts the discounts and sends a message when a wishlisted game drops.",
       "url": "https://sconti.mdfdev.net/",
       "year": 2026,
-      "tags": ["Python", "Discord", "Next.js", "PostgreSQL"],
+      "tags": [
+        "Python",
+        "Discord",
+        "Next.js",
+        "PostgreSQL"
+      ],
       "logo": "prisma/vetrina/loghi/saldora.png",
       "screenshot": "prisma/vetrina/screenshots/saldora.webp"
     },
@@ -21,7 +43,12 @@
       "descriptionEn": "The shopping list your family shares, live and even offline. You invite the people you live with by link, tick items off as you shop, and install it as an app with notifications.",
       "url": "https://shoppylist.mdfdev.net/",
       "year": 2025,
-      "tags": ["Next.js", "PostgreSQL", "PWA", "Docker"],
+      "tags": [
+        "Next.js",
+        "PostgreSQL",
+        "PWA",
+        "Docker"
+      ],
       "logo": "prisma/vetrina/loghi/shoppylist.png",
       "screenshot": "prisma/vetrina/screenshots/shoppylist.webp"
     },
@@ -33,7 +60,12 @@
       "descriptionEn": "QR code generator for links and Wi-Fi networks, downloadable as PNG, SVG or PDF with no account. With an account the codes become dynamic: you change the destination after printing and count the scans.",
       "url": "https://qrator.mdfdev.net/",
       "year": 2024,
-      "tags": ["Next.js", "PostgreSQL", "Prisma", "Docker"],
+      "tags": [
+        "Next.js",
+        "PostgreSQL",
+        "Prisma",
+        "Docker"
+      ],
       "logo": "prisma/vetrina/loghi/qrator.png",
       "screenshot": "prisma/vetrina/screenshots/qrator.webp"
     },
@@ -45,7 +77,12 @@
       "descriptionEn": "The digital menu of the PizzaBakery pizzeria in Cefalù, in Italian and English. The owner updates pizzas, starters, drinks and desserts from an admin panel, and the changes show up straight away.",
       "url": "https://www.pizzabakery.biz/",
       "year": 2024,
-      "tags": ["Node.js", "Express", "MongoDB", "Docker"],
+      "tags": [
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Docker"
+      ],
       "logo": "prisma/vetrina/loghi/pizzabakery.png",
       "screenshot": "prisma/vetrina/screenshots/pizzabakery.webp"
     }
