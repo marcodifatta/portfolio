@@ -25,6 +25,12 @@ after(async () => {
 });
 
 describe("SEO e GEO", () => {
+  test("ads.txt: dichiara il publisher AdSense", async () => {
+    const res = await ctx.agent().get("/ads.txt");
+    assert.equal(res.status, 200);
+    assert.match(res.text, /^google\.com, pub-4068044181575088, DIRECT, f08c47fec0942fa0\n$/);
+  });
+
   test("robots.txt: sito aperto, admin chiuso, crawler AI ammessi, sitemap indicata", async () => {
     const res = await ctx.agent().get("/robots.txt");
     assert.equal(res.status, 200);

@@ -88,6 +88,8 @@ export function jsonLd(site: SiteData, lang: Lang, base: string): string {
   return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 }
 
+const ADSENSE_PUBLISHER = "pub-4068044181575088";
+
 const AI_CRAWLERS = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "PerplexityBot", "Google-Extended", "Applebot-Extended", "CCBot"];
 
 export function seoRouter(prisma: PrismaClient, opts: { publicUrl: string }) {
@@ -108,6 +110,15 @@ export function seoRouter(prisma: PrismaClient, opts: { publicUrl: string }) {
       "",
     ];
     res.type("text/plain").set("Cache-Control", "public, max-age=3600").send(lines.join("\n"));
+  });
+
+  // ads.txt per Google AdSense: vale per mdfdev.net e i suoi sottodomini (es. sconti.mdfdev.net).
+  // L'ID publisher è pubblico per natura (compare nel codice di ogni annuncio).
+  router.get("/ads.txt", (_req, res) => {
+    res
+      .type("text/plain")
+      .set("Cache-Control", "public, max-age=3600")
+      .send(`google.com, ${ADSENSE_PUBLISHER}, DIRECT, f08c47fec0942fa0\n`);
   });
 
   router.get("/sitemap.xml", async (_req, res) => {
