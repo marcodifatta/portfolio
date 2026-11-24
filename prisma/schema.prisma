@@ -69,6 +69,14 @@ model BioLink {
   subtitle  String   @default("")
   url       String
   iconPath  String?  @map("icon_path")
+  /// testo piccolo sotto il pulsante (es. avviso "link affiliato")
+  note      String   @default("")
+  /// nome dell'evento Umami; vuoto = "click-" + titolo
+  event     String   @default("")
+  /// link affiliato o sponsorizzato: rel="sponsored"
+  sponsored Boolean  @default(false)
+  /// apre il link in una nuova scheda
+  newTab    Boolean  @default(false) @map("new_tab")
   /// false = nascosto dalla pagina senza cancellarlo
   visible   Boolean  @default(true)
   position  Int      @default(0)

@@ -13,12 +13,18 @@ export function sourceFrom(value: unknown): Source {
   return typeof value === "string" && (SOURCES as readonly string[]).includes(value) ? (value as Source) : "link";
 }
 
-/** Aggiunge gli UTM a un link esterno; se l'indirizzo non è valido lo lascia com'è. */
+/**
+ * Aggiunge gli UTM a un link esterno; se l'indirizzo non è valido lo lascia com'è.
+ * Se il link ha già dei parametri utm_* (es. un link affiliato con il suo utm_medium) li rispetta
+ * e imposta solo utm_source con la fonte della visita.
+ */
 export function withUtm(href: string, source: Source): string {
   try {
     const url = new URL(href);
     if (url.protocol !== "https:" && url.protocol !== "http:") return href;
+    const hasOwnUtm = [...url.searchParams.keys()].some((k) => k.startsWith("utm_"));
     url.searchParams.set("utm_source", source);
+    if (hasOwnUtm) return url.href;
     url.searchParams.set("utm_medium", "social");
     url.searchParams.set("utm_campaign", "link_in_bio");
     return url.href;
@@ -60,8 +66,12 @@ export function linkRouter(prisma: PrismaClient, opts: { publicUrl: string }) {
         title: l.title,
         subtitle: l.subtitle,
         href: withUtm(l.url, source),
-        event: eventName(l.title),
+        event: l.event || eventName(l.title),
         iconPath: l.iconPath,
+        initial: Array.from(l.title.trim())[0] ?? "",
+        note: l.note,
+        newTab: l.newTab,
+        rel: ["noopener", ...(l.sponsored ? ["sponsored"] : [])].join(" "),
       })),
       socials: site.socials.filter((s) => s.kind !== "email"),
       year: new Date().getFullYear(),

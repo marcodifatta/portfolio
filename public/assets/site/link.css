@@ -54,6 +54,8 @@ a { color: inherit; }
 .lk-arrow { color: var(--accent); font-size: 20px; transition: transform .15s ease; }
 .lk-item:hover .lk-arrow { transform: translateX(3px); }
 
+.lk-note { margin: 6px 14px 0; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+
 .lk-socials { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; }
 .lk-socials a { color: var(--muted); font-size: 15px; text-underline-offset: 3px; }
 .lk-foot { text-align: center; color: rgba(247, 239, 238, .45); font-size: 13px; }

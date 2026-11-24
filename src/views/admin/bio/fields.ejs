@@ -19,10 +19,25 @@
   <div class="field full">
     <label for="url">Collegamento</label>
     <input id="url" name="url" type="text" placeholder="https://shoppylist.mdfdev.net/" value="<%= values.url %>" <%- errors.url ? 'aria-invalid="true" aria-describedby="url-error"' : "" %> />
-    <span class="hint">Un indirizzo https://… oppure un'email. Ai link web si aggiunge da solo da quale social arriva la visita.</span>
+    <span class="hint">Un indirizzo https://… oppure un'email. Ai link web si aggiunge da solo da quale social arriva la visita (utm_source); se il link ha già dei parametri utm_, gli altri restano com'è.</span>
     <% if (errors.url) { %><span class="error" id="url-error"><%= errors.url %></span><% } %>
   </div>
   <div class="field full">
-    <label class="check"><input type="checkbox" name="visible" <%= values.visible ? "checked" : "" %> /> Visibile sulla pagina /link</label>
+    <label for="note">Nota sotto il pulsante <span class="hint" style="display:inline">(facoltativa)</span></label>
+    <input id="note" name="note" type="text" maxlength="160" placeholder="link affiliato: se compri lì ricevo una piccola commissione, senza costi per te" value="<%= values.note %>" <%- errors.note ? 'aria-invalid="true" aria-describedby="note-error"' : "" %> />
+    <span class="hint">Testo piccolo sotto il pulsante, per esempio l'avviso di un link affiliato.</span>
+    <% if (errors.note) { %><span class="error" id="note-error"><%= errors.note %></span><% } %>
   </div>
+  <div class="field">
+    <label for="event">Nome evento statistiche <span class="hint" style="display:inline">(facoltativo)</span></label>
+    <input id="event" name="event" type="text" maxlength="50" placeholder="click-instantgaming" value="<%= values.event %>" <%- errors.event ? 'aria-invalid="true" aria-describedby="event-error"' : "" %> />
+    <span class="hint">Vuoto: "click-" seguito dal testo del link.</span>
+    <% if (errors.event) { %><span class="error" id="event-error"><%= errors.event %></span><% } %>
+  </div>
+  <fieldset class="field">
+    <legend>Opzioni</legend>
+    <label class="check"><input type="checkbox" name="newTab" <%= values.newTab ? "checked" : "" %> /> Apri in una nuova scheda</label>
+    <label class="check"><input type="checkbox" name="sponsored" <%= values.sponsored ? "checked" : "" %> /> Link affiliato o sponsorizzato</label>
+    <label class="check"><input type="checkbox" name="visible" <%= values.visible ? "checked" : "" %> /> Visibile sulla pagina /link</label>
+  </fieldset>
 </div>

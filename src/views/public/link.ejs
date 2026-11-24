@@ -39,11 +39,12 @@
     <ul class="lk-list">
       <% links.forEach((l) => { %>
       <li>
-        <a class="lk-item" href="<%= l.href %>" data-id="<%= l.id %>" data-umami-event="<%= l.event %>" data-umami-event-fonte="<%= source %>">
-          <% if (l.iconPath) { %><img src="<%= l.iconPath %>" alt="" width="48" height="48"><% } else { %><span class="lk-ph" aria-hidden="true"><%= l.title.slice(0, 1) %></span><% } %>
+        <a class="lk-item" href="<%= l.href %>" rel="<%= l.rel %>"<% if (l.newTab) { %> target="_blank"<% } %> data-id="<%= l.id %>" data-umami-event="<%= l.event %>" data-umami-event-fonte="<%= source %>"<% if (l.note) { %> aria-describedby="lk-note-<%= l.id %>"<% } %>>
+          <% if (l.iconPath) { %><img src="<%= l.iconPath %>" alt="" width="48" height="48"><% } else { %><span class="lk-ph" aria-hidden="true"><%= l.initial %></span><% } %>
           <span class="lk-text"><strong><%= l.title %></strong><% if (l.subtitle) { %><span><%= l.subtitle %></span><% } %></span>
           <span class="lk-arrow" aria-hidden="true">→</span>
         </a>
+        <% if (l.note) { %><p class="lk-note" id="lk-note-<%= l.id %>"><%= l.note %></p><% } %>
       </li>
       <% }) %>
     </ul>

@@ -13,6 +13,13 @@ export const bioLinkSchema = z
     title: z.string().trim().min(1, "Scrivi il testo del link").max(40, "Massimo 40 caratteri"),
     subtitle: z.string().trim().max(90, "Massimo 90 caratteri").default(""),
     url: z.string().trim().min(1, "Inserisci il collegamento"),
+    note: z.string().trim().max(160, "Massimo 160 caratteri").default(""),
+    event: z
+      .string()
+      .trim()
+      .max(50, "Massimo 50 caratteri")
+      .regex(/^[a-z0-9-]*$/, "Solo lettere minuscole, numeri e trattini, es. click-instantgaming")
+      .default(""),
   })
   .transform((v, ctx) => {
     let url = v.url;
@@ -27,11 +34,11 @@ export const bioLinkSchema = z
       ctx.addIssue({ code: "custom", path: ["url"], message: "Inserisci un link completo, es. https://..." });
       return z.NEVER;
     }
-    return { title: v.title, subtitle: v.subtitle, url };
+    return { title: v.title, subtitle: v.subtitle, url, note: v.note, event: v.event };
   });
 
-type Values = { title: string; subtitle: string; url: string; visible: boolean };
-const EMPTY: Values = { title: "", subtitle: "", url: "", visible: true };
+type Values = { title: string; subtitle: string; url: string; note: string; event: string; sponsored: boolean; newTab: boolean; visible: boolean };
+const EMPTY: Values = { title: "", subtitle: "", url: "", note: "", event: "", sponsored: false, newTab: false, visible: true };
 
 export function bioRouter({ prisma, uploads }: AdminDeps) {
   const router = Router();
@@ -44,8 +51,13 @@ export function bioRouter({ prisma, uploads }: AdminDeps) {
     title: String(req.body.title ?? ""),
     subtitle: String(req.body.subtitle ?? ""),
     url: String(req.body.url ?? ""),
+    note: String(req.body.note ?? ""),
+    event: String(req.body.event ?? ""),
+    sponsored: checkbox(req.body.sponsored),
+    newTab: checkbox(req.body.newTab),
     visible: checkbox(req.body.visible),
   });
+  const flags = (req: Request) => ({ sponsored: checkbox(req.body.sponsored), newTab: checkbox(req.body.newTab), visible: checkbox(req.body.visible) });
   const renderList = async (res: Response, status = 200, values: Values = EMPTY, errors: Record<string, string> = {}) => {
     res.status(status).render("admin/bio/list", { title: "Link in bio", links: await list(), values, errors });
   };
@@ -74,7 +86,7 @@ export function bioRouter({ prisma, uploads }: AdminDeps) {
     if ("errors" in result) return renderList(res, 422, valuesFrom(req), result.errors);
     const last = await prisma.bioLink.aggregate({ _max: { position: true } });
     await prisma.bioLink.create({
-      data: { ...result.data, iconPath: result.iconPath ?? null, visible: checkbox(req.body.visible), position: (last._max.position ?? -1) + 1 },
+      data: { ...result.data, ...flags(req), iconPath: result.iconPath ?? null, position: (last._max.position ?? -1) + 1 },
     });
     flash(req, "ok", "Link aggiunto.");
     res.redirect(303, "/admin/bio");
@@ -96,7 +108,7 @@ export function bioRouter({ prisma, uploads }: AdminDeps) {
     }
     const removeIcon = checkbox(req.body.removeIcon);
     const iconPath = result.iconPath ?? (removeIcon ? null : link.iconPath);
-    await prisma.bioLink.update({ where: { id: link.id }, data: { ...result.data, iconPath, visible: checkbox(req.body.visible) } });
+    await prisma.bioLink.update({ where: { id: link.id }, data: { ...result.data, ...flags(req), iconPath } });
     if (iconPath !== link.iconPath) await uploads.remove(link.iconPath);
     flash(req, "ok", "Link aggiornato.");
     res.redirect(303, "/admin/bio");

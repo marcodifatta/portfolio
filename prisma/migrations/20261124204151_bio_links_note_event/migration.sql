@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "bio_links" ADD COLUMN     "event" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "new_tab" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "note" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "sponsored" BOOLEAN NOT NULL DEFAULT false;

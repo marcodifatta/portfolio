@@ -59,6 +59,15 @@ describe("funzioni della pagina /link", () => {
     assert.equal(withUtm("mailto:a@b.it", "link"), "mailto:a@b.it");
     assert.equal(withUtm("non un link", "link"), "non un link");
   });
+
+  test("withUtm rispetta gli utm_ già presenti (link affiliati) e imposta solo utm_source", () => {
+    const ig = new URL(withUtm("https://www.instant-gaming.com/it/?igr=gamer-c5b364&utm_medium=gamer-c5b364", "tiktok"));
+    assert.equal(ig.searchParams.get("igr"), "gamer-c5b364");
+    assert.equal(ig.searchParams.get("utm_medium"), "gamer-c5b364");
+    assert.equal(ig.searchParams.get("utm_source"), "tiktok");
+    assert.equal(ig.searchParams.get("utm_campaign"), null);
+    assert.equal(withUtm("https://t.me/saldora_offerte?utm_source=link", "instagram"), "https://t.me/saldora_offerte?utm_source=instagram");
+  });
 });
 
 describe("primo avvio: link iniziali", () => {
@@ -209,5 +218,47 @@ describe("admin: Link in bio", () => {
     assert.equal(await ctx.prisma.bioLink.count({ where: { id: shoppy.id } }), 0);
     assert.equal(existsSync(onDisk(shoppy.iconPath!)), false);
     assert.doesNotMatch((await ctx.agent().get("/link")).text, /<strong>ShoppyList<\/strong>/);
+  });
+
+  test("link affiliato: nota sotto il pulsante, evento scelto, nuova scheda e rel sponsored", async () => {
+    const agent = ctx.agent();
+    await login(agent);
+    const token = await csrf(agent, "/admin/bio");
+    let res = await agent.post("/admin/bio").field("_csrf", token).field("title", "x").field("url", "https://x.it/").field("event", "Click Strano!");
+    assert.equal(res.status, 422);
+    assert.match(res.text, /Solo lettere minuscole/);
+
+    res = await agent
+      .post("/admin/bio")
+      .field("_csrf", token)
+      .field("title", "🛒 Giochi scontati su Instant Gaming")
+      .field("url", "https://www.instant-gaming.com/it/?igr=gamer-c5b364&utm_medium=gamer-c5b364")
+      .field("note", "link affiliato: se compri lì ricevo una piccola commissione, senza costi per te")
+      .field("event", "click-instantgaming")
+      .field("sponsored", "on")
+      .field("newTab", "on")
+      .field("visible", "on");
+    assert.equal(res.status, 303);
+    await agent
+      .post("/admin/bio")
+      .field("_csrf", token)
+      .field("title", "📣 Offerte ogni sera su Telegram")
+      .field("url", "https://t.me/saldora_offerte?utm_source=link")
+      .field("event", "click-telegram")
+      .field("newTab", "on")
+      .field("visible", "on");
+    assert.match((await agent.get("/admin/bio")).text, /<span class="badge draft">Affiliato<\/span>/);
+
+    const html = (await ctx.agent().get("/link?src=tiktok")).text;
+    const ig = html.match(/<a class="lk-item" href="([^"]+)" rel="([^"]+)" target="_blank" data-id="(\d+)" data-umami-event="click-instantgaming" data-umami-event-fonte="tiktok" aria-describedby="lk-note-\3">/);
+    assert.ok(ig, "pulsante Instant Gaming");
+    assert.equal(ig![1], "https://www.instant-gaming.com/it/?igr=gamer-c5b364&amp;utm_medium=gamer-c5b364&amp;utm_source=tiktok");
+    assert.equal(ig![2], "noopener sponsored");
+    assert.match(html, /<p class="lk-note" id="lk-note-\d+">link affiliato: se compri lì ricevo una piccola commissione, senza costi per te<\/p>/);
+    assert.match(html, /<span class="lk-ph" aria-hidden="true">🛒<\/span>/, "l'iniziale è l'emoji intera");
+    assert.match(html, /href="https:\/\/t\.me\/saldora_offerte\?utm_source=tiktok" rel="noopener" target="_blank" data-id="\d+" data-umami-event="click-telegram" data-umami-event-fonte="tiktok">/);
+
+    const noSrc = (await ctx.agent().get("/link")).text;
+    assert.match(noSrc, /utm_medium=gamer-c5b364&amp;utm_source=link"/);
   });
 });

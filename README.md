@@ -52,7 +52,7 @@ npm run admin:password          # scrivi la nuova password, copia la riga ADMIN_
 | Testi e CV | titolo e frase della homepage, testo "Chi sono", email di contatto (IT/EN), caricamento del CV in PDF |
 | Social | LinkedIn, GitHub, Instagram, email... con ordine |
 | Competenze | nome e icona delle tecnologie, con ordine |
-| Link in bio | i link della pagina `/link`: logo, testo, sottotesto, collegamento (https o email), ordine (frecce ↑ ↓), Nascondi/Mostra, Elimina |
+| Link in bio | i link della pagina `/link`: logo, testo, sottotesto, collegamento (https o email), nota sotto il pulsante, nome dell'evento Umami, nuova scheda, link affiliato (`rel="sponsored"`), ordine (frecce ↑ ↓), Nascondi/Mostra, Elimina |
 
 ### Vetrina dei progetti
 
@@ -125,6 +125,8 @@ I file caricati (loghi, screenshot, CV) finiscono in `UPLOAD_DIR` (`./data/uploa
 ## 📝 Changelog
 
 ### Novembre 2026
+
+- **24/11** - `/link`: due pulsanti nuovi subito dopo Saldora, **🛒 Giochi scontati su Instant Gaming** (link affiliato, con la nota "link affiliato: se compri lì ricevo una piccola commissione, senza costi per te", `rel="noopener sponsored"`, evento `click-instantgaming`) e **📣 Offerte ogni sera su Telegram** (evento `click-telegram`), entrambi in una nuova scheda. I link in bio hanno quattro campi nuovi gestiti dall'admin (nota, evento, nuova scheda, affiliato; migrazione `bio_links_note_event`); se un link ha già dei parametri `utm_`, la pagina imposta solo `utm_source` con la fonte (`?src=`, `link` se manca). I due pulsanti si inseriscono con `scripts/sql/2026-11-24-link-instantgaming-telegram.sql`. Aggiornato il test della vetrina, che non contava ancora Sparti
 
 - **17/11** - Sezione **Link in bio** nell'admin: i link della pagina `/link` si aggiungono, modificano (logo, testo, sottotesto, collegamento), spostano, nascondono ed eliminano dal pannello. Nuova tabella `bio_links` (migrazione `20261117201728_bio_links`); al primo avvio il server ci copia i 5 link che la pagina mostrava prima, con una copia propria dei loghi in `uploads/bio/`, così la pagina resta uguale
 
