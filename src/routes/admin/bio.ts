@@ -6,6 +6,7 @@ import { flash, verifyCsrf } from "../../auth/session";
 import { checkbox, fieldErrors } from "../../lib/forms";
 import { moveItem } from "../../lib/ordering";
 import { UploadError } from "../../services/uploads";
+import { firstGrapheme } from "../link";
 import { multipart, uploadedFile, type AdminDeps } from "./index";
 
 export const bioLinkSchema = z
@@ -59,7 +60,7 @@ export function bioRouter({ prisma, uploads }: AdminDeps) {
   });
   const flags = (req: Request) => ({ sponsored: checkbox(req.body.sponsored), newTab: checkbox(req.body.newTab), visible: checkbox(req.body.visible) });
   const renderList = async (res: Response, status = 200, values: Values = EMPTY, errors: Record<string, string> = {}) => {
-    res.status(status).render("admin/bio/list", { title: "Link in bio", links: await list(), values, errors });
+    res.status(status).render("admin/bio/list", { title: "Link in bio", links: await list(), values, errors, firstGrapheme });
   };
 
   /** Valida il form e salva l'eventuale logo; restituisce i dati o gli errori per campo. */

@@ -12,7 +12,7 @@
   <ol class="rows">
     <% links.forEach((l, i) => { %>
       <li>
-        <% if (l.iconPath) { %><img class="thumb" src="<%= l.iconPath %>" alt="" width="48" height="48" /><% } else { %><span class="thumb thumb--letter" aria-hidden="true"><%= Array.from(l.title.trim())[0] ?? "" %></span><% } %>
+        <% if (l.iconPath) { %><img class="thumb" src="<%= l.iconPath %>" alt="" width="48" height="48" /><% } else { %><span class="thumb thumb--letter" aria-hidden="true"><%= firstGrapheme(l.title) %></span><% } %>
         <div class="main">
           <strong><%= l.title %> <% if (!l.visible) { %><span class="badge draft">Nascosto</span><% } %><% if (l.sponsored) { %> <span class="badge draft">Affiliato</span><% } %></strong>
           <% if (l.subtitle) { %><small><%= l.subtitle %></small><br /><% } %>

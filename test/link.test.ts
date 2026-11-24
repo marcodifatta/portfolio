@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { after, before, describe, test } from "node:test";
-import { eventName, sourceFrom, withUtm } from "../src/routes/link";
+import { eventName, firstGrapheme, sourceFrom, withUtm } from "../src/routes/link";
 import { initBioLinks } from "../src/services/bio-links";
 import { createUploadStore } from "../src/services/uploads";
 import { csrf, login, pngBuffer, setupApp } from "./helpers";
@@ -40,6 +40,13 @@ describe("funzioni della pagina /link", () => {
     assert.equal(eventName("ShoppyList"), "click-shoppylist");
     assert.equal(eventName("Città & Più!"), "click-citta-piu");
     assert.equal(eventName("  "), "click-link");
+  });
+
+  test("firstGrapheme prende l'emoji intera, anche composta", () => {
+    assert.equal(firstGrapheme("▶️ Le offerte in video"), "▶️");
+    assert.equal(firstGrapheme("🛒 Giochi"), "🛒");
+    assert.equal(firstGrapheme("  Saldora"), "S");
+    assert.equal(firstGrapheme(""), "");
   });
 
   test("sourceFrom accetta solo instagram e tiktok", () => {

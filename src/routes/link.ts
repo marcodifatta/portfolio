@@ -44,6 +44,12 @@ export function eventName(title: string): string {
   return `click-${slug || "link"}`.slice(0, 50);
 }
 
+/** Primo carattere visibile del titolo, emoji composte comprese (es. "▶️"): va nel riquadro senza logo. */
+export function firstGrapheme(text: string): string {
+  const first = new Intl.Segmenter("it", { granularity: "grapheme" }).segment(text.trim())[Symbol.iterator]().next();
+  return first.done ? "" : first.value.segment;
+}
+
 export function linkRouter(prisma: PrismaClient, opts: { publicUrl: string }) {
   const router = Router({ strict: true });
 
@@ -68,7 +74,7 @@ export function linkRouter(prisma: PrismaClient, opts: { publicUrl: string }) {
         href: withUtm(l.url, source),
         event: l.event || eventName(l.title),
         iconPath: l.iconPath,
-        initial: Array.from(l.title.trim())[0] ?? "",
+        initial: firstGrapheme(l.title),
         note: l.note,
         newTab: l.newTab,
         rel: ["noopener", ...(l.sponsored ? ["sponsored"] : [])].join(" "),
